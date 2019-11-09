@@ -27,6 +27,8 @@ dependencies:
   common_utils: ^1.1.3
   url_launcher: ^4.0.1
   http: ^0.12.0+2
+  flutter_plugin:
+        path: /work/flutter_plugin/example/flutter_plugin
 dev_dependencies:
   flutter_test:
     sdk: flutter

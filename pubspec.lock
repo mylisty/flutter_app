@@ -69,6 +69,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_plugin:
+    dependency: "direct main"
+    description:
+      path: "/work/flutter_plugin/example/flutter_plugin"
+      relative: false
+    source: path
+    version: "0.0.1"
   flutter_test:
     dependency: "direct dev"
     description: flutter

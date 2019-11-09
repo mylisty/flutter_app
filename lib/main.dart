@@ -1,9 +1,11 @@
 import 'dart:ui' as prefix0;
 
 import 'package:flutter/material.dart';
+import 'package:flutter_plugin/flutter_plugin.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;
-
+import 'dart:async';
+import 'package:flutter/services.dart';
 void main() {
   runApp(
       /*  new MyApp15(
@@ -53,6 +55,8 @@ class MyApp25 extends StatelessWidget {
 class FirstScreen extends StatelessWidget {
   final  list = new List.generate(30, (i) => new SecondScreen(title:'商品id$i',dec: '商品详情$i'));
   var result='Navigator';
+  String platformVersion = 'Unknown';
+  var demoPlugin = const MethodChannel('demo.plugin');
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -62,17 +66,20 @@ class FirstScreen extends StatelessWidget {
       body: new ListView.builder(itemBuilder: (context,index) {
         return new ListTile(
           title:  new Text(list[index].title),
-          onTap: ()  {
+          onTap: ()  async {
+            // Platform messages may fail, so we use a try/catch PlatformException.
+            /* await FlutterPlugin.getName;*/
+            demoPlugin.invokeMethod('interaction');
         /*  result =   await Navigator.push(context, new MaterialPageRoute(builder: (context) =>
             new SecondScreen(list[index].title, list[index].dec)));
            print('reslut $result');*/
-            Navigator.push<String>(context, new MaterialPageRoute(builder: (BuildContext context){
+           /* Navigator.push<String>(context, new MaterialPageRoute(builder: (BuildContext context){
               return  new SecondScreen(title: list[index].title,dec: list[index].dec,);
             })).then( (Object result){
               //处理代码
               this.result  = result;
               print('aaa '+ this.result);
-            });
+            });*/
           },
         );
       }),
