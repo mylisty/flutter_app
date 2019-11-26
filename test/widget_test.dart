@@ -5,40 +5,28 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:flutter_app/main.dart';
-class  Logger {
-  final String name;
-  bool mute = false;
 
-  // _cache is library-private, thanks to the _ in front
-  // of its name.
-  static final Map<String, Logger> _cache =
-  <String, Logger>{};
-
-  factory Logger(String name) {
-    if (_cache.containsKey(name)) {
-      print('a');
-      return _cache[name];
-    } else {
-      final logger = new Logger._internal(name);
-      _cache[name] = logger;
-      print('b');
-      return logger;
-    }
-  }
-
-  Logger._internal(this.name);
-    static log(String msg) {
-      print(msg);
-  }
-  _ls() {
-
-  }
+bool isLoginPassword(String input) {
+  RegExp mobile = new RegExp(r"(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$");
+  return mobile.hasMatch(input);
 }
 
+ Future<String> say(String from, String msg, [String device])  async{
+  var result = '$from says $msg';
+  if (device != null) {
+    result = '$result with a $device';
+  }
+
+  return await Future.value(result + "a");
+}
+
+String say2(String from, String msg, [String device]) =>   '$from says $msg';
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
    /* // Build our app and trigger a frame.
@@ -61,7 +49,30 @@ void main() {
     int a = 1;
     bool b = true ;
    */
-    Logger.log('Button clicked2');
-    Logger lg = new Logger('a');
+   /* Logger.log('Button clicked2');
+    Logger lg = new Logger('a');*/
+    /*var loginPassword = isLoginPassword("12345698MSt");
+    print("logintPassword "+ loginPassword.toString());*/
+
+
+    var teas = ['green', 'black', 'chamomile', 'earl grey'];
+ /*    teas.forEach((item) {
+       print(item);
+     });
+     teas.forEach(print);
+     var a = teas.iterator;
+     while (a.moveNext()){
+        print(a.current);
+     }
+     for(var a = 0 ; a < teas.length; a++) {
+       print(a.toString() + teas[a].toUpperCase());
+     }*/
+  /*  var loudTeas = teas.map((tea) => tea.toUpperCase());
+    loudTeas.forEach(print);
+    var loudTeaList = teas
+        .map((tea) => tea.toUpperCase()).toList();*/
+     // print(loudTeaList.toString());
+   // print(say("a", "b"));
   });
+
 }

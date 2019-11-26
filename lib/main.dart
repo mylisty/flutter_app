@@ -1,23 +1,667 @@
 import 'dart:ui' as prefix0;
-
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_plugin/flutter_plugin.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'package:flutter/services.dart';
+import 'package:transparent_image/transparent_image.dart';
+
+import 'dialog.dart';
 void main() {
   runApp(
-      /*  new MyApp15(
+      /*  new MyApp26(
         item: new List<String>.generate(300, (i)=> "item$i"),
       )*/
       new MaterialApp(
         title: 'a',
-        home:   new FirstScreen(),
+        home:   new MyApp30(),
       )
-     /* new MyApp25()*/
+   /*   new MyApp30()*/
   );
 }
+
+class MyApp30 extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return new LinearGradientState();
+  }
+}
+
+class LinearGradientState extends State<MyApp30> {
+  Future<Null> _onRefresh() async{
+    await Future.delayed(Duration(seconds: 3),(){
+      setState(() {});
+    });
+  }
+  //这是个key吧，机制问题
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  @override
+  Widget build(BuildContext context) {
+    return  new Scaffold(
+      key: _scaffoldKey,
+      body: Stack(
+        children: <Widget>[
+          Container(
+            decoration: BoxDecoration(
+                gradient: new LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [Colors.cyan, Colors.white, Colors.blue]
+                )
+            ),
+          ),
+          RefreshIndicator(
+            child: Column(
+                children: <Widget>[
+                  Text("a"),
+                  RaisedButton(onPressed: () {
+                    _scaffoldKey.currentState.openDrawer();
+                  },
+                    child: Text("button"),
+                  )
+                ],
+            ),
+            onRefresh: _onRefresh ,
+          ),
+        ],
+      ),
+      drawer: new Drawer(
+            child: new Column(
+              children: <Widget>[
+                Text("aaa"),
+                Text("aaa"),
+                Text("aaa"),
+                Text("aaa"),
+                Text("aaa"),
+                Text("aaa"),
+              ],
+            ),
+      ) ,
+    );
+  }
+}
+
+
+class MyApp29 extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return new TextFieldState();
+  }
+}
+
+class TextFieldState extends State<MyApp29> {
+  var  controller;
+  @override
+  void initState() {
+    super.initState();
+    controller = TextEditingController();
+  }
+  @override
+  Widget build(BuildContext context) {
+    return  new Scaffold(
+      appBar: new AppBar(
+        title: new Text("textField button"),
+      ),
+      body: Center(
+        child: Column(
+          children: <Widget>[
+            new Container(
+              width: 200,
+              child: TextField(
+                controller: controller,
+                //    maxLength: 30,//最大长度，设置此项会让TextField右下角有一个输入数量的统计字符串
+                maxLines: 1,//最大行数
+                autocorrect: true,//是否自动更正
+                autofocus: false,//是否自动对焦
+                obscureText: false,//是否是密码
+                textAlign: TextAlign.start,//文本对齐方式
+                style: TextStyle(fontSize: 17, color: Colors.black87),//输入文本的样式
+                //| inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],//允许的输入格式
+                inputFormatters: [
+                  BlacklistingTextInputFormatter(RegExp("[a-z]")),
+                  LengthLimitingTextInputFormatter(5)
+                ],
+                onChanged: (text) {//内容改变的回调
+                  print('change $text');
+                },
+                cursorWidth: 2.0,
+                cursorColor: Colors.black87,//光标颜色,
+                dragStartBehavior: DragStartBehavior.down,
+                // this.dragStartBehavior = DragStartBehavior.down,
+                scrollPadding: EdgeInsets.all(20),
+                decoration: new InputDecoration(
+                  hintText: "phone",
+                  hintStyle: new TextStyle(fontSize: 16),
+                  //prefixIcon: Image.asset("assets/images/qr_zhilun.jpg",width: 5,height: 5,),
+                  border: new UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black87 ),
+                      borderRadius: BorderRadius.circular(7.0)
+                  ),
+                  focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.black87)),
+                  enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.black87)),
+                ),
+              ),
+            ),
+            OutlineButton(
+              textTheme:  ButtonTextTheme.normal,
+              onPressed: () {
+
+            },
+           /*   focusColor: Colors.lime,
+              hoverColor: Colors.red  ,*/
+           //   color: Colors.greenAccent,
+           //   borderSide: BorderSide(color: Colors.lightBlue,style: BorderStyle.solid),
+              child: Text("outline",style: new TextStyle(fontSize: 10),),
+              disabledBorderColor: Colors.amberAccent,
+              highlightedBorderColor: Colors.red,
+              color: Colors.green,
+              hoverColor: Colors.black87,
+             // splashColor: Colors.green,//点击后的颜色
+             /* shape: ShapeBorder.lerp(),*/
+             // highlightColor: Colors.amberAccent,
+              shape: new RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0))
+            ),
+            FlatButton(onPressed: () {},
+                child: new Text("FlatButton"),
+                color: Colors.green,
+                clipBehavior: Clip.antiAlias,
+                shape: new RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0) ,
+                ),
+               // highlightColor: Colors.red,
+              hoverColor: Colors.amberAccent,
+            ),
+            RaisedButton(onPressed: () {
+
+            },
+              child: Text("RaiseButton"),
+              color: Colors.green,
+                shape: new StadiumBorder(side: new BorderSide(
+                  style: BorderStyle.solid,
+                  color: Colors.greenAccent,
+                ),),
+//              highlightColor: Colors.amber,
+              splashColor: Colors.amber,
+          //    colorBrightness:Brightness.light ,
+            )
+          ],
+        )
+      ),
+    );;
+  }
+
+}
+/*const TextField({
+Key key,
+this.controller,    //编辑框的控制器，跟文本框的交互一般都通过该属性完成，如果不创建的话默认会自动创建
+this.focusNode,  //用于管理焦点
+this.decoration = const InputDecoration(),   //输入框的装饰器，用来修改外观
+TextInputType keyboardType,   //设置输入类型，不同的输入类型键盘不一样
+this.textInputAction,   //用于控制键盘动作（一般位于右下角，默认是完成）
+this.textCapitalization = TextCapitalization.none,
+this.style,    //输入的文本样式
+this.textAlign = TextAlign.start,   //输入的文本位置
+this.textDirection,    //输入的文字排列方向，一般不会修改这个属性
+this.autofocus = false,   //是否自动获取焦点
+this.obscureText = false,   //是否隐藏输入的文字，一般用在密码输入框中
+this.autocorrect = true,   //是否自动校验
+this.maxLines = 1,   //最大行
+this.maxLength,   //能输入的最大字符个数
+this.maxLengthEnforced = true,  //配合maxLength一起使用，在达到最大长度时是否阻止输入
+this.onChanged,  //输入文本发生变化时的回调
+this.onEditingComplete,   //点击键盘完成按钮时触发的回调，该回调没有参数，(){}
+this.onSubmitted,  //同样是点击键盘完成按钮时触发的回调，该回调有参数，参数即为当前输入框中的值。(String){}
+this.inputFormatters,   //对输入文本的校验
+this.enabled,    //输入框是否可用
+this.cursorWidth = 2.0,  //光标的宽度
+this.cursorRadius,  //光标的圆角
+this.cursorColor,  //光标的颜色
+this.keyboardAppearance,
+this.scrollPadding = const EdgeInsets.all(20.0),
+this.dragStartBehavior = DragStartBehavior.down,
+this.enableInteractiveSelection,
+this.onTap,    //点击输入框时的回调(){}
+this.buildCounter,
+})*/
+
+/*InputDecoration({
+this.icon,    //位于装饰器外部和输入框前面的图片
+this.labelText,  //用于描述输入框，例如这个输入框是用来输入用户名还是密码的，当输入框获取焦点时默认会浮动到上方，
+this.labelStyle,  // 控制labelText的样式,接收一个TextStyle类型的值
+this.helperText, //辅助文本，位于输入框下方，如果errorText不为空的话，则helperText不会显示
+this.helperStyle, //helperText的样式
+this.hintText,  //提示文本，位于输入框内部
+this.hintStyle, //hintText的样式
+this.hintMaxLines, //提示信息最大行数
+this.errorText,  //错误信息提示
+this.errorStyle, //errorText的样式
+this.errorMaxLines,   //errorText最大行数
+this.hasFloatingPlaceholder = true,  //labelText是否浮动，默认为true，修改为false则labelText在输入框获取焦点时不会浮动且不显示
+this.isDense,   //改变输入框是否为密集型，默认为false，修改为true时，图标及间距会变小
+this.contentPadding, //内间距
+this.prefixIcon,  //位于输入框内部起始位置的图标。
+this.prefix,   //预先填充的Widget,跟prefixText同时只能出现一个
+this.prefixText,  //预填充的文本，例如手机号前面预先加上区号等
+this.prefixStyle,  //prefixText的样式
+this.suffixIcon, //位于输入框后面的图片,例如一般输入框后面会有个眼睛，控制输入内容是否明文
+this.suffix,  //位于输入框尾部的控件，同样的不能和suffixText同时使用
+this.suffixText,//位于尾部的填充文字
+this.suffixStyle,  //suffixText的样式
+this.counter,//位于输入框右下方的小控件，不能和counterText同时使用
+this.counterText,//位于右下方显示的文本，常用于显示输入的字符数量
+this.counterStyle, //counterText的样式
+this.filled,  //如果为true，则输入使用fillColor指定的颜色填充
+this.fillColor,  //相当于输入框的背景颜色
+this.errorBorder,   //errorText不为空，输入框没有焦点时要显示的边框
+this.focusedBorder,  //输入框有焦点时的边框,如果errorText不为空的话，该属性无效
+this.focusedErrorBorder,  //errorText不为空时，输入框有焦点时的边框
+this.disabledBorder,  //输入框禁用时显示的边框，如果errorText不为空的话，该属性无效
+this.enabledBorder,  //输入框可用时显示的边框，如果errorText不为空的话，该属性无效
+this.border, //正常情况下的border
+this.enabled = true,  //输入框是否可用
+this.semanticCounterText,
+this.alignLabelWithHint,
+})*/
+
+
+
+
+
+class MyApp28 extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    // TODO: implement createState
+    return new DialogState();
+  }
+}
+class DialogState extends State<MyApp28> {
+  @override
+  Widget build(BuildContext context) {
+    return new Scaffold(
+        appBar: new AppBar(
+          title: new Text("dialog"),
+        ),
+        body: Center(
+          child: new RaisedButton(
+            onPressed: () {
+              show(context);
+            },
+            child: Text("button"),
+          ),
+        ),
+      );
+  }
+
+}
+
+
+class MyApp27 extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return new ViewPageState();
+  }
+}
+class ViewPageState  extends State<MyApp27> {
+
+  _onPageChnge(index) {
+    print("aaaaaaaaaaaaaaa "+ index.toString());
+  }
+  @override
+  Widget build(BuildContext context) {
+    return new MaterialApp(
+        title: "pageView",
+        home: new Scaffold(
+            appBar: AppBar(
+              title: Text('pageView Image'),
+            ),
+            body: new PageView(
+              children: <Widget>[
+                 new Container(
+                   child: FadeInImage.memoryNetwork(
+                       placeholder: kTransparentImage,
+                       image: 'https://p0.ssl.qhimg.com/t0183421f63f84fccaf.gif',),
+                       width: 100,
+                       height: 100,
+                 ),
+                 Image.network('https://ws1.sinaimg.cn/large/0065oQSqly1fw8wzdua6rj30sg0yc7gp.jpg'),
+                 Image.network('https://ws1.sinaimg.cn/large/0065oQSqly1fw0vdlg6xcj30j60mzdk7.jpg'),
+                Image.network('https://ws1.sinaimg.cn/large/0065oQSqly1fuo54a6p0uj30sg0zdqnf.jpg'),
+                new Container(
+                  child: FadeInImage.assetNetwork(placeholder: "assets/images/card_package_icon.png", image: 'https://ws1.sinaime/0065oQSqly1fw8wzdua6rj30sg0yc7gp.jpg'),
+                )
+              ],
+              onPageChanged:  _onPageChnge,
+              scrollDirection: Axis.horizontal,
+              reverse: false,
+            )
+        )
+    );
+  }
+
+}
+/*
+
+class ViewPagerDemo extends StatelessWidget {
+  final List<String> arr = [
+    'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1554462012322&di=987630d5759673ef2b8b3b48f8112f78&imgtype=0&src=http%3A%2F%2Fwww.jituwang.com%2Fuploads%2Fallimg%2F121005%2F219049-1210051Q43054.jpg',
+    'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=100023636,3868399025&fm=26&gp=0.jpg',
+    'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1554462109653&di=fc9a56f0410fbc71aa78a87994d77681&imgtype=0&src=http%3A%2F%2Fimg.boqiicdn.com%2FData%2FBK%2FA%2F1408%2F7%2Fimg88561407405003.jpg',
+    'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1554462109652&di=81eab7bc76410abc2ffdb7ba0bd63049&imgtype=0&src=http%3A%2F%2Fimg.pconline.com.cn%2Fimages%2Fupload%2Fupc%2Ftx%2Fphotoblog%2F1303%2F03%2Fc9%2F18591026_18591026_1362320235218.jpg',
+    'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1554462109652&di=40a8a6f283e19dbd52f7c454b13c8e2b&imgtype=0&src=http%3A%2F%2Fimg.pconline.com.cn%2Fimages%2Fupload%2Fupc%2Ftx%2Fphotoblog%2F1303%2F03%2Fc9%2F18591026_18591026_1362320204968.jpg',
+    'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1554462208642&di=9c36cc656acfa0009863cefd1e09ae80&imgtype=0&src=http%3A%2F%2Fa4.att.hudong.com%2F74%2F46%2F300000764046131105469835325.jpg'
+  ];
+*/
+
+/*  List<Widget> _createViewPager() {
+    List<Widget> list = [];
+    list.add(ViewPager(arr, (imgUrl){}));
+    return list;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: _createViewPager(),
+    );
+  }*/
+/*
+}
+typedef void OnTapViewPagerItem(String data);
+class ViewPager extends StatefulWidget {
+  final List<String> viewPagerData;
+  final OnTapViewPagerItem onTap;
+
+  ViewPager(this.viewPagerData, this.onTap, {Key key}) : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() {
+    return _HomePagerState();
+  }
+}
+
+class _HomePagerState extends State<ViewPager> {
+  int virtualIndex = 0;
+  int realIndex = 1;
+
+  PageController controller;
+  Timer timer;
+  PageController  _transController ;
+  var _currentPageValue = 0.0;
+
+  PageController _entryController ;
+  var _entryPageValue = 0.0;
+
+  @override
+  void initState() {
+    super.initState();
+
+    controller = new PageController(initialPage: realIndex);
+    _transController = new PageController();
+    _entryController = new PageController();
+    timer = Timer.periodic(Duration(seconds: 5), (timer) {
+      //实现自动滚动
+      controller.animateToPage(realIndex + 1,
+          duration: Duration(milliseconds: 300), curve: Curves.linear);
+    });
+
+    _transController.addListener(() {
+      setState(() {
+        _currentPageValue = _transController.page;
+      });
+    });
+
+    _entryController.addListener(() {
+      setState(() {
+        _entryPageValue = _entryController.page;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    controller.dispose();
+    timer.cancel();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        //默认构造函数的ViewPager
+        Container(
+          height: 200,
+          child: PageView(
+            controller: controller,
+            onPageChanged: _onPageChanged,
+            children: _buildItems(), //滚动的view
+          ),
+        ),
+        Container(height: 30, child: _buildIndicator()), //滚动的小点
+        //使用PageView.builder
+        //添加transformation
+        Container(
+          height: 200,
+          child: PageView.builder(
+              controller: _transController,
+              itemCount: widget.viewPagerData.length,
+              physics: PageScrollPhysics(parent: BouncingScrollPhysics()),
+              itemBuilder: (BuildContext context, int index) {
+                if (index == _currentPageValue.floor()) {
+                  //将要出去的item
+                  return Transform(
+                    transform: Matrix4.identity()
+                      ..rotateX(_currentPageValue - index),
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                        vertical: 16,
+                        horizontal: 8,
+                      ),
+                      child: Image.network(
+                        widget.viewPagerData[index],
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  );
+                } else if (index == _currentPageValue.floor() + 1) {
+                  //将要进来的item
+                  return Transform(
+                    transform: Matrix4.identity()
+                      ..rotateX(_currentPageValue - index),
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                        vertical: 16,
+                        horizontal: 8,
+                      ),
+                      child: Image.network(
+                        widget.viewPagerData[index],
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  );
+                } else {
+                  //其他，不在屏幕显示的item
+                  return Padding(
+                    padding: EdgeInsets.symmetric(
+                      vertical: 16,
+                      horizontal: 8,
+                    ),
+                    child: Image.network(
+                      widget.viewPagerData[index],
+                      fit: BoxFit.cover,
+                    ),
+                  );
+                }
+              }),
+        ),
+        Container(
+          height: 200,
+          child: PageView.custom(
+            controller: _entryController,
+            childrenDelegate:
+            SliverChildBuilderDelegate((BuildContext context, int index) {
+              if (index == _entryPageValue.floor()) {
+                //出去的item
+                return Transform(
+                    transform: Matrix4.identity()
+                      ..setEntry(3, 2, 0.004)
+                      ..rotateY(_entryPageValue - index)
+                      ..rotateZ(_entryPageValue - index),
+                    child: Image.network(
+                      widget.viewPagerData[index],
+                      fit: BoxFit.fill,
+                    ));
+              } else if (index == _entryPageValue.floor() + 1) {
+                //进来的item
+                return Transform(
+                    transform: Matrix4.identity()
+                      ..setEntry(3, 2, 0.004)
+                      ..rotateY(_entryPageValue - index)
+                      ..rotateZ(_entryPageValue - index),
+                    child: Image.network(
+                      widget.viewPagerData[index],
+                      fit: BoxFit.fill,
+                    ));
+              } else {
+                return Image.network(
+                  widget.viewPagerData[index],
+                  fit: BoxFit.fill,
+                );
+              }
+            }, childCount: widget.viewPagerData.length),
+          ),
+        ),
+      ],
+    );
+  }
+
+  List<Widget> _buildItems() {
+    //轮播图
+    List<Widget> items = [];
+    if (widget.viewPagerData.length > 0) {
+      //头部添加一个尾部item，模拟循环
+      items.add(
+          _buildItem(widget.viewPagerData[widget.viewPagerData.length - 1]));
+      //添加正常item
+      items.addAll(widget.viewPagerData
+          .map((imgUrl) => _buildItem(imgUrl))
+          .toList(growable: false));
+      //尾部
+      items.add(_buildItem(widget.viewPagerData[0]));
+    }
+    return items;
+  }
+
+  Widget _buildItem(String imgUrl) {
+    return GestureDetector(
+      onTap: () {
+        if (widget.onTap != null) {
+          widget.onTap(imgUrl);
+        }
+      },
+      child: Stack(
+        fit: StackFit.expand,
+        children: <Widget>[
+          Image.network(
+            imgUrl,
+            fit: BoxFit.cover,
+          ),
+        ],
+      ),
+    );
+  }
+
+  //创建轮播图点
+  Widget _buildIndicator() {
+    List<Widget> indicators = [];
+    for (int i = 0; i < widget.viewPagerData.length; i++) {
+      indicators.add(Container(
+        //当有装饰组件作为子组件的时候，是一个装饰容器
+        width: 6,
+        height: 6,
+        margin: EdgeInsets.symmetric(horizontal: 1.5, vertical: 10),
+        decoration: BoxDecoration(
+          //装饰组件，对装饰容器进行装饰用，添加颜色、图片、边框、圆角、阴影、渐变、背景混合、形状
+            shape: BoxShape.circle,
+            color: i == virtualIndex ? Colors.white : Colors.grey),
+      ));
+    }
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: indicators,
+    );
+  }
+
+  _onPageChanged(int index) {
+    realIndex = index;
+    int count = widget.viewPagerData.length;
+    if (index == 0) {
+      virtualIndex = count - 1;
+      controller.jumpToPage(count);
+    } else if (index == count + 1) {
+      virtualIndex = 0;
+      controller.jumpToPage(1);
+    } else {
+      virtualIndex = index - 1;
+    }
+    setState(() {});
+  }
+}
+
+*/
+
+
+class MyApp26 extends StatelessWidget {
+  final List<String> item;
+
+  MyApp26({Key key, @required this.item}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return new MaterialApp(
+        title: "列表",
+        home: new Scaffold(
+            appBar: AppBar(
+              title: Text('居中布局示例'),
+            ),
+            body:  new Center(
+              child: new Column(
+                children: <Widget>[
+                  new ClipOval(
+                    child: new SizedBox(
+                      width: 50,
+                      height: 50,
+                      child:  new Image.asset('assets/images/qr_zhilun.jpg',fit: BoxFit.fill,),
+                    ),
+                  ),
+                  new CircleAvatar(
+                    radius:40 ,
+                    backgroundImage: AssetImage("assets/images/qr_zhilun.jpg"),
+                  ),
+                  new Container(
+                    width: 72.0,
+                    height: 72.0,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      image: DecorationImage(
+                        image: AssetImage(
+                         "assets/images/ant_installment_icon.png",
+                        ),
+                      ),
+                    ),
+                  ),
+                  new ClipRRect(
+                    borderRadius: new BorderRadius.all(new Radius.circular(100)),
+                    child: new Image.asset("assets/images/qr_zhilun.jpg",width: 72,height: 72,),
+                  ),
+                ],
+              ),
+            )
+        )
+    );
+  }
+}
+
+
 
 class MyApp25 extends StatelessWidget {
   @override
@@ -69,17 +713,17 @@ class FirstScreen extends StatelessWidget {
           onTap: ()  async {
             // Platform messages may fail, so we use a try/catch PlatformException.
             /* await FlutterPlugin.getName;*/
-            demoPlugin.invokeMethod('interaction');
+           // demoPlugin.invokeMethod('interaction');
         /*  result =   await Navigator.push(context, new MaterialPageRoute(builder: (context) =>
             new SecondScreen(list[index].title, list[index].dec)));
            print('reslut $result');*/
-           /* Navigator.push<String>(context, new MaterialPageRoute(builder: (BuildContext context){
+            Navigator.push<String>(context, new MaterialPageRoute(builder: (BuildContext context){
               return  new SecondScreen(title: list[index].title,dec: list[index].dec,);
             })).then( (Object result){
               //处理代码
               this.result  = result;
               print('aaa '+ this.result);
-            });*/
+            });
           },
         );
       }),
@@ -644,7 +1288,10 @@ class _LoginPageState extends State<MyApp10> {
   String userName;
   String passWord;
   GlobalKey<FormState> loginkey = new GlobalKey<FormState>();
-
+  static bool isLoginPassword(String input) {
+    RegExp mobile = new RegExp(r"(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$");
+    return mobile.hasMatch(input);
+  }
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
@@ -668,13 +1315,16 @@ class _LoginPageState extends State<MyApp10> {
                       onSaved: (value) {
                         userName = value;
                       },
-                      onFieldSubmitted: (value) {},
+                      onFieldSubmitted: (value) {
+
+                      },
                     ),
                     new TextFormField(
                       decoration: new InputDecoration(labelText: '请输入密码'),
                       obscureText: true,
                       validator: (value) {
-                        return value.length < 6 ? "密码不够六位" : null;
+                        return isLoginPassword(value)? "6~16位数字和字符组合": null;
+                       // return value.length < 6 ? "密码不够六位" : null;
                       },
                       onSaved: (value) {
                         passWord = value;
