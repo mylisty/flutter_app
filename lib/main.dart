@@ -9,16 +9,65 @@ import 'package:transparent_image/transparent_image.dart';
 import 'dialog.dart';
 void main() {
   runApp(
-      /*  new MyApp26(
+        new MyApp31(
         item: new List<String>.generate(300, (i)=> "item$i"),
-      )*/
-      new MaterialApp(
-        title: 'a',
-        home:   new MyApp30(),
       )
-   /*   new MyApp30()*/
+    /*  new SecondScreen(
+        title: 'a',
+        dec:   'c',
+      )*/
+ /*    new MaterialApp(
+       title: '',
+       home: new MyApp28(),
+     )*/
   );
 }
+
+class MyApp31 extends StatelessWidget {
+  final List<String> item;
+
+  MyApp31({Key key, @required this.item}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return new MaterialApp(
+        title: "列表",
+        home: new Scaffold(
+            appBar: AppBar(
+              title: Text('居中布局示例'),
+            ),
+            body: Column(
+              // start ，沿着主轴方向(垂直方向)顶部对齐；
+              //end，沿着主轴方向(垂直方向)底部对齐；
+              //center，沿着主轴方向(垂直方向)居中对齐；
+              //spaceBetween ，沿着主轴方向(垂直方向)平分剩余空间；
+              //spaceAround，把剩余空间平分成n份，n是子widget的数量，然后把其中一份空间分成2份，放在第一个child的前面，和最后一个child的后面；
+              //6.spaceEvenly，把剩余空间平分n+1份，然后平分所有的空间，请注意和spaceAround的区别；
+              //
+              //作者：liu_520
+              //链接：https://www.jianshu.com/p/1d003ab6c278
+            /*  mainAxisAlignment: MainAxisAlignment.center,*/
+              //
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Row(
+                  children: <Widget>[
+                    Text("aaaa")
+                  ],
+                )
+              ],
+            ),
+        )
+    );
+  }
+}
+
+
+
+
+
+
+
 
 class MyApp30 extends StatefulWidget {
   @override
@@ -115,7 +164,7 @@ class TextFieldState extends State<MyApp29> {
                 autofocus: false,//是否自动对焦
                 obscureText: false,//是否是密码
                 textAlign: TextAlign.start,//文本对齐方式
-                style: TextStyle(fontSize: 17, color: Colors.black87),//输入文本的样式
+                style: TextStyle(fontSize: 16, color: Colors.black87),//输入文本的样式
                 //| inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],//允许的输入格式
                 inputFormatters: [
                   BlacklistingTextInputFormatter(RegExp("[a-z]")),
@@ -132,11 +181,15 @@ class TextFieldState extends State<MyApp29> {
                 decoration: new InputDecoration(
                   hintText: "phone",
                   hintStyle: new TextStyle(fontSize: 16),
-                  //prefixIcon: Image.asset("assets/images/qr_zhilun.jpg",width: 5,height: 5,),
-                  border: new UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black87 ),
-                      borderRadius: BorderRadius.circular(7.0)
-                  ),
+                  prefixIcon: Image.asset("assets/images/qr_zhilun.jpg",width: 5,height: 5,),
+               /*   border: new OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                      borderSide: BorderSide(color: Colors.red)
+                  ),*/
+//                  border: new UnderlineInputBorder( //OutlineInputBorder 边框
+//                      borderSide: BorderSide(color: Colors.black87 ),
+//                      borderRadius: BorderRadius.circular(7.0)
+//                  ),
                   focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.black87)),
                   enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.black87)),
                 ),
@@ -283,7 +336,8 @@ class DialogState extends State<MyApp28> {
         body: Center(
           child: new RaisedButton(
             onPressed: () {
-              show(context);
+              //show(context);
+              showListDialog(context);
             },
             child: Text("button"),
           ),
@@ -317,7 +371,6 @@ class ViewPageState  extends State<MyApp27> {
               children: <Widget>[
                  new Container(
                    child: FadeInImage.memoryNetwork(
-                       placeholder: kTransparentImage,
                        image: 'https://p0.ssl.qhimg.com/t0183421f63f84fccaf.gif',),
                        width: 100,
                        height: 100,
@@ -626,12 +679,17 @@ class MyApp26 extends StatelessWidget {
             body:  new Center(
               child: new Column(
                 children: <Widget>[
-                  new ClipOval(
-                    child: new SizedBox(
-                      width: 50,
-                      height: 50,
-                      child:  new Image.asset('assets/images/qr_zhilun.jpg',fit: BoxFit.fill,),
+                  GestureDetector(
+                    child: new ClipOval(
+                      child: new SizedBox(
+                        width: 50,
+                        height: 50,
+                        child:  new Image.asset('assets/images/qr_zhilun.jpg',fit: BoxFit.fill,),
+                      ),
                     ),
+                    onTap: () {
+                    //  show(context);
+                    },
                   ),
                   new CircleAvatar(
                     radius:40 ,
@@ -747,7 +805,8 @@ class SecondScreen extends StatelessWidget {
         child: new RaisedButton(
             child: Text(title),
             onPressed: () {
-              Navigator.pop(context,dec);
+              showListDialog(context);
+            //  Navigator.pop(context,dec);
             }),
       ),
     );
@@ -806,7 +865,6 @@ class MyApp22 extends StatelessWidget {
         ],
       ),
       onTap: () {
-        print('按下');
       },
     );
   }
@@ -1032,6 +1090,7 @@ class MyApp18 extends StatelessWidget {
 }
 
 class MyApp17 extends StatelessWidget {
+  List<String> list = ["a","c","c"];
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
@@ -1042,11 +1101,11 @@ class MyApp17 extends StatelessWidget {
             ),
             body: new Container(
               height: 200,
-              child: new AspectRatio(
-                aspectRatio: 1.5, //宽高比例
+              child:gridViewDefaultCount(list) /*new AspectRatio(
+                aspectRatio: 2, //宽高比例
                 child: new Container(
                   color: Colors.greenAccent,
-                  child: new GridView.extent(
+                  child:gridViewDefaultCount(list) *//*new GridView.extent(
                     maxCrossAxisExtent: 150,
                     children: <Widget>[
                       Text('ajj'),
@@ -1060,10 +1119,41 @@ class MyApp17 extends StatelessWidget {
                       Text('ajj'),
                       Text('ajj'),
                     ],
-                  ),
+                  )*//*,
                 ),
-              ),
+              ),*/
             )));
+  }
+  Widget gridViewDefaultCount(List<String> list) {
+    return GridView.count(
+//      padding: EdgeInsets.all(5.0),
+      //一行多少个
+      crossAxisCount: 2,
+      //滚动方向
+      scrollDirection: Axis.vertical,
+      // 左右间隔
+      crossAxisSpacing: 10.0,
+      // 上下间隔
+      mainAxisSpacing: 10.0,
+      //宽高比
+      childAspectRatio: 1 / 1,
+
+      children: initListWidget(list),
+    );
+  }
+
+  List<Widget> initListWidget(List<String> list) {
+    List<Widget> lists = [];
+    for (var item in list) {
+      lists.add(new Container(
+        height: 50.0,
+        width: 50.0,
+        color: Colors.yellow,
+        child: new Center(
+            child: Text('a')),
+      ));
+    }
+    return lists;
   }
 }
 

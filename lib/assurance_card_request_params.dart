@@ -19,7 +19,11 @@ class AssuranceCardRequestParams {
 		orderSn = json['orderSn'];
 		latitude = json['latitude'];
 		if (json['tyreInfoList'] != null) {
-			tyreInfoList = new List<AssuranceCardRequestParamsTyreinfolist>();(json['tyreInfoList'] as List).forEach((v) { tyreInfoList.add(new AssuranceCardRequestParamsTyreinfolist.fromJson(v)); });
+			tyreInfoList = new List<AssuranceCardRequestParamsTyreinfolist>();
+			(json['tyreInfoList'] as List)
+					.forEach((v) {
+						tyreInfoList.add(new AssuranceCardRequestParamsTyreinfolist.fromJson(v));
+			     });
 		}
 		bigCustomOrderSn = json['bigCustomOrderSn'];
 		driverName = json['driverName'];

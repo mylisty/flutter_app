@@ -9,6 +9,46 @@ buildscript {
         classpath 'com.android.tools.build:gradle:3.2.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
+    subprojects {
+        project.configurations.all {
+            resolutionStrategy.eachDependency { details ->
+                if (details.requested.group == 'com.android.support'
+                        && !details.requested.name.contains('multidex') ) {
+                    details.useVersion "28.0.0"
+                }
+
+                if (details.requested.group == 'androidx.core'
+                        && !details.requested.name.contains('androidx.core') ) {
+                    details.useVersion "1.0.2"
+                }
+                if (details.requested.group == 'androidx.lifecycle') {
+                    details.useVersion "2.0.0"
+                }
+                if (details.requested.group == 'androidx.arch.core') {
+                    details.useVersion "2.0.0"
+                }
+                if (details.requested.group == 'androidx.versionedparcelable') {
+                    details.useVersion "1.0.0"
+                }
+                if (details.requested.group == 'androidx.collection') {
+                    details.useVersion "1.0.0"
+                }
+                /*  if (details.requested.group == 'androidx.annotation') {
+                      details.useVersion "1.0.2"
+                  }*/
+                if (details.requested.group == 'androidx.appcompat') {
+                    details.useVersion "1.1.0"
+                }
+                if (details.requested.group == 'androidx.vectordrawable') {
+                    details.useVersion "1.1.0-beta02"
+                }
+                /* if (details.requested.group == 'androidx.legacy') {
+                     details.useVersion "1.0.0-rc01"
+                 }*/
+
+            }
+        }
+    }
 }
 
 allprojects {
