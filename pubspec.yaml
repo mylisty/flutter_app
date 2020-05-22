@@ -30,6 +30,14 @@ dependencies:
   connectivity: ^0.3.2
   image_picker: 0.6.1+10
   fluttertoast: 3.1.2
+  webview_flutter: ^0.3.10+4
+#  flutter_webview_plugin: ^0.3.10
+  flutter_inappwebview: ^2.1.0+1
+  dio: ^3.0.9
+  flutter_picker: ^1.1.4
+  popup_window: ^1.0.0+3
+  bloc: ^4.0.0
+  flutter_bloc: ^4.0.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

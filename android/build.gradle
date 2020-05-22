@@ -42,9 +42,21 @@ buildscript {
                 if (details.requested.group == 'androidx.vectordrawable') {
                     details.useVersion "1.1.0-beta02"
                 }
-                /* if (details.requested.group == 'androidx.legacy') {
+                 if (details.requested.group == 'androidx.legacy') {
                      details.useVersion "1.0.0-rc01"
-                 }*/
+                 }
+                if (details.requested.group == 'androidx.fragment') {
+                     details.useVersion "1.0.0-rc01"
+                 }
+                if (details.requested.group == 'androidx.drawerlayout') {
+                     details.useVersion "1.0.0-rc01"
+                 }
+                if (details.requested.group == 'androidx.interpolator') {
+                     details.useVersion "1.0.0-rc01"
+                 }
+                if (details.requested.group == 'androidx.cursoradapter') {
+                     details.useVersion "1.0.0-rc01"
+                 }
 
             }
         }

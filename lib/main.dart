@@ -1,26 +1,1526 @@
+import 'dart:convert';
+import 'dart:math';
+// ignore: avoid_web_libraries_in_flutter
 import 'dart:ui' as prefix0;
+import 'package:common_utils/common_utils.dart';
+import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/PopRoute.dart';
+import 'package:flutter_picker/flutter_picker.dart';
+//import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'package:flutter/services.dart';
-import 'package:transparent_image/transparent_image.dart';
-
+import 'package:popup_window/popup_window.dart';
+//import 'package:transparent_image/transparent_image.dart';
+import 'package:webview_flutter/webview_flutter.dart';
+import 'dart:async';
+import 'PickerData.dart';
+import 'Test.dart';
 import 'dialog.dart';
+
 void main() {
   runApp(
-        new MyApp31(
+    /*  new MyApp1(
         item: new List<String>.generate(300, (i)=> "item$i"),
-      )
-    /*  new SecondScreen(
-        title: 'a',
-        dec:   'c',
       )*/
- /*    new MaterialApp(
-       title: '',
-       home: new MyApp28(),
-     )*/
+      new MyApp27()
+//    new MaterialApp(
+//      title: '',
+//      home: new TabbarBgColorTest(),
+//    ),
   );
+}
+class TabbarBgColorTest extends StatefulWidget{
+  @override
+  State<StatefulWidget> createState() {
+    return _TabbarBgColorTesttate();
+  }
+}
+
+class _TabbarBgColorTesttate extends State<TabbarBgColorTest> with SingleTickerProviderStateMixin{
+  int _selectedIndex = 0;
+  GlobalKey<ScaffoldState> _key = GlobalKey();
+  final List<String> _tabs = ["新闻", "历史", "图片"];
+  TabController _tabController;
+
+  // PageController _pageController;
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: _tabs.length, vsync: this);
+    _tabController.addListener((){
+      _tabController.previousIndex;
+      print("selected tabBar ${_tabController.previousIndex}");
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        key: _key,
+        appBar: AppBar(
+            title: Text("ScaffoldTest"),
+            //TabBar布置
+            bottom: PreferredSize(
+              preferredSize: Size.fromHeight(48),
+              child: Material(
+                color: Colors.green,
+                child: TabBar(
+                  // indicator: ColorTabIndicator(Colors.black),//选中标签颜色
+                  indicatorColor: Colors.black,//选中下划线颜色,如果使用了indicator这里设置无效
+                  controller: _tabController,
+                  labelColor: Colors.white,
+                  unselectedLabelColor: Colors.yellow,
+                  indicatorPadding: EdgeInsets.all(10),
+                  tabs: _tabs.map((item)=>Tab(child: Container(child: Text(item)),)).toList(),
+                ),
+              ),
+            )
+        ),
+        body: TabBarView(
+          controller: _tabController,
+          children: _tabs.map((item) => Container(
+            color: Colors.blueGrey,
+            alignment: AlignmentDirectional.center,
+            child: Text(item),
+          )).toList(),
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+          items: [
+            BottomNavigationBarItem(
+                title: Text("Home"),
+                icon: Icon(Icons.home)
+            ),
+            BottomNavigationBarItem(
+                title: Text("Business"),
+                icon: Icon(Icons.business)
+            ),
+            BottomNavigationBarItem(
+                title: Text("School"),
+                icon: Icon(Icons.school)
+            )
+          ],
+          currentIndex: _selectedIndex,
+          fixedColor: Colors.green,
+          onTap: (index){
+            setState(() {
+              _selectedIndex = index;
+            });
+            print(_selectedIndex);
+          },
+        )
+    );
+  }
+}
+
+
+class MyApp104 extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return new MaterialApp(
+      title: '弹出菜单演示',
+      home: new MenuHomePage(),
+    );
+  }
+}
+
+/*
+首页是带一个根据点击弹出菜单而改变中间文字的可变状态控件
+ */
+class MenuHomePage extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return new MenuHomePageState();
+  }
+}
+
+class MenuHomePageState extends State<MenuHomePage> {
+  //首次运行中间文字显示点击效果
+  String _bodyText = '点击效果';
+  @override
+  Widget build(BuildContext context) {
+    return new Scaffold(
+      appBar: new AppBar(
+        title: new Text('弹出菜单演示'),
+        actions: <Widget>[
+          /*
+          下面是一个弹出菜单按钮，包含两个属性点击属性和弹出菜单子项的建立
+          其中<String>是表示这个弹出菜单的value内容是String类型
+           */
+          new PopupMenuButton<String>(
+              //这是点击弹出菜单的操作，点击对应菜单后，改变屏幕中间文本状态，将点击的菜单值赋予屏幕中间文本
+              onSelected: (String value) {
+                setState(() {
+                  _bodyText = value;
+                });
+              },
+              //这是弹出菜单的建立，包含了两个子项，分别是增加和删除以及他们对应的值
+              itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+                    PopupMenuItem(
+                      child: new Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[
+                          new Text('增加'),
+                          new Icon(Icons.add_circle)
+                        ],
+                      ),
+                      value: '这是增加',
+                    ),
+                    PopupMenuItem(
+                      child: new Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[
+                          new Text('增加'),
+                          new Icon(Icons.remove_circle)
+                        ],
+                      ),
+                      value: '这是删除',
+                    )
+                  ])
+        ],
+      ),
+      //这是屏幕主体包含一个中央空间，里面是一个文本内容以及字体大小
+      body: new Center(
+        child: new Text(
+          _bodyText,
+          style: new TextStyle(fontSize: 20.0),
+        ),
+      ),
+    );
+  }
+}
+
+class MyApp103 extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return new _testLiandongState3();
+  }
+}
+
+enum Position {
+  TOP,
+  CENTER,
+  BOTTOM,
+}
+
+class Toast {
+  static OverlayEntry _overlayEntry; // 浮层，Toast显示全靠它
+  static Position _toastPosition; // 显示位置
+
+  static void show(
+    BuildContext context, {
+    String message, // 文本内容
+    Color color = Colors.black,
+    Color textColor = Colors.white, // 文本颜色
+    double textSize = 14.0, // 文字大小
+    int seconds = 2, // 显示时长，单位：秒
+    Position position = Position.BOTTOM, // 显示位置
+  }) async {
+    assert(message != null);
+    _toastPosition = position;
+
+    //显示之前先把之前的浮层清空
+    _cancelToast();
+    //获取OverlayState
+    OverlayState overlayState = Overlay.of(context);
+    _overlayEntry = OverlayEntry(
+      builder: (BuildContext context) => Positioned(
+          //top值，可以改变这个值来改变toast在屏幕中的位置
+          top: _getToastPosition(context),
+          child: Container(
+            alignment: Alignment.center,
+            width: MediaQuery.of(context).size.width,
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 40.0),
+              child: Center(
+                child: Card(
+                  color: color, //背景色
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                    child: Text(
+                      message,
+                      style: TextStyle(
+                        fontSize: textSize,
+                        color: textColor,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          )),
+    );
+    WidgetsBinding.instance
+        .addPostFrameCallback((_) => overlayState.insert(_overlayEntry));
+  }
+
+  // 移除Toast
+  static _cancelToast() async {
+    _overlayEntry?.remove();
+    _overlayEntry = null;
+  }
+
+  // 设置toast位置
+  static double _getToastPosition(context) {
+    double position;
+    if (_toastPosition == Position.TOP) {
+      position = MediaQuery.of(context).size.height * 1 / 6;
+    } else if (_toastPosition == Position.CENTER) {
+      position = MediaQuery.of(context).size.height * 3 / 6;
+    } else {
+      position = MediaQuery.of(context).size.height * 5 / 6;
+    }
+    return position;
+  }
+}
+
+class Toast2 {
+  static void show({@required BuildContext context, @required String message}) {
+    //创建一个OverlayEntry对象
+    OverlayEntry overlayEntry = new OverlayEntry(builder: (context) {
+      //外层使用Positioned进行定位，控制在Overlay中的位置
+      return new Positioned(
+          top: MediaQuery.of(context).size.height * 0.7,
+          child: new Material(
+            child: new Container(
+              width: MediaQuery.of(context).size.width,
+              alignment: Alignment.center,
+              child: new Center(
+                child: new Card(
+                  child: new Padding(
+                    padding: EdgeInsets.all(8),
+                    child: new Text(message),
+                  ),
+                  color: Colors.grey,
+                ),
+              ),
+            ),
+          ));
+    });
+    //往Overlay中插入插入OverlayEntry
+    WidgetsBinding.instance
+        .addPostFrameCallback((_) => Overlay.of(context).insert(overlayEntry));
+
+    //两秒后，移除Toast
+    /*new Future.delayed(Duration(seconds: 2)).then((value) {
+      overlayEntry.remove();
+    });*/
+  }
+}
+
+// ignore: camel_case_types
+class _testLiandongState3 extends State<MyApp103> {
+  // ignore: non_constant_identifier_names
+  List<TestBean> list = new List();
+  final List<FixedExtentScrollController> scrollController = [];
+  final List<GlobalKey<_StateViewState>> _keys = [];
+  bool firstIn = true;
+  @override
+  void initState() {
+    super.initState();
+    for (int i = 0; i < 7; i++) {
+      var testBean = new TestBean();
+      testBean.value = i;
+      testBean.label = "类目一" + i.toString();
+      List<sendoBean> children = new List();
+      for (int j = 0; j < 5; j++) {
+        var sendoBean2 = new sendoBean();
+        sendoBean2.value = 23 + j + i;
+        sendoBean2.label = "服务项" + j.toString() + i.toString();
+        children.add(sendoBean2);
+      }
+
+      testBean.children = children;
+      list.add(testBean);
+    }
+
+    if (scrollController.length == 0) {
+      scrollController
+          .add(FixedExtentScrollController(initialItem: list.length));
+      _keys.add(GlobalKey(debugLabel: 0.toString()));
+
+      scrollController.add(FixedExtentScrollController(
+          initialItem: list[position].children.length));
+      _keys.add(GlobalKey(debugLabel: 1.toString()));
+    }
+    WidgetsBinding.instance.addPostFrameCallback((_) {});
+  }
+
+  int position = 0;
+  List<OverlayEntry> overlayEntryList = List<OverlayEntry>();
+  OverlayEntry weixinOverlayEntry;
+  void showWeixinButtonView() {
+    weixinOverlayEntry = new OverlayEntry(builder: (context) {
+      return new Positioned(
+          top: kToolbarHeight,
+          right: 20,
+          width: 200,
+          height: 320,
+          child: new SafeArea(
+              child: new Material(
+            child: new Container(
+              color: Colors.black,
+              child: new Column(
+                children: <Widget>[
+                  Expanded(
+                    child: new ListTile(
+                      leading: Icon(
+                        Icons.add,
+                        color: Colors.white,
+                      ),
+                      title: new Text(
+                        "发起群聊",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: new ListTile(
+                      leading: Icon(Icons.add, color: Colors.white),
+                      title: new Text("添加朋友",
+                          style: TextStyle(color: Colors.white)),
+                    ),
+                  ),
+                  Expanded(
+                    child: new ListTile(
+                      leading: Icon(Icons.add, color: Colors.white),
+                      title: new Text("扫一扫",
+                          style: TextStyle(color: Colors.white)),
+                    ),
+                  ),
+                  Expanded(
+                    child: new ListTile(
+                      leading: Icon(Icons.add, color: Colors.white),
+                      title: new Text("首付款",
+                          style: TextStyle(color: Colors.white)),
+                    ),
+                  ),
+                  Expanded(
+                    child: new ListTile(
+                      leading: Icon(Icons.add, color: Colors.white),
+                      title: new Text("帮助与反馈",
+                          style: TextStyle(color: Colors.white)),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          )));
+    });
+    Overlay.of(context).insert(weixinOverlayEntry);
+  }
+
+  void showOverlay(BuildContext context) async {
+    final OverlayState overlayState = Overlay.of(context);
+    final OverlayEntry overlayEntry = OverlayEntry(
+      builder: (BuildContext context) => Positioned(
+          left: 0.0,
+          right: 0,
+          bottom: 90.0,
+          child: Container(
+            margin: const EdgeInsets.all(15.0),
+            padding: const EdgeInsets.all(3.0),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(25.0),
+                border: Border.all(color: Colors.blueAccent)),
+            child: Text('Focus, lighting and contrast help',
+                style: TextStyle(
+                    fontWeight: FontWeight.normal,
+                    color: Colors.white,
+                    fontSize: 18.0,
+                    decoration: TextDecoration.none)),
+          )),
+    );
+    WidgetsBinding.instance
+        .addPostFrameCallback((_) => overlayState.insert(overlayEntry));
+//    await Future<dynamic>.delayed(Duration(seconds: 2));
+//    overlayEntry.remove();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return new MaterialApp(
+        title: "pageView",
+        home: new Scaffold(
+          appBar: AppBar(
+            title: Text('pageView Image'),
+          ),
+          body: Column(
+            children: <Widget>[
+              RaisedButton(
+                onPressed: () {
+                  //获取OverlayState
+                  OverlayState overlayState = Overlay.of(context);
+//创建OverlayEntry
+                  OverlayEntry _overlayEntry = OverlayEntry(
+                      builder: (BuildContext context) => Positioned(
+                            child: Icon(Icons.check_circle),
+                          ));
+//显示到屏幕上
+                  WidgetsBinding.instance.addPostFrameCallback(
+                      (_) => overlayState.insert(_overlayEntry));
+//                overlayState.insert(_overlayEntry);
+//移除屏幕
+//                overlayState.remove();
+
+//                这样就可以在屏幕上显示一个icon
+//                可以通过修改Positioned的left、top
+//                、right、bottom等值来修改在屏幕中的位置;
+//                最后通过overlayState.remove();来移除
+//
+//                作者：哎呀啊噢
+//                链接：https://www.jianshu.com/p/cc8aab935e11
+//                来源：简书
+//                著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+                },
+                child: Text("click"),
+              ),
+              /*GestureDetector(
+                child: Text("clic",style: TextStyle(fontSize: 44),),
+                onTap: () {
+//                  showOverlay(context);
+//                Toast2.show(context: context,message: "sljfjsf");
+//                  showWeixinButtonView();
+                },
+              ),*/
+              Container(
+                height: 241,
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                      flex: 1,
+                      child: CupertinoPicker.builder(
+                        scrollController: scrollController[0],
+                        magnification: 1.0,
+                        childCount: list.length,
+                        itemBuilder: (context, index) {
+                          return Container(
+                            alignment: Alignment.center,
+                            child: Text(
+                              list[index].label,
+                              style: TextStyle(fontSize: 16, color: Colors.red),
+                            ),
+                          );
+                        },
+                        onSelectedItemChanged: (int value) {
+                          position = value;
+                          setState(() {});
+                        },
+                        itemExtent: 47,
+                      ),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: CupertinoPicker.builder(
+//                          scrollController: scrollController[1],
+                        magnification: 1.0,
+                        childCount: list[position].children.length,
+                        itemBuilder: (context, index) {
+                          return Container(
+                            alignment: Alignment.center,
+                            child: Text(list[position].children[index].label),
+                          );
+                        },
+                        onSelectedItemChanged: (int value) {
+                          LogUtil.e("aaaaaaaaa " + "aaa" + value.toString());
+                        },
+                        itemExtent: 47,
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ));
+  }
+
+  void _modalBottomSheetMenu() {
+    showModalBottomSheet(
+        context: context,
+        builder: (builder) {
+          return Container(
+            child: Column(
+              children: <Widget>[
+                Container(
+                  height: 48,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    border:
+                        Border(bottom: BorderSide(width: 1, color: Colors.red)),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      GestureDetector(
+                        child: Container(
+                          child: Text(
+                            "取消",
+                            style: TextStyle(fontSize: 14, color: Colors.red),
+                          ),
+                          margin: EdgeInsets.only(left: 16),
+                        ),
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                      ),
+                      Text(
+                        "服务项目",
+                        style: TextStyle(fontSize: 14, color: Colors.red),
+                      ),
+                      GestureDetector(
+                        child: Container(
+                          child: Text(
+                            "确认",
+                            style: TextStyle(fontSize: 14, color: Colors.red),
+                          ),
+                          margin: EdgeInsets.only(right: 16),
+                        ),
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  height: 241,
+                  child: Row(
+                    children: <Widget>[
+                      Expanded(
+                        flex: 1,
+                        child: CupertinoPicker.builder(
+//                         scrollController: scrollController[0],
+                          magnification: 1.0,
+                          childCount: list.length,
+                          itemBuilder: (context, index) {
+                            return Container(
+                              alignment: Alignment.center,
+                              child: Text(
+                                list[index].label,
+                                style:
+                                    TextStyle(fontSize: 16, color: Colors.red),
+                              ),
+                            );
+                          },
+                          onSelectedItemChanged: (int value) {
+                            position = value;
+                            setState(() {});
+                          },
+                          itemExtent: 47,
+                        ),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: CupertinoPicker.builder(
+//                          scrollController: scrollController[1],
+                          magnification: 1.0,
+                          childCount: list[position].children.length,
+                          itemBuilder: (context, index) {
+                            return Container(
+                              alignment: Alignment.center,
+                              child: Text(list[position].children[index].label),
+                            );
+                          },
+                          onSelectedItemChanged: (int value) {
+                            LogUtil.e("aaaaaaaaa " + "aaa" + value.toString());
+                          },
+                          itemExtent: 47,
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          );
+        });
+  }
+
+  Widget buildListFirst(bool firstIn) {
+    return CupertinoPicker.builder(
+//      scrollController: scrollController[0],
+      magnification: 1.0,
+      childCount: list.length,
+      itemBuilder: (context, index) {
+        return Container(
+          alignment: Alignment.center,
+          child: Text(
+            list[index].label,
+            style: TextStyle(fontSize: 16, color: Colors.red),
+          ),
+        );
+      },
+      onSelectedItemChanged: (int value) {
+        setState(() {
+          position = value;
+        });
+      },
+      itemExtent: 47,
+    );
+  }
+
+  Widget buildListSecond(bool firstIn) {
+    return CupertinoPicker.builder(
+//      scrollController: scrollController[1],
+      magnification: 1.0,
+      childCount: list[position].children.length,
+      itemBuilder: (context, index) {
+        return Container(
+          alignment: Alignment.center,
+          child: Text(list[position].children[index].label),
+        );
+      },
+      onSelectedItemChanged: (int value) {
+        LogUtil.e("aaaaaaaaa " + "aaa" + value.toString());
+      },
+      itemExtent: 47,
+    );
+  }
+}
+
+class _StateView extends StatefulWidget {
+  final WidgetBuilder builder;
+  const _StateView({Key key, this.builder}) : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() => _StateViewState();
+}
+
+class _StateViewState extends State<_StateView> {
+  @override
+  Widget build(BuildContext context) {
+    return widget.builder(context);
+  }
+
+  update() {
+    setState(() {});
+  }
+}
+
+class MyApp102 extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return new _testLiandongState2();
+  }
+}
+
+// ignore: camel_case_types
+class _testLiandongState2 extends State<MyApp102> {
+  // ignore: non_constant_identifier_names
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return new MaterialApp(
+        title: "pageView",
+        home: new Scaffold(
+          appBar: AppBar(
+            title: Text('pageView Image'),
+          ),
+          body: Stack(
+            children: <Widget>[
+              Container(
+                width: 64,
+                height: 64,
+                color: Colors.red,
+              ),
+              Positioned(
+                  bottom: 0,
+                  left: 0,
+                  child: Offstage(
+                    offstage: false,
+                    child: Container(
+                      width: 64,
+                      height: 18,
+                      color: Colors.amber,
+                      alignment: Alignment.center,
+                      child: Text(
+                        "网红轮胎店",
+                        style: TextStyle(fontSize: 11, color: Colors.white),
+                      ),
+                    ),
+                  )),
+            ],
+          ),
+        ));
+  }
+}
+
+class MyApp101 extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return new _testLiandongState();
+  }
+}
+
+// ignore: camel_case_types
+class _testLiandongState extends State<MyApp101> {
+  // ignore: non_constant_identifier_names
+  List _CourseNameList = ["bbb", "sdfsdf", "ldjfsjdf"];
+  String isCourseValue = "bbb";
+  String isChapterValue = "bbb";
+  Map _ChapterNameList = {"bbb": "1", "sdfsdf": "2", "ldjfsjdf": "3"};
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return new MaterialApp(
+        title: "pageView",
+        home: new Scaffold(
+          appBar: AppBar(
+            title: Text('pageView Image'),
+          ),
+          body: Container(
+            child: DropdownButton(
+              isExpanded: true,
+              value: isCourseValue,
+              items: _CourseNameList.map((item) {
+                return DropdownMenuItem(
+                  child: Text(item),
+                  value: item,
+                );
+              }).toList(),
+              onChanged: (value) {
+                setState(() {
+                  isCourseValue = value; //一级
+                  isChapterValue = _ChapterNameList[isCourseValue]; //二级
+                  LogUtil.e(
+                      "aaaaaaaaaaaaaaaaa isChapterValuev " + isChapterValue);
+                  LogUtil.e(
+                      "aaaaaaaaaaaaaaaaa  isCourseValue " + isCourseValue);
+                });
+              },
+            ),
+          ),
+        ));
+  }
+}
+
+class MyApp100 extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return new _MyAppState();
+  }
+}
+
+class _MyAppState extends State<MyApp100> {
+  @override
+  Widget build(BuildContext context) {
+    return new MaterialApp(
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        localizationsDelegates: [
+          PickerLocalizationsDelegate.delegate, // 如果要使用本地化，请添加此行，则可以显示中文按钮
+        ],
+        supportedLocales: [
+          const Locale('en', 'US'),
+          const Locale('zh', 'CH'),
+          const Locale('ko', 'KO'),
+          const Locale('it', 'IT'),
+          const Locale('ar', 'AR'),
+          const Locale('tr', 'TR')
+        ],
+        home: new MyHomePage());
+  }
+}
+
+class MyHomePage extends StatefulWidget {
+  @override
+  _MyHomePageState2 createState() => _MyHomePageState2();
+}
+
+class _MyHomePageState2 extends State<MyHomePage> {
+  final double listSpec = 4.0;
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  String stateText;
+  @override
+  Widget build(BuildContext context) {
+    return new MaterialApp(
+        title: "PickState",
+        home: new Scaffold(
+          appBar: AppBar(
+            title: Text('PickState '),
+          ),
+          body: Container(
+            padding: EdgeInsets.all(10.0),
+            alignment: Alignment.topCenter,
+            child: ListView(
+              children: <Widget>[
+                (stateText != null) ? Text(stateText) : Container(),
+                RaisedButton(
+                  child: Text('Picker Show'),
+                  onPressed: () {
+                    showPicker(context);
+                  },
+                ),
+                SizedBox(height: listSpec),
+                RaisedButton(
+                  child: Text('Picker Show Modal'),
+                  onPressed: () {
+                    showPickerModal(context);
+                  },
+                ),
+                SizedBox(height: listSpec),
+                RaisedButton(
+                  child: Text('Picker Show Icons'),
+                  onPressed: () {
+                    showPickerIcons(context);
+                  },
+                ),
+                SizedBox(height: listSpec),
+                RaisedButton(
+                  child: Text('Picker Show (Array)'),
+                  onPressed: () {
+                    showPickerArray(context);
+                  },
+                ),
+                SizedBox(height: listSpec),
+                RaisedButton(
+                  child: Text('Picker Show Number'),
+                  onPressed: () {
+                    showPickerNumber(context);
+                  },
+                ),
+                SizedBox(height: listSpec),
+                RaisedButton(
+                  child: Text('Picker Show Number FormatValue'),
+                  onPressed: () {
+                    showPickerNumberFormatValue(context);
+                  },
+                ),
+                SizedBox(height: listSpec),
+                RaisedButton(
+                  child: Text('Picker Show Date'),
+                  onPressed: () {
+                    showPickerDate(context);
+                  },
+                ),
+                SizedBox(height: listSpec),
+                RaisedButton(
+                  child: Text('Picker Show Datetime'),
+                  onPressed: () {
+                    showPickerDateTime(context);
+                  },
+                ),
+                SizedBox(height: listSpec),
+                RaisedButton(
+                  child: Text('Picker Show Date (Custom)'),
+                  onPressed: () {
+                    showPickerDateCustom(context);
+                  },
+                ),
+                SizedBox(height: listSpec),
+                RaisedButton(
+                  child: Text('Picker Show Datetime (24)'),
+                  onPressed: () {
+                    showPickerDateTime24(context);
+                  },
+                ),
+                SizedBox(height: listSpec),
+                RaisedButton(
+                  child: Text('Picker Show Datetime (Round background)'),
+                  onPressed: () {
+                    showPickerDateTimeRoundBg(context);
+                  },
+                ),
+                SizedBox(height: listSpec),
+                RaisedButton(
+                  child: Text('Picker Show Date Range'),
+                  onPressed: () {
+                    showPickerDateRange(context);
+                  },
+                ),
+              ],
+            ),
+          ),
+        ));
+  }
+
+  showPicker(BuildContext context) {
+    Picker picker = Picker(
+        adapter: PickerDataAdapter<String>(
+            pickerdata: JsonDecoder().convert(PickerData)),
+        changeToFirst: false,
+        textAlign: TextAlign.left,
+        textStyle: const TextStyle(color: Colors.blue),
+        selectedTextStyle: TextStyle(color: Colors.red),
+        columnPadding: const EdgeInsets.all(8.0),
+        onConfirm: (Picker picker, List value) {
+          print(value.toString());
+          print(picker.getSelectedValues());
+        });
+    picker.show(_scaffoldKey.currentState);
+  }
+
+  showPickerModal(BuildContext context) {
+    Picker(
+        adapter: PickerDataAdapter<String>(
+            pickerdata: JsonDecoder().convert(PickerData)),
+        changeToFirst: true,
+        hideHeader: false,
+        selectedTextStyle: TextStyle(color: Colors.blue),
+        onConfirm: (Picker picker, List value) {
+          print(value.toString());
+          print(picker.adapter.text);
+        }).showModal(this.context); //_scaffoldKey.currentState);
+  }
+
+  showPickerIcons(BuildContext context) {
+    Picker(
+      adapter: PickerDataAdapter(data: [
+        PickerItem(text: Icon(Icons.add), value: Icons.add, children: [
+          PickerItem(text: Icon(Icons.more)),
+          PickerItem(text: Icon(Icons.aspect_ratio)),
+          PickerItem(text: Icon(Icons.android)),
+          PickerItem(text: Icon(Icons.menu)),
+        ]),
+        PickerItem(text: Icon(Icons.title), value: Icons.title, children: [
+          PickerItem(text: Icon(Icons.more_vert)),
+          PickerItem(text: Icon(Icons.ac_unit)),
+          PickerItem(text: Icon(Icons.access_alarm)),
+          PickerItem(text: Icon(Icons.account_balance)),
+        ]),
+        PickerItem(text: Icon(Icons.face), value: Icons.face, children: [
+          PickerItem(text: Icon(Icons.add_circle_outline)),
+          PickerItem(text: Icon(Icons.add_a_photo)),
+          PickerItem(text: Icon(Icons.access_time)),
+          PickerItem(text: Icon(Icons.adjust)),
+        ]),
+        PickerItem(
+            text: Icon(Icons.linear_scale),
+            value: Icons.linear_scale,
+            children: [
+              PickerItem(text: Icon(Icons.assistant_photo)),
+              PickerItem(text: Icon(Icons.account_balance)),
+              PickerItem(text: Icon(Icons.airline_seat_legroom_extra)),
+              PickerItem(text: Icon(Icons.airport_shuttle)),
+              PickerItem(text: Icon(Icons.settings_bluetooth)),
+            ]),
+        PickerItem(text: Icon(Icons.close), value: Icons.close),
+      ]),
+      title: Text("Select Icon"),
+      selectedTextStyle: TextStyle(color: Colors.blue),
+      onConfirm: (Picker picker, List value) {
+        print(value.toString());
+        print(picker.getSelectedValues());
+      },
+    ).show(_scaffoldKey.currentState);
+  }
+
+  showPickerDialog(BuildContext context) {
+    Picker(
+        adapter: PickerDataAdapter<String>(
+            pickerdata: JsonDecoder().convert(PickerData)),
+        hideHeader: true,
+        title: new Text("Select Data"),
+        selectedTextStyle: TextStyle(color: Colors.blue),
+        onConfirm: (Picker picker, List value) {
+          print(value.toString());
+          print(picker.getSelectedValues());
+        }).showDialog(context);
+  }
+
+  showPickerArray(BuildContext context) {
+    Picker(
+        adapter: PickerDataAdapter<String>(
+          pickerdata: JsonDecoder().convert(PickerData2),
+          isArray: true,
+        ),
+        hideHeader: true,
+        selecteds: [3, 0, 2],
+        title: Text("Please Select"),
+        selectedTextStyle: TextStyle(color: Colors.blue),
+        cancel: FlatButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: Icon(Icons.child_care)),
+        onConfirm: (Picker picker, List value) {
+          print(value.toString());
+          print(picker.getSelectedValues());
+        }).showDialog(context);
+  }
+
+  showPickerNumber(BuildContext context) {
+    Picker(
+        adapter: NumberPickerAdapter(data: [
+          NumberPickerColumn(
+              begin: 0,
+              end: 999,
+              postfix: Text("\$"),
+              suffix: Icon(Icons.insert_emoticon)),
+          NumberPickerColumn(begin: 200, end: 100, jump: -10),
+        ]),
+        delimiter: [
+          PickerDelimiter(
+              child: Container(
+            width: 30.0,
+            alignment: Alignment.center,
+            child: Icon(Icons.more_vert),
+          ))
+        ],
+        hideHeader: true,
+        title: Text("Please Select"),
+        selectedTextStyle: TextStyle(color: Colors.blue),
+        onConfirm: (Picker picker, List value) {
+          print(value.toString());
+          print(picker.getSelectedValues());
+        }).showDialog(context);
+  }
+
+  showPickerNumberFormatValue(BuildContext context) {
+    Picker(
+        adapter: NumberPickerAdapter(data: [
+          NumberPickerColumn(
+              begin: 0,
+              end: 999,
+              onFormatValue: (v) {
+                return v < 10 ? "0$v" : "$v";
+              }),
+          NumberPickerColumn(begin: 100, end: 200),
+        ]),
+        delimiter: [
+          PickerDelimiter(
+              child: Container(
+            width: 30.0,
+            alignment: Alignment.center,
+            child: Icon(Icons.more_vert),
+          ))
+        ],
+        hideHeader: true,
+        title: Text("Please Select"),
+        selectedTextStyle: TextStyle(color: Colors.blue),
+        onConfirm: (Picker picker, List value) {
+          print(value.toString());
+          print(picker.getSelectedValues());
+        }).showDialog(context);
+  }
+
+  showPickerDate(BuildContext context) {
+    Picker(
+        hideHeader: true,
+        adapter: DateTimePickerAdapter(),
+        title: Text("Select Data"),
+        selectedTextStyle: TextStyle(color: Colors.blue),
+        onConfirm: (Picker picker, List value) {
+          print((picker.adapter as DateTimePickerAdapter).value);
+        }).showDialog(context);
+  }
+
+  showPickerDateCustom(BuildContext context) {
+    new Picker(
+        hideHeader: true,
+        adapter: new DateTimePickerAdapter(
+          customColumnType: [2, 1, 0, 3, 4],
+        ),
+        title: new Text("Select Data"),
+        selectedTextStyle: TextStyle(color: Colors.blue),
+        onConfirm: (Picker picker, List value) {
+          print((picker.adapter as DateTimePickerAdapter).value);
+        }).showDialog(context);
+  }
+
+  showPickerDateTime(BuildContext context) {
+    new Picker(
+        adapter: new DateTimePickerAdapter(
+          type: PickerDateTimeType.kYMD_AP_HM,
+          isNumberMonth: true,
+          //strAMPM: const["上午", "下午"],
+          yearSuffix: "年",
+          monthSuffix: "月",
+          daySuffix: "日",
+          minValue: DateTime.now(),
+          minuteInterval: 30,
+          // twoDigitYear: true,
+        ),
+        title: new Text("Select DateTime"),
+        textAlign: TextAlign.right,
+        selectedTextStyle: TextStyle(color: Colors.blue),
+        delimiter: [
+          PickerDelimiter(
+              column: 5,
+              child: Container(
+                width: 16.0,
+                alignment: Alignment.center,
+                child: Text(':', style: TextStyle(fontWeight: FontWeight.bold)),
+                color: Colors.white,
+              ))
+        ],
+        footer: Container(
+          height: 50.0,
+          alignment: Alignment.center,
+          child: Text('Footer'),
+        ),
+        onConfirm: (Picker picker, List value) {
+          print(picker.adapter.text);
+        },
+        onSelect: (Picker picker, int index, List<int> selecteds) {
+          this.setState(() {
+            stateText = picker.adapter.toString();
+          });
+        }).show(_scaffoldKey.currentState);
+  }
+
+  showPickerDateRange(BuildContext context) {
+    print("canceltext: ${PickerLocalizations.of(context).cancelText}");
+
+    Picker ps = new Picker(
+        hideHeader: true,
+        adapter: new DateTimePickerAdapter(
+            type: PickerDateTimeType.kYMD, isNumberMonth: true),
+        onConfirm: (Picker picker, List value) {
+          print((picker.adapter as DateTimePickerAdapter).value);
+        });
+
+    Picker pe = new Picker(
+        hideHeader: true,
+        adapter: new DateTimePickerAdapter(type: PickerDateTimeType.kYMD),
+        onConfirm: (Picker picker, List value) {
+          print((picker.adapter as DateTimePickerAdapter).value);
+        });
+
+    List<Widget> actions = [
+      FlatButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: new Text(PickerLocalizations.of(context).cancelText)),
+      FlatButton(
+          onPressed: () {
+            Navigator.pop(context);
+            ps.onConfirm(ps, ps.selecteds);
+            pe.onConfirm(pe, pe.selecteds);
+          },
+          child: new Text(PickerLocalizations.of(context).confirmText))
+    ];
+
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return new AlertDialog(
+            title: Text("Select Date Range"),
+            actions: actions,
+            content: Container(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Text("Begin:"),
+                  ps.makePicker(),
+                  Text("End:"),
+                  pe.makePicker()
+                ],
+              ),
+            ),
+          );
+        });
+  }
+
+  showPickerDateTime24(BuildContext context) {
+    new Picker(
+        adapter: new DateTimePickerAdapter(
+            type: PickerDateTimeType.kMDYHM,
+            isNumberMonth: true,
+            yearSuffix: "年",
+            monthSuffix: "月",
+            daySuffix: "日"),
+        title: new Text("Select DateTime"),
+        onConfirm: (Picker picker, List value) {
+          print(picker.adapter.text);
+        },
+        onSelect: (Picker picker, int index, List<int> selecteds) {
+          this.setState(() {
+            stateText = picker.adapter.toString();
+          });
+        }).show(_scaffoldKey.currentState);
+  }
+
+  /// 圆角背景
+  showPickerDateTimeRoundBg(BuildContext context) {
+    var picker = Picker(
+        backgroundColor: Colors.transparent,
+        headerDecoration: BoxDecoration(
+            border:
+                Border(bottom: BorderSide(color: Colors.black12, width: 0.5))),
+        adapter: new DateTimePickerAdapter(
+            type: PickerDateTimeType.kMDYHM,
+            isNumberMonth: true,
+            yearSuffix: "年",
+            monthSuffix: "月",
+            daySuffix: "日"),
+        delimiter: [
+          PickerDelimiter(
+              column: 3,
+              child: Container(
+                width: 8.0,
+                alignment: Alignment.center,
+              )),
+          PickerDelimiter(
+              column: 5,
+              child: Container(
+                width: 12.0,
+                alignment: Alignment.center,
+                child: Text(':', style: TextStyle(fontWeight: FontWeight.bold)),
+                color: Colors.white,
+              )),
+        ],
+        title: new Text("Select DateTime"),
+        onConfirm: (Picker picker, List value) {
+          print(picker.adapter.text);
+        },
+        onSelect: (Picker picker, int index, List<int> selecteds) {
+          this.setState(() {
+            stateText = picker.adapter.toString();
+          });
+        });
+
+    showModalBottomSheet(
+        context: context,
+        backgroundColor: Colors.transparent,
+        builder: (context) {
+          return Material(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(10), topRight: Radius.circular(10)),
+              child: Container(
+                padding: const EdgeInsets.only(top: 4),
+                child: picker.makePicker(null, true),
+              ));
+        });
+  }
+}
+
+//const Scaffold({
+//Key key,
+//this.appBar, // 标题栏
+//this.body,  // 用于显示当前界面主要内容的Widget
+//this.floatingActionButton, // 一个悬浮在body上的按钮，默认显示在右下角
+//this.floatingActionButtonLocation, // 用于设置floatingActionButton显示的位置
+//this.floatingActionButtonAnimator, // floatingActionButton移动到一个新的位置时的动画
+//this.persistentFooterButtons, // 多状态按钮
+//this.drawer, // 左侧的抽屉菜单
+//this.endDrawer, //  右'侧的抽屉菜单
+//this.bottomNavigationBar,// 底部导航栏。
+//this.bottomSheet, // 显示在底部的工具栏
+//this.backgroundColor,// 内容的背景颜色
+//this.resizeToAvoidBottomPadding = true, // 控制界面内容 body 是否重新布局来避免底部被覆盖，比如当键盘显示的时候，重新布局避免被键盘盖住内容。
+//this.primary = true,// Scaffold是否显示在页面的顶部
+//})
+/*MaterialApp({
+Key key,
+this.title = '', // 设备用于为用户识别应用程序的单行描述
+this.home, // 应用程序默认路由的小部件,用来定义当前应用打开的时候，所显示的界面
+this.color, // 在操作系统界面中应用程序使用的主色。
+this.theme, // 应用程序小部件使用的颜色。
+this.routes = const <String, WidgetBuilder>{}, // 应用程序的顶级路由表
+this.navigatorKey, // 在构建导航器时使用的键。
+this.initialRoute, // 如果构建了导航器，则显示的第一个路由的名称
+this.onGenerateRoute, // 应用程序导航到指定路由时使用的路由生成器回调
+this.onUnknownRoute, // 当 onGenerateRoute 无法生成路由(initialRoute除外)时调用
+this.navigatorObservers = const <NavigatorObserver>[], // 为该应用程序创建的导航器的观察者列表
+this.builder, // 用于在导航器上面插入小部件，但在由WidgetsApp小部件创建的其他小部件下面插入小部件，或用于完全替换导航器
+this.onGenerateTitle, // 如果非空，则调用此回调函数来生成应用程序的标题字符串，否则使用标题。
+this.locale, // 此应用程序本地化小部件的初始区域设置基于此值。
+this.localizationsDelegates, // 这个应用程序本地化小部件的委托。
+this.localeListResolutionCallback, // 这个回调负责在应用程序启动时以及用户更改设备的区域设置时选择应用程序的区域设置。
+this.localeResolutionCallback, //
+this.supportedLocales = const <Locale>[Locale('en', 'US')], // 此应用程序已本地化的地区列表
+this.debugShowMaterialGrid = false, // 打开绘制基线网格材质应用程序的网格纸覆盖
+this.showPerformanceOverlay = false, // 打开性能叠加
+this.checkerboardRasterCacheImages = false, // 打开栅格缓存图像的棋盘格
+this.checkerboardOffscreenLayers = false, // 打开渲染到屏幕外位图的图层的棋盘格
+this.showSemanticsDebugger = false, // 打开显示框架报告的可访问性信息的覆盖
+this.debugShowCheckedModeBanner = true, // 在选中模式下打开一个小的“DEBUG”横幅，表示应用程序处于选中模式
+})*/
+/*class MyApp33 extends StatefulWidget {
+  @override
+  _MyAppState createState() => new _MyAppState();
+}
+class _MyAppState extends State<MyApp33> {
+
+  String url = "";
+  double progress = 0;
+//  var _streamSubscription;
+  @override
+  void initState() {
+    super.initState();
+//    _streamSubscription = Fluttertoast.eventPlugin.receiveBroadcastStream()
+//        .listen(_onData, onError: _onError, onDone: _onDone, cancelOnError: true);
+
+  }
+
+  void _onData(Object event) {
+    // 接收数据
+    LogUtil.e("aaaaaaaaaaa       "+ event.toString());
+    setState(() {
+
+    });
+  }
+
+  void _onError(Object error) {
+    // 发生错误时被回调
+    setState((){
+
+    });
+  }
+
+  void _onDone() {
+    //结束时调用
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  */ /*  if(_streamSubscription != null) {
+      _streamSubscription.cancel();
+    }*/ /*
+  }
+  void _request(String phone) async{
+    try {
+      Response response = await Dio().post("http://motanni.com:7000/api/auth/sms_code/",data:{'mobile':phone});
+      print('response:${response.statusCode}');
+      print(response.data.toString());
+    } catch (e) {
+      print(e);
+    }
+  }
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text('InAppWebView Example'),
+        ),
+        body: Container(
+            child: Column(children: <Widget>[
+              Container(
+                padding: EdgeInsets.all(20.0),
+                child: Text(
+                    "CURRENT URL\n${(url.length > 50) ? url.substring(0, 50) + "..." : url}"),
+              ),
+              Container(
+                  padding: EdgeInsets.all(10.0),
+                  child: progress < 1.0
+                      ? LinearProgressIndicator(value: progress)
+                      : Container()),
+              Expanded(
+                child: Container(
+                  margin: const EdgeInsets.all(10.0),
+                  decoration:
+                  BoxDecoration(border: Border.all(color: Colors.blueAccent)),
+                  child: InAppWebView(
+                    initialUrl:   "https://wx.jfx.qdfaw.com/qqWeChatOfficialRelease2/web/car-buyCars-zl/buyCars.html?token=&token_type=&userId=&updateTokenTime=&user_mobile=&refresh_token=&userAgent=Android&appVersionCode=126&latitude=30.31044&longitude=120.250965",
+                    initialHeaders: {},
+                    initialOptions: InAppWebViewWidgetOptions(
+                        inAppWebViewOptions: InAppWebViewOptions(
+                          debuggingEnabled: true,
+                        )
+                    ),
+                    onWebViewCreated: (InAppWebViewController controller) {
+                      webView = controller;
+                    },
+                    onLoadStart: (InAppWebViewController controller, String url) {
+                      setState(() {
+                        this.url = url;
+                      });
+                    },
+                    onLoadStop: (InAppWebViewController controller, String url) async {
+                      setState(() {
+                        this.url = url;
+                      });
+                    },
+                    onProgressChanged: (InAppWebViewController controller, int progress) {
+                      setState(() {
+                        this.progress = progress / 100;
+                      });
+                    },
+                  ),
+                ),
+
+
+              ),
+              ButtonBar(
+                alignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  RaisedButton(
+                    child: Icon(Icons.arrow_back),
+                    onPressed: () async {
+                      Fluttertoast.showToast(msg: "lsjflsjdfjdsjf");
+                      _request("19967341993");
+                    */ /*  Response response;
+                      Dio dio = new Dio();
+                      response = await dio.post("http://motanni.com:7000/api/auth/sms_code/", data: {"mobile":
+                      "19967341993"
+                      });
+                      print(response.data.toString());*/ /*
+                      */ /*if (webView != null) {
+                        webView.goBack();
+                      }*/ /*
+                    },
+                  ),
+                  RaisedButton(
+                    child: Icon(Icons.arrow_forward),
+                    onPressed: () {
+                      if (webView != null) {
+                        webView.goForward();
+                      }
+                    },
+                  ),
+                  RaisedButton(
+                    child: Icon(Icons.refresh),
+                    onPressed: () {
+                      if (webView != null) {
+                        webView.reload();
+                      }
+                    },
+                  ),
+                ],
+              ),
+            ])),
+      ),
+    );
+  }
+}*/
+
+class MyApp32 extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return new LinearGradientState2();
+  }
+}
+
+class LinearGradientState2 extends State<MyApp32> {
+  Future<Null> _onRefresh() async {
+    await Future.delayed(Duration(seconds: 3), () {
+      setState(() {});
+    });
+  }
+
+  //这是个key吧，机制问题
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: "",
+      home: new Scaffold(
+        body: new WebView(
+          initialUrl: "https://sh.zhilun.com/defect",
+          javascriptMode: JavascriptMode.unrestricted,
+        ),
+      ),
+    );
+  }
 }
 
 class MyApp31 extends StatelessWidget {
@@ -33,10 +1533,26 @@ class MyApp31 extends StatelessWidget {
     return new MaterialApp(
         title: "列表",
         home: new Scaffold(
-            appBar: AppBar(
-              title: Text('居中布局示例'),
-            ),
-            body: Column(
+          appBar: AppBar(
+            title: Text('居中布局示例'),
+          ),
+          /**
+        Wrap({
+        Key key,
+        this.direction = Axis.horizontal,//主轴（mainAxis）的方向，默认为水平。
+        this.alignment = WrapAlignment.start,//主轴方向上的对齐方式，默认为start。
+        this.spacing = 0.0,//主轴方向上的间距。
+        this.runAlignment = WrapAlignment.start,//run的对齐方式。run可以理解为新的行或者列，如果是水平方向布局的话，run可以理解为新的一行。
+        this.runSpacing = 0.0,//run的间距。
+        this.crossAxisAlignment = WrapCrossAlignment.start,//交叉轴（crossAxis）方向上的对齐方式。
+        this.textDirection,//文本方向。
+        this.verticalDirection = VerticalDirection.down,//定义了children摆放顺序，默认是down，见Flex相关属性介绍。
+        List<Widget> children = const <Widget>[],//
+        })
+      */
+          body: Wrap(children: <Widget>[
+//              for (String item in tags) TagItem(item)
+          ]) /*Column(
               // start ，沿着主轴方向(垂直方向)顶部对齐；
               //end，沿着主轴方向(垂直方向)底部对齐；
               //center，沿着主轴方向(垂直方向)居中对齐；
@@ -46,28 +1562,68 @@ class MyApp31 extends StatelessWidget {
               //
               //作者：liu_520
               //链接：https://www.jianshu.com/p/1d003ab6c278
-            /*  mainAxisAlignment: MainAxisAlignment.center,*/
+            */ /*  mainAxisAlignment: MainAxisAlignment.center,*/ /*
+              //
+              mainAxisAlignment:  MainAxisAlignment.center,
+
+              //start ，垂直主轴方向(水平方向)左侧对齐；
+              //end，垂直主轴方向(水平方向)右侧对齐；
+              //center，垂直主轴方向(水平方向)居中对齐；
+              //stretch ，垂直主轴方向(水平方向)拉伸子child；
+              //baseline，这个要和textBaseline一起使用，；
               //
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
+                  Text("aljdflsjf"),
+                  Text("aljdflsjf"),
                 Row(
                   children: <Widget>[
                     Text("aaaa")
                   ],
                 )
               ],
-            ),
-        )
+            )*/
+          ,
+        ));
+  }
+}
+
+class TagItem extends StatelessWidget {
+  final String text;
+
+  TagItem(this.text);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 40,
+      margin: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+      decoration: BoxDecoration(
+          border:
+              Border.all(color: Colors.blueAccent.withAlpha(60), width: 1.0),
+          borderRadius: BorderRadius.all(Radius.circular(5))),
+      child: Container(
+        margin: EdgeInsets.all(8),
+        child: Text(text),
+      ),
     );
   }
 }
 
-
-
-
-
-
-
+const List<String> tags = [
+  "肯德基",
+  "小哥哥你的东西掉了",
+  "小姐姐好漂亮啊",
+  "这个东西是啥",
+  "哈哈哈",
+  "好困啊",
+  "今天好运",
+  "明天好运来",
+  "今年快结束了",
+  "我累啊",
+  "你写的什么代码",
+  "多多多"
+];
 
 class MyApp30 extends StatefulWidget {
   @override
@@ -77,16 +1633,17 @@ class MyApp30 extends StatefulWidget {
 }
 
 class LinearGradientState extends State<MyApp30> {
-  Future<Null> _onRefresh() async{
-    await Future.delayed(Duration(seconds: 3),(){
+  Future<Null> _onRefresh() async {
+    await Future.delayed(Duration(seconds: 3), () {
       setState(() {});
     });
   }
+
   //这是个key吧，机制问题
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
-    return  new Scaffold(
+    return new Scaffold(
       key: _scaffoldKey,
       body: Stack(
         children: <Widget>[
@@ -95,41 +1652,39 @@ class LinearGradientState extends State<MyApp30> {
                 gradient: new LinearGradient(
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
-                    colors: [Colors.cyan, Colors.white, Colors.blue]
-                )
-            ),
+                    colors: [Colors.cyan, Colors.white, Colors.blue])),
           ),
           RefreshIndicator(
             child: Column(
-                children: <Widget>[
-                  Text("a"),
-                  RaisedButton(onPressed: () {
+              children: <Widget>[
+                Text("a"),
+                RaisedButton(
+                  onPressed: () {
                     _scaffoldKey.currentState.openDrawer();
                   },
-                    child: Text("button"),
-                  )
-                ],
+                  child: Text("button"),
+                )
+              ],
             ),
-            onRefresh: _onRefresh ,
+            onRefresh: _onRefresh,
           ),
         ],
       ),
       drawer: new Drawer(
-            child: new Column(
-              children: <Widget>[
-                Text("aaa"),
-                Text("aaa"),
-                Text("aaa"),
-                Text("aaa"),
-                Text("aaa"),
-                Text("aaa"),
-              ],
-            ),
-      ) ,
+        child: new Column(
+          children: <Widget>[
+            Text("aaa"),
+            Text("aaa"),
+            Text("aaa"),
+            Text("aaa"),
+            Text("aaa"),
+            Text("aaa"),
+          ],
+        ),
+      ),
     );
   }
 }
-
 
 class MyApp29 extends StatefulWidget {
   @override
@@ -139,50 +1694,56 @@ class MyApp29 extends StatefulWidget {
 }
 
 class TextFieldState extends State<MyApp29> {
-  var  controller;
+  var controller;
   @override
   void initState() {
     super.initState();
     controller = TextEditingController();
   }
+
   @override
   Widget build(BuildContext context) {
-    return  new Scaffold(
+    return new Scaffold(
       appBar: new AppBar(
         title: new Text("textField button"),
       ),
       body: Center(
-        child: Column(
-          children: <Widget>[
-            new Container(
-              width: 200,
-              child: TextField(
-                controller: controller,
-                //    maxLength: 30,//最大长度，设置此项会让TextField右下角有一个输入数量的统计字符串
-                maxLines: 1,//最大行数
-                autocorrect: true,//是否自动更正
-                autofocus: false,//是否自动对焦
-                obscureText: false,//是否是密码
-                textAlign: TextAlign.start,//文本对齐方式
-                style: TextStyle(fontSize: 16, color: Colors.black87),//输入文本的样式
-                //| inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],//允许的输入格式
-                inputFormatters: [
-                  BlacklistingTextInputFormatter(RegExp("[a-z]")),
-                  LengthLimitingTextInputFormatter(5)
-                ],
-                onChanged: (text) {//内容改变的回调
-                  print('change $text');
-                },
-                cursorWidth: 2.0,
-                cursorColor: Colors.black87,//光标颜色,
-                dragStartBehavior: DragStartBehavior.down,
-                // this.dragStartBehavior = DragStartBehavior.down,
-                scrollPadding: EdgeInsets.all(20),
-                decoration: new InputDecoration(
-                  hintText: "phone",
-                  hintStyle: new TextStyle(fontSize: 16),
-                  prefixIcon: Image.asset("assets/images/qr_zhilun.jpg",width: 5,height: 5,),
-               /*   border: new OutlineInputBorder(
+          child: Column(
+        children: <Widget>[
+          new Container(
+            width: 200,
+            child: TextField(
+              controller: controller,
+              //    maxLength: 30,//最大长度，设置此项会让TextField右下角有一个输入数量的统计字符串
+              maxLines: 1, //最大行数
+              autocorrect: true, //是否自动更正
+              autofocus: false, //是否自动对焦
+              obscureText: false, //是否是密码
+              textAlign: TextAlign.start, //文本对齐方式
+              style: TextStyle(fontSize: 16, color: Colors.black87), //输入文本的样式
+              //| inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],//允许的输入格式
+              inputFormatters: [
+                BlacklistingTextInputFormatter(RegExp("[a-z]")),
+                LengthLimitingTextInputFormatter(5)
+              ],
+              onChanged: (text) {
+                //内容改变的回调
+                print('change $text');
+              },
+              cursorWidth: 2.0,
+              cursorColor: Colors.black87, //光标颜色,
+              dragStartBehavior: DragStartBehavior.down,
+              // this.dragStartBehavior = DragStartBehavior.down,
+              scrollPadding: EdgeInsets.all(20),
+              decoration: new InputDecoration(
+                hintText: "phone",
+                hintStyle: new TextStyle(fontSize: 16),
+                prefixIcon: Image.asset(
+                  "assets/images/qr_zhilun.jpg",
+                  width: 5,
+                  height: 5,
+                ),
+                /*   border: new OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8.0),
                       borderSide: BorderSide(color: Colors.red)
                   ),*/
@@ -190,58 +1751,63 @@ class TextFieldState extends State<MyApp29> {
 //                      borderSide: BorderSide(color: Colors.black87 ),
 //                      borderRadius: BorderRadius.circular(7.0)
 //                  ),
-                  focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.black87)),
-                  enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.black87)),
-                ),
+                focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.black87)),
+                enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.black87)),
               ),
             ),
-            OutlineButton(
-              textTheme:  ButtonTextTheme.normal,
-              onPressed: () {
-
-            },
-           /*   focusColor: Colors.lime,
+          ),
+          OutlineButton(
+              textTheme: ButtonTextTheme.normal,
+              onPressed: () {},
+              /*   focusColor: Colors.lime,
               hoverColor: Colors.red  ,*/
-           //   color: Colors.greenAccent,
-           //   borderSide: BorderSide(color: Colors.lightBlue,style: BorderStyle.solid),
-              child: Text("outline",style: new TextStyle(fontSize: 10),),
+              //   color: Colors.greenAccent,
+              //   borderSide: BorderSide(color: Colors.lightBlue,style: BorderStyle.solid),
+              child: Text(
+                "outline",
+                style: new TextStyle(fontSize: 10),
+              ),
               disabledBorderColor: Colors.amberAccent,
               highlightedBorderColor: Colors.red,
               color: Colors.green,
               hoverColor: Colors.black87,
-             // splashColor: Colors.green,//点击后的颜色
-             /* shape: ShapeBorder.lerp(),*/
-             // highlightColor: Colors.amberAccent,
-              shape: new RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0))
+              // splashColor: Colors.green,//点击后的颜色
+              /* shape: ShapeBorder.lerp(),*/
+              // highlightColor: Colors.amberAccent,
+              shape: new RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0))),
+          FlatButton(
+            onPressed: () {},
+            child: new Text("FlatButton"),
+            color: Colors.green,
+            clipBehavior: Clip.antiAlias,
+            shape: new RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20.0),
             ),
-            FlatButton(onPressed: () {},
-                child: new Text("FlatButton"),
-                color: Colors.green,
-                clipBehavior: Clip.antiAlias,
-                shape: new RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0) ,
-                ),
-               // highlightColor: Colors.red,
-              hoverColor: Colors.amberAccent,
+            // highlightColor: Colors.red,
+            hoverColor: Colors.amberAccent,
+          ),
+          RaisedButton(
+            onPressed: () {},
+            child: Text("RaiseButton"),
+            color: Colors.green,
+            shape: new StadiumBorder(
+              side: new BorderSide(
+                style: BorderStyle.solid,
+                color: Colors.greenAccent,
+              ),
             ),
-            RaisedButton(onPressed: () {
-
-            },
-              child: Text("RaiseButton"),
-              color: Colors.green,
-                shape: new StadiumBorder(side: new BorderSide(
-                  style: BorderStyle.solid,
-                  color: Colors.greenAccent,
-                ),),
 //              highlightColor: Colors.amber,
-              splashColor: Colors.amber,
-          //    colorBrightness:Brightness.light ,
-            )
-          ],
-        )
-      ),
-    );;
+            splashColor: Colors.amber,
+            //    colorBrightness:Brightness.light ,
+          )
+        ],
+      )),
+    );
+    ;
   }
-
 }
 /*const TextField({
 Key key,
@@ -315,10 +1881,6 @@ this.semanticCounterText,
 this.alignLabelWithHint,
 })*/
 
-
-
-
-
 class MyApp28 extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -326,27 +1888,42 @@ class MyApp28 extends StatefulWidget {
     return new DialogState();
   }
 }
+
 class DialogState extends State<MyApp28> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Future.delayed(Duration.zero, () {
+//      showPictureBg(context);
+    Loading.show(context);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-        appBar: new AppBar(
-          title: new Text("dialog"),
-        ),
-        body: Center(
-          child: new RaisedButton(
-            onPressed: () {
-              //show(context);
-              showListDialog(context);
-            },
-            child: Text("button"),
-          ),
-        ),
-      );
+      appBar: new AppBar(
+        title: new Text("dialog"),
+      ),
+      body: Container(
+        child: Stack(
+          children: <Widget>[
+            Positioned(
+              bottom: 0,
+              left: 100,
+              child: Text("圣诞节"),
+            ),
+          ],
+        ), /*Positioned(,
+          bottom: 0,
+          left: 100,
+          child: Text("圣诞节"),
+        )*/
+      ),
+    );
   }
-
 }
-
 
 class MyApp27 extends StatefulWidget {
   @override
@@ -354,11 +1931,12 @@ class MyApp27 extends StatefulWidget {
     return new ViewPageState();
   }
 }
-class ViewPageState  extends State<MyApp27> {
 
+class ViewPageState extends State<MyApp27> {
   _onPageChnge(index) {
-    print("aaaaaaaaaaaaaaa "+ index.toString());
+    print("aaaaaaaaaaaaaaa " + index.toString());
   }
+
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
@@ -369,27 +1947,32 @@ class ViewPageState  extends State<MyApp27> {
             ),
             body: new PageView(
               children: <Widget>[
-                 new Container(
-                   child: FadeInImage.memoryNetwork(
-                       image: 'https://p0.ssl.qhimg.com/t0183421f63f84fccaf.gif',),
-                       width: 100,
-                       height: 100,
-                 ),
-                 Image.network('https://ws1.sinaimg.cn/large/0065oQSqly1fw8wzdua6rj30sg0yc7gp.jpg'),
-                 Image.network('https://ws1.sinaimg.cn/large/0065oQSqly1fw0vdlg6xcj30j60mzdk7.jpg'),
-                Image.network('https://ws1.sinaimg.cn/large/0065oQSqly1fuo54a6p0uj30sg0zdqnf.jpg'),
                 new Container(
-                  child: FadeInImage.assetNetwork(placeholder: "assets/images/card_package_icon.png", image: 'https://ws1.sinaime/0065oQSqly1fw8wzdua6rj30sg0yc7gp.jpg'),
+                  child: FadeInImage.assetNetwork(
+                    placeholder: "assets/images/card_package_icon.png",
+                    image: 'https://p0.ssl.qhimg.com/t0183421f63f84fccaf.gif',
+                  ),
+                  width: 100,
+                  height: 100,
+                ),
+                Image.network(
+                    'https://ws1.sinaimg.cn/large/0065oQSqly1fw8wzdua6rj30sg0yc7gp.jpg'),
+                Image.network(
+                    'https://ws1.sinaimg.cn/large/0065oQSqly1fw0vdlg6xcj30j60mzdk7.jpg'),
+                Image.network(
+                    'https://ws1.sinaimg.cn/large/0065oQSqly1fuo54a6p0uj30sg0zdqnf.jpg'),
+                new Container(
+                  child: FadeInImage.assetNetwork(
+                      placeholder: "assets/images/card_package_icon.png",
+                      image:
+                          'https://ws1.sinaime/0065oQSqly1fw8wzdua6rj30sg0yc7gp.jpg'),
                 )
               ],
-              onPageChanged:  _onPageChnge,
+              onPageChanged: _onPageChnge,
               scrollDirection: Axis.horizontal,
               reverse: false,
-            )
-        )
-    );
+            )));
   }
-
 }
 /*
 
@@ -662,7 +2245,6 @@ class _HomePagerState extends State<ViewPager> {
 
 */
 
-
 class MyApp26 extends StatelessWidget {
   final List<String> item;
 
@@ -676,7 +2258,7 @@ class MyApp26 extends StatelessWidget {
             appBar: AppBar(
               title: Text('居中布局示例'),
             ),
-            body:  new Center(
+            body: new Center(
               child: new Column(
                 children: <Widget>[
                   GestureDetector(
@@ -684,15 +2266,18 @@ class MyApp26 extends StatelessWidget {
                       child: new SizedBox(
                         width: 50,
                         height: 50,
-                        child:  new Image.asset('assets/images/qr_zhilun.jpg',fit: BoxFit.fill,),
+                        child: new Image.asset(
+                          'assets/images/qr_zhilun.jpg',
+                          fit: BoxFit.fill,
+                        ),
                       ),
                     ),
                     onTap: () {
-                    //  show(context);
+                      //  show(context);
                     },
                   ),
                   new CircleAvatar(
-                    radius:40 ,
+                    radius: 40,
                     backgroundImage: AssetImage("assets/images/qr_zhilun.jpg"),
                   ),
                   new Container(
@@ -702,24 +2287,25 @@ class MyApp26 extends StatelessWidget {
                       shape: BoxShape.circle,
                       image: DecorationImage(
                         image: AssetImage(
-                         "assets/images/ant_installment_icon.png",
+                          "assets/images/ant_installment_icon.png",
                         ),
                       ),
                     ),
                   ),
                   new ClipRRect(
-                    borderRadius: new BorderRadius.all(new Radius.circular(100)),
-                    child: new Image.asset("assets/images/qr_zhilun.jpg",width: 72,height: 72,),
+                    borderRadius:
+                        new BorderRadius.all(new Radius.circular(100)),
+                    child: new Image.asset(
+                      "assets/images/qr_zhilun.jpg",
+                      width: 14,
+                      height: 8,
+                    ),
                   ),
                 ],
               ),
-            )
-        )
-    );
+            )));
   }
 }
-
-
 
 class MyApp25 extends StatelessWidget {
   @override
@@ -751,50 +2337,96 @@ class MyApp25 extends StatelessWidget {
   }
 }
 
-
-
-
 class FirstScreen extends StatelessWidget {
-  final  list = new List.generate(30, (i) => new SecondScreen(title:'商品id$i',dec: '商品详情$i'));
-  var result='Navigator';
+  final list = new List.generate(
+      30, (i) => new SecondScreen(title: '商品id$i', dec: '商品详情$i'));
+  var result = 'Navigator';
   String platformVersion = 'Unknown';
   var demoPlugin = const MethodChannel('demo.plugin');
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: new AppBar(
         title: new Text('$result'),
       ),
-      body: new ListView.builder(itemBuilder: (context,index) {
+      body: new ListView.builder(itemBuilder: (context, index) {
         return new ListTile(
+          title: new TextField(
+            //    maxLength: 30,//最大长度，设置此项会让TextField右下角有一个输入数量的统计字符串
+            maxLines: 1, //最大行数
+            autocorrect: true, //是否自动更正
+            autofocus: false, //是否自动对焦
+            obscureText: false, //是否是密码
+            textAlign: TextAlign.start, //文本对齐方式
+            style: TextStyle(fontSize: 16, color: Colors.black87), //输入文本的样式
+            //| inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],//允许的输入格式
+            inputFormatters: [
+              BlacklistingTextInputFormatter(RegExp("[a-z]")),
+              LengthLimitingTextInputFormatter(5)
+            ],
+            onChanged: (text) {
+              //内容改变的回调
+              print('change $text');
+            },
+            cursorWidth: 2.0,
+            cursorColor: Colors.black87, //光标颜色,
+            dragStartBehavior: DragStartBehavior.down,
+            // this.dragStartBehavior = DragStartBehavior.down,
+            scrollPadding: EdgeInsets.all(20),
+            decoration: new InputDecoration(
+              hintText: "phone",
+              hintStyle: new TextStyle(fontSize: 16),
+              prefixIcon: Image.asset(
+                "assets/images/qr_zhilun.jpg",
+                width: 5,
+                height: 5,
+              ),
+              /*   border: new OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                      borderSide: BorderSide(color: Colors.red)
+                  ),*/
+//                  border: new UnderlineInputBorder( //OutlineInputBorder 边框
+//                      borderSide: BorderSide(color: Colors.black87 ),
+//                      borderRadius: BorderRadius.circular(7.0)
+//                  ),
+              focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.black87)),
+              enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.black87)),
+            ),
+          ),
+        )
+
+            /* new ListTile(
           title:  new Text(list[index].title),
           onTap: ()  async {
+            Fluttertoast.showToast(msg: "aaaa");
             // Platform messages may fail, so we use a try/catch PlatformException.
-            /* await FlutterPlugin.getName;*/
-           // demoPlugin.invokeMethod('interaction');
-        /*  result =   await Navigator.push(context, new MaterialPageRoute(builder: (context) =>
+            //demoPlugin.invokeMethod('interaction');
+        */ /*  result =   await Navigator.push(context, new MaterialPageRoute(builder: (context) =>
             new SecondScreen(list[index].title, list[index].dec)));
-           print('reslut $result');*/
-            Navigator.push<String>(context, new MaterialPageRoute(builder: (BuildContext context){
-              return  new SecondScreen(title: list[index].title,dec: list[index].dec,);
-            })).then( (Object result){
-              //处理代码
-              this.result  = result;
-              print('aaa '+ this.result);
-            });
+           print('reslut $result');*/ /*
+//            Navigator.push<String>(context, new MaterialPageRoute(builder: (BuildContext context){
+//              return  new SecondScreen(title: list[index].title,dec: list[index].dec,);
+//            })).then( (Object result){
+//              //处理代码
+//              this.result  = result;
+//              print('aaa '+ this.result);
+//            });
           },
-        );
+        )*/
+            ;
       }),
     );
   }
-
 }
-
 
 class SecondScreen extends StatelessWidget {
   String title;
   String dec;
-  SecondScreen({Key key, @required this.title,@required this.dec}) : super(key: key);
+  SecondScreen({Key key, @required this.title, @required this.dec})
+      : super(key: key);
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -806,13 +2438,13 @@ class SecondScreen extends StatelessWidget {
             child: Text(title),
             onPressed: () {
               showListDialog(context);
-            //  Navigator.pop(context,dec);
+              //  Navigator.pop(context,dec);
             }),
       ),
     );
   }
-
 }
+
 class MyApp23 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -864,8 +2496,7 @@ class MyApp22 extends StatelessWidget {
           )
         ],
       ),
-      onTap: () {
-      },
+      onTap: () {},
     );
   }
 
@@ -1090,7 +2721,7 @@ class MyApp18 extends StatelessWidget {
 }
 
 class MyApp17 extends StatelessWidget {
-  List<String> list = ["a","c","c"];
+  List<String> list = ["a", "c", "c"];
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
@@ -1100,12 +2731,13 @@ class MyApp17 extends StatelessWidget {
               title: Text('AspectRatio'),
             ),
             body: new Container(
-              height: 200,
-              child:gridViewDefaultCount(list) /*new AspectRatio(
+                height: 200,
+                child: gridViewDefaultCount(
+                    list) /*new AspectRatio(
                 aspectRatio: 2, //宽高比例
                 child: new Container(
                   color: Colors.greenAccent,
-                  child:gridViewDefaultCount(list) *//*new GridView.extent(
+                  child:gridViewDefaultCount(list) */ /*new GridView.extent(
                     maxCrossAxisExtent: 150,
                     children: <Widget>[
                       Text('ajj'),
@@ -1119,11 +2751,12 @@ class MyApp17 extends StatelessWidget {
                       Text('ajj'),
                       Text('ajj'),
                     ],
-                  )*//*,
+                  )*/ /*,
                 ),
               ),*/
-            )));
+                )));
   }
+
   Widget gridViewDefaultCount(List<String> list) {
     return GridView.count(
 //      padding: EdgeInsets.all(5.0),
@@ -1149,8 +2782,7 @@ class MyApp17 extends StatelessWidget {
         height: 50.0,
         width: 50.0,
         color: Colors.yellow,
-        child: new Center(
-            child: Text('a')),
+        child: new Center(child: Text('a')),
       ));
     }
     return lists;
@@ -1382,6 +3014,7 @@ class _LoginPageState extends State<MyApp10> {
     RegExp mobile = new RegExp(r"(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$");
     return mobile.hasMatch(input);
   }
+
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
@@ -1405,16 +3038,14 @@ class _LoginPageState extends State<MyApp10> {
                       onSaved: (value) {
                         userName = value;
                       },
-                      onFieldSubmitted: (value) {
-
-                      },
+                      onFieldSubmitted: (value) {},
                     ),
                     new TextFormField(
                       decoration: new InputDecoration(labelText: '请输入密码'),
                       obscureText: true,
                       validator: (value) {
-                        return isLoginPassword(value)? "6~16位数字和字符组合": null;
-                       // return value.length < 6 ? "密码不够六位" : null;
+                        return isLoginPassword(value) ? "6~16位数字和字符组合" : null;
+                        // return value.length < 6 ? "密码不够六位" : null;
                       },
                       onSaved: (value) {
                         passWord = value;
