@@ -51,13 +51,13 @@ Future<void> showPictureBg(context) async {
 }
 
 class Loading {
-  static void show(BuildContext context, {bool mateStyle}) {
+  static void show(BuildContext context, {double left}) {
     showDialog(
       context: context,
       barrierDismissible: true,
       builder: (BuildContext context) {
         return WillPopScope(
-            child: LoadingDialog(),
+            child: LoadingDialog(left: left,),
             onWillPop: () async {
               return Future.value(true);
             });
@@ -71,6 +71,8 @@ class Loading {
 }
 
 class LoadingDialog extends Dialog {
+  double left;
+  LoadingDialog({Key key, @required this.left}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -82,7 +84,7 @@ class LoadingDialog extends Dialog {
           children: <Widget>[
             Positioned(
               bottom: 0,
-              left: 69,
+              left: left,
               child: new Image.asset(
                 'assets/images/by_tyre_point.png',
                 width: 203,
@@ -101,17 +103,24 @@ class LoadingDialog extends Dialog {
                   Loading.hide(context);
                 },
                 child: Container(
-                  width: 96,
-                  height: 44,
+                  width: 160,
+                  height: 48,
                   alignment: Alignment.center,
-                  decoration: BoxDecoration(
+                  decoration: new BoxDecoration(
+                    gradient: const LinearGradient(
+                        colors: [Color(0xFFFF9224), Color(0xFFFF9224), Color(0xFFFF3D10)]),
+                    borderRadius: BorderRadius.circular(50),
+                  ),
+                 /* decoration: BoxDecoration(
                     color: Colors.red,
                     borderRadius:
                     const BorderRadius.all(const Radius.circular(4)), //弧度
-                  ),
-                  child: Text(
-                    "我知道了",
-                    style: TextStyle(fontSize: 16, color: Colors.white),
+                  ),*/
+                  child: FlatButton(
+                    onPressed: () {
+                      Loading.hide(context);
+                    },
+                    child: Text("知道了"),
                   ),
                 ),
               ),

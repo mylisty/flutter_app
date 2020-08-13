@@ -24,7 +24,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
   logging: ^0.11.3+2
-  common_utils: ^1.1.3
+  common_utils: ^1.2.1
   http: ^0.12.0+2
   transparent_image: ^1.0.0
   connectivity: ^0.3.2

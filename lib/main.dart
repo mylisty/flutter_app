@@ -24,24 +24,176 @@ import 'dialog.dart';
 
 void main() {
   runApp(
-    /*  new MyApp1(
+      /*  new MyApp1(
         item: new List<String>.generate(300, (i)=> "item$i"),
       )*/
-      new MyApp27()
-//    new MaterialApp(
-//      title: '',
-//      home: new TabbarBgColorTest(),
-//    ),
-  );
+//      new ListViewController()
+//     new MyApp29()
+      /*  new MaterialApp(
+      title: '',
+      home: new  OverlayPage(),
+    ),*/
+      new MaterialApp(
+    title: '',
+    home: new MyApp29(),
+  ));
 }
-class TabbarBgColorTest extends StatefulWidget{
+
+/*
+ 引导图标
+ */
+class OverlayPage extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return new OverlayPageState();
+  }
+}
+
+class OverlayPageState extends State<OverlayPage> {
+  //首次运行中间文字显示点击效果
+  String _bodyText = '点击效果';
+  GlobalKey anchorKey = GlobalKey();
+  double dx = 0;
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      RenderBox renderBox = anchorKey.currentContext.findRenderObject();
+      var offset = renderBox.localToGlobal(Offset.zero);
+      dx = offset.dx + renderBox.size.width;
+      var dy = offset.dy;
+      Future.delayed(Duration.zero, () {
+        Loading.show(context, left: dx);
+        LogUtil.e("aaaaaaaaaaaa " + dx.toString());
+        LogUtil.e("aaaaaaaaaaaa " + dy.toString());
+        LogUtil.e("aaaaaaaaaaaa " + renderBox.size.height.toString());
+        LogUtil.e("aaaaaaaaaaaa " + renderBox.size.width.toString());
+      });
+    });
+
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return new Scaffold(
+      appBar: new AppBar(
+        title: new Text('悬浮演示'),
+      ),
+      //这是屏幕主体包含一个中央空间，里面是一个文本内容以及字体大小
+      body: new Center(
+        child: Column(
+          children: <Widget>[
+            RaisedButton(
+              onPressed: () {
+                OverlayDialog._cancelToast();
+              },
+              child: Text("data"),
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 40),
+              child: RaisedButton(
+                onPressed: () {
+                  Loading.show(context, left: dx);
+                },
+                key: anchorKey,
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class OverlayDialog {
+  static OverlayEntry _overlayEntry; // 浮层，Toast显示全靠它
+  static void show(
+    BuildContext context, {
+    String message, // 文本内容
+    Color color = Colors.black,
+    Color textColor = Colors.white, // 文本颜色
+    double textSize = 14.0, // 文字大小
+    int seconds = 2, // 显示时长，单位：秒
+    double left,
+    double bottom,
+  }) async {
+    //获取OverlayState
+    OverlayState overlayState = Overlay.of(context);
+    _overlayEntry = OverlayEntry(
+      builder: (BuildContext context) => Positioned(
+          //top值，可以改变这个值来改变toast在屏幕中的位置
+          bottom: bottom,
+          left: left,
+          child: Material(
+            //创建透明层
+            type: MaterialType.transparency, //透明类型
+            child: Container(
+              //保证控件居中效果
+              child: Stack(
+                children: <Widget>[
+                  Positioned(
+                    bottom: 0,
+                    left: 69,
+                    child: new Image.asset(
+                      'assets/images/by_tyre_point.png',
+                      width: 203,
+                      height: 202,
+                    ), /*new Image.asset(
+                'assets/images/by_tyre_point.png',
+                width: 203,
+                height: 202,
+              )*/
+                  ),
+                  Positioned(
+                    left: 140,
+                    bottom: 222,
+                    child: GestureDetector(
+                      onTap: () {
+                        Loading.hide(context);
+                      },
+                      child: Container(
+                        width: 96,
+                        height: 44,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          color: Colors.red,
+                          borderRadius: const BorderRadius.all(
+                              const Radius.circular(4)), //弧度
+                        ),
+                        child: Text(
+                          "我知道了",
+                          style: TextStyle(fontSize: 16, color: Colors.white),
+                        ),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+          )),
+    );
+    WidgetsBinding.instance
+        .addPostFrameCallback((_) => overlayState.insert(_overlayEntry));
+  }
+
+  // 移除Toast
+  static _cancelToast() async {
+    if (_overlayEntry != null) {
+      _overlayEntry.remove();
+      _overlayEntry = null;
+    }
+  }
+}
+
+class TabbarBgColorTest extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
     return _TabbarBgColorTesttate();
   }
 }
 
-class _TabbarBgColorTesttate extends State<TabbarBgColorTest> with SingleTickerProviderStateMixin{
+class _TabbarBgColorTesttate extends State<TabbarBgColorTest>
+    with SingleTickerProviderStateMixin {
   int _selectedIndex = 0;
   GlobalKey<ScaffoldState> _key = GlobalKey();
   final List<String> _tabs = ["新闻", "历史", "图片"];
@@ -52,7 +204,7 @@ class _TabbarBgColorTesttate extends State<TabbarBgColorTest> with SingleTickerP
   void initState() {
     super.initState();
     _tabController = TabController(length: _tabs.length, vsync: this);
-    _tabController.addListener((){
+    _tabController.addListener(() {
       _tabController.previousIndex;
       print("selected tabBar ${_tabController.previousIndex}");
     });
@@ -68,55 +220,52 @@ class _TabbarBgColorTesttate extends State<TabbarBgColorTest> with SingleTickerP
             bottom: PreferredSize(
               preferredSize: Size.fromHeight(48),
               child: Material(
-                color: Colors.green,
+                color: Colors.cyan,
                 child: TabBar(
                   // indicator: ColorTabIndicator(Colors.black),//选中标签颜色
-                  indicatorColor: Colors.black,//选中下划线颜色,如果使用了indicator这里设置无效
+                  indicatorColor: Colors.black, //选中下划线颜色,如果使用了indicator这里设置无效
                   controller: _tabController,
                   labelColor: Colors.white,
                   unselectedLabelColor: Colors.yellow,
                   indicatorPadding: EdgeInsets.all(10),
-                  tabs: _tabs.map((item)=>Tab(child: Container(child: Text(item)),)).toList(),
+                  tabs: _tabs
+                      .map((item) => Tab(
+                            child: Container(child: Text(item)),
+                          ))
+                      .toList(),
                 ),
               ),
-            )
-        ),
+            )),
         body: TabBarView(
           controller: _tabController,
-          children: _tabs.map((item) => Container(
-            color: Colors.blueGrey,
-            alignment: AlignmentDirectional.center,
-            child: Text(item),
-          )).toList(),
+          children: _tabs
+              .map((item) => Container(
+                    color: Colors.blueGrey,
+                    alignment: AlignmentDirectional.center,
+                    child: Text(item),
+                  ))
+              .toList(),
         ),
         bottomNavigationBar: BottomNavigationBar(
           items: [
             BottomNavigationBarItem(
-                title: Text("Home"),
-                icon: Icon(Icons.home)
-            ),
+                title: Text("Home"), icon: Icon(Icons.home)),
             BottomNavigationBarItem(
-                title: Text("Business"),
-                icon: Icon(Icons.business)
-            ),
+                title: Text("Business"), icon: Icon(Icons.business)),
             BottomNavigationBarItem(
-                title: Text("School"),
-                icon: Icon(Icons.school)
-            )
+                title: Text("School"), icon: Icon(Icons.school))
           ],
           currentIndex: _selectedIndex,
           fixedColor: Colors.green,
-          onTap: (index){
+          onTap: (index) {
             setState(() {
               _selectedIndex = index;
             });
             print(_selectedIndex);
           },
-        )
-    );
+        ));
   }
 }
-
 
 class MyApp104 extends StatelessWidget {
   @override
@@ -256,6 +405,9 @@ class Toast {
     );
     WidgetsBinding.instance
         .addPostFrameCallback((_) => overlayState.insert(_overlayEntry));
+    new Future.delayed(Duration(seconds: 2)).then((value) {
+      _overlayEntry.remove();
+    });
   }
 
   // 移除Toast
@@ -1693,12 +1845,30 @@ class MyApp29 extends StatefulWidget {
   }
 }
 
-class TextFieldState extends State<MyApp29> {
+class TextFieldState extends State<MyApp29>
+    with SingleTickerProviderStateMixin {
   var controller;
+  AnimationController animationController;
+  Animation<Offset> animation;
   @override
   void initState() {
     super.initState();
     controller = TextEditingController();
+
+    ///原文链接：https://blog.csdn.net/zl18603543572/article/details/95259555
+    animationController = AnimationController(
+        duration: const Duration(milliseconds: 700), vsync: this);
+    //begin: Offset.zero, end: Offset(1, 0) 以左下角为参考点，相对于左下角坐标 x轴方向向右 平移执行动画的view 的1倍 宽度，y轴方向不动，也就是水平向右平移
+    //begin: Offset.zero, end: Offset(1, 1) 以左下角为参考点，相对于左下角坐标 x轴方向向右 平移执行动画的view 的1倍 宽度，y轴方向 向下 平衡执行动画view 的1倍的高度，也就是向右下角平移了
+    animation = Tween(begin: Offset(0, 1), end: Offset(0, 0)).animate(
+      CurvedAnimation(
+        parent: animationController,
+        curve: Curves.easeInOutQuad,
+      ),
+    );
+    Future.delayed(Duration(milliseconds: 1000), () {
+      animationController.forward();
+    });
   }
 
   @override
@@ -1707,43 +1877,46 @@ class TextFieldState extends State<MyApp29> {
       appBar: new AppBar(
         title: new Text("textField button"),
       ),
-      body: Center(
-          child: Column(
+      body: Stack(
         children: <Widget>[
-          new Container(
-            width: 200,
-            child: TextField(
-              controller: controller,
-              //    maxLength: 30,//最大长度，设置此项会让TextField右下角有一个输入数量的统计字符串
-              maxLines: 1, //最大行数
-              autocorrect: true, //是否自动更正
-              autofocus: false, //是否自动对焦
-              obscureText: false, //是否是密码
-              textAlign: TextAlign.start, //文本对齐方式
-              style: TextStyle(fontSize: 16, color: Colors.black87), //输入文本的样式
-              //| inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],//允许的输入格式
-              inputFormatters: [
-                BlacklistingTextInputFormatter(RegExp("[a-z]")),
-                LengthLimitingTextInputFormatter(5)
-              ],
-              onChanged: (text) {
-                //内容改变的回调
-                print('change $text');
-              },
-              cursorWidth: 2.0,
-              cursorColor: Colors.black87, //光标颜色,
-              dragStartBehavior: DragStartBehavior.down,
-              // this.dragStartBehavior = DragStartBehavior.down,
-              scrollPadding: EdgeInsets.all(20),
-              decoration: new InputDecoration(
-                hintText: "phone",
-                hintStyle: new TextStyle(fontSize: 16),
-                prefixIcon: Image.asset(
-                  "assets/images/qr_zhilun.jpg",
-                  width: 5,
-                  height: 5,
-                ),
-                /*   border: new OutlineInputBorder(
+          Center(
+            child: Column(
+              children: <Widget>[
+                new Container(
+                  width: 200,
+                  child: TextField(
+                    controller: controller,
+                    //    maxLength: 30,//最大长度，设置此项会让TextField右下角有一个输入数量的统计字符串
+                    maxLines: 1, //最大行数
+                    autocorrect: true, //是否自动更正
+                    autofocus: false, //是否自动对焦
+                    obscureText: false, //是否是密码
+                    textAlign: TextAlign.start, //文本对齐方式
+                    style: TextStyle(
+                        fontSize: 16, color: Colors.black87), //输入文本的样式
+                    //| inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],//允许的输入格式
+                    inputFormatters: [
+                      BlacklistingTextInputFormatter(RegExp("[a-z]")),
+                      LengthLimitingTextInputFormatter(5)
+                    ],
+                    onChanged: (text) {
+                      //内容改变的回调
+                      print('change $text');
+                    },
+                    cursorWidth: 2.0,
+                    cursorColor: Colors.black87, //光标颜色,
+                    dragStartBehavior: DragStartBehavior.down,
+                    // this.dragStartBehavior = DragStartBehavior.down,
+                    scrollPadding: EdgeInsets.all(20),
+                    decoration: new InputDecoration(
+                      hintText: "phone",
+                      hintStyle: new TextStyle(fontSize: 16),
+                      prefixIcon: Image.asset(
+                        "assets/images/qr_zhilun.jpg",
+                        width: 5,
+                        height: 5,
+                      ),
+                      /*   border: new OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8.0),
                       borderSide: BorderSide(color: Colors.red)
                   ),*/
@@ -1751,62 +1924,215 @@ class TextFieldState extends State<MyApp29> {
 //                      borderSide: BorderSide(color: Colors.black87 ),
 //                      borderRadius: BorderRadius.circular(7.0)
 //                  ),
-                focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black87)),
-                enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black87)),
-              ),
-            ),
-          ),
-          OutlineButton(
-              textTheme: ButtonTextTheme.normal,
-              onPressed: () {},
-              /*   focusColor: Colors.lime,
+                      focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.black87)),
+                      enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.black87)),
+                    ),
+                  ),
+                ),
+                OutlineButton(
+                    textTheme: ButtonTextTheme.normal,
+                    onPressed: () {},
+                    /*   focusColor: Colors.lime,
               hoverColor: Colors.red  ,*/
-              //   color: Colors.greenAccent,
-              //   borderSide: BorderSide(color: Colors.lightBlue,style: BorderStyle.solid),
-              child: Text(
-                "outline",
-                style: new TextStyle(fontSize: 10),
-              ),
-              disabledBorderColor: Colors.amberAccent,
-              highlightedBorderColor: Colors.red,
-              color: Colors.green,
-              hoverColor: Colors.black87,
-              // splashColor: Colors.green,//点击后的颜色
-              /* shape: ShapeBorder.lerp(),*/
-              // highlightColor: Colors.amberAccent,
-              shape: new RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20.0))),
-          FlatButton(
-            onPressed: () {},
-            child: new Text("FlatButton"),
-            color: Colors.green,
-            clipBehavior: Clip.antiAlias,
-            shape: new RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20.0),
-            ),
-            // highlightColor: Colors.red,
-            hoverColor: Colors.amberAccent,
-          ),
-          RaisedButton(
-            onPressed: () {},
-            child: Text("RaiseButton"),
-            color: Colors.green,
-            shape: new StadiumBorder(
-              side: new BorderSide(
-                style: BorderStyle.solid,
-                color: Colors.greenAccent,
-              ),
-            ),
+                    //   color: Colors.greenAccent,
+                    //   borderSide: BorderSide(color: Colors.lightBlue,style: BorderStyle.solid),
+                    child: Text(
+                      "outline",
+                      style: new TextStyle(fontSize: 10),
+                    ),
+                    disabledBorderColor: Colors.amberAccent,
+                    highlightedBorderColor: Colors.red,
+                    color: Colors.green,
+                    hoverColor: Colors.black87,
+                    // splashColor: Colors.green,//点击后的颜色
+                    /* shape: ShapeBorder.lerp(),*/
+                    // highlightColor: Colors.amberAccent,
+                    shape: new RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0))),
+                FlatButton(
+                  onPressed: () {},
+                  child: new Text("FlatButton"),
+                  color: Colors.green,
+                  clipBehavior: Clip.antiAlias,
+                  shape: new RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20.0),
+                  ),
+                  // highlightColor: Colors.red,
+                  hoverColor: Colors.amberAccent,
+                ),
+                Container(
+                  width: 160,
+                  height: 48,
+                  decoration: new BoxDecoration(
+                    gradient: const LinearGradient(colors: [
+                      Color(0xFFFF9224),
+                      Color(0xFFFF9224),
+                      Color(0xFFFF3D10)
+                    ]),
+                    borderRadius: BorderRadius.circular(50),
+                  ),
+                  child: FlatButton.icon(
+                    onPressed: () {},
+                    clipBehavior: Clip.antiAlias,
+                    shape: new RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(50.0),
+                    ),
+                    // highlightColor: Colors.red,
+                    hoverColor: Colors.amberAccent,
+                    icon: Icon(
+                      Icons.phone,
+                      color: Colors.white,
+                      size: 24,
+                    ),
+                    label: Text(
+                      "联系管理员",
+                      style: TextStyle(color: Colors.white, fontSize: 16),
+                    ),
+                  ),
+                ),
+                RaisedButton(
+                  onPressed: () {},
+                  child: Text("RaiseButton"),
+                  color: Colors.green,
+                  shape: new StadiumBorder(
+                    side: new BorderSide(
+                      style: BorderStyle.solid,
+                      color: Colors.greenAccent,
+                    ),
+                  ),
 //              highlightColor: Colors.amber,
-            splashColor: Colors.amber,
-            //    colorBrightness:Brightness.light ,
+                  splashColor: Colors.amber,
+                  //    colorBrightness:Brightness.light ,
+                ),
+                Container(
+                  width: 160,
+                  height: 48,
+                  decoration: new BoxDecoration(
+                    gradient: const LinearGradient(colors: [
+                      Color(0xFFFF9224),
+                      Color(0xFFFF9224),
+                      Color(0xFFFF3D10)
+                    ]),
+                    borderRadius: BorderRadius.circular(50),
+                  ),
+                  child:RaisedButton(
+                    onPressed: () {},
+                    child: Text("RaiseButton"),
+                    shape: new StadiumBorder(
+                      side: new BorderSide(
+                        style: BorderStyle.solid,
+                        color: Colors.greenAccent,
+                      ),
+                    ),
+//              highlightColor: Colors.amber,
+                    splashColor:  Color(0xff20DDAA),
+                    //    colorBrightness:Brightness.light ,
+                  ) ,
+                ),
+                RaisedButton(
+                  onPressed: () {},
+                  textColor: Colors.white,
+                  clipBehavior: Clip.hardEdge,
+
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(22.0))),
+                  padding: const EdgeInsets.all(0.0),
+                  child: Container(
+                    width: 260,
+                    height: 44,
+                    alignment: Alignment.center,
+                    decoration: const BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: <Color>[
+                          Color(0xff25D1D1),
+                          Color(0xff3BE6AD),
+                          Color(0xff20DDAA)
+                        ],
+                      ),
+                    ),
+                    padding: const EdgeInsets.all(10.0),
+                    child: Text('立即申请',textAlign: TextAlign.center,),
+                  ),
+                  splashColor:  Color(0xff20DDAA),
+                ),
+              ],
+            ),
+          ),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Offstage(
+                offstage: false,
+                child: IntrinsicHeight( // // 自适应高度
+                  child: SlideTransition(
+                    position: animation,
+                    child: Container(
+                      height: 162,
+                      color: Colors.white,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text(
+                            "等待车队管理员审批....",
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: Color(0xFFEA421B),
+                            ),
+                          ),
+                          Container(
+                            margin:
+                                EdgeInsets.only(top: 3, left: 40, right: 40),
+                            child: Text(
+                              "订单将在车队管理员审批后发布给周边服务车，请及时联系管理员审批。",
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Color(0xFF333333),
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(top: 12),
+                            width: 160,
+                            height: 48,
+                            decoration: new BoxDecoration(
+                              gradient: const LinearGradient(colors: [
+                                Color(0xFFFF9224),
+                                Color(0xFFFF9224),
+                                Color(0xFFFF3D10)
+                              ]),
+                              borderRadius: BorderRadius.circular(50),
+                            ),
+                            child: FlatButton.icon(
+                              onPressed: () {},
+                              clipBehavior: Clip.antiAlias,
+                              shape: new RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(50.0),
+                              ),
+                              // highlightColor: Colors.red,
+                              hoverColor: Colors.amberAccent,
+                              icon: Icon(
+                                Icons.phone,
+                                color: Colors.white,
+                                size: 24,
+                              ),
+                              label: Text(
+                                "联系管理员",
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 16),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                )),
           )
         ],
-      )),
+      ),
     );
-    ;
   }
 }
 /*const TextField({
@@ -1896,7 +2222,7 @@ class DialogState extends State<MyApp28> {
     super.initState();
     Future.delayed(Duration.zero, () {
 //      showPictureBg(context);
-    Loading.show(context);
+      Loading.show(context);
     });
   }
 
@@ -2445,33 +2771,159 @@ class SecondScreen extends StatelessWidget {
   }
 }
 
-class MyApp23 extends StatelessWidget {
+class ListViewController extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return new MyApp23();
+  }
+}
+
+// ignore: slash_for_doc_comments
+/**
+ * 继承SliverChildBuilderDelegate  可以对列表的监听
+ */
+class _SaltedValueKey extends ValueKey<Key> {
+  const _SaltedValueKey(Key key)
+      : assert(key != null),
+        super(key);
+}
+
+class MyChildrenDelegate extends SliverChildBuilderDelegate {
+  MyChildrenDelegate(
+    Widget Function(BuildContext, int) builder, {
+    int childCount,
+    bool addAutomaticKeepAlive = true,
+    bool addRepaintBoundaries = true,
+  }) : super(builder,
+            childCount: childCount,
+            addAutomaticKeepAlives: addAutomaticKeepAlive,
+            addRepaintBoundaries: addRepaintBoundaries);
+  // Return a Widget for the given Exception
+  Widget _createErrorWidget(dynamic exception, StackTrace stackTrace) {
+    final FlutterErrorDetails details = FlutterErrorDetails(
+      exception: exception,
+      stack: stackTrace,
+      library: 'widgets library',
+      context: ErrorDescription('building'),
+    );
+    FlutterError.reportError(details);
+    return ErrorWidget.builder(details);
+  }
+
+  @override
+  Widget build(BuildContext context, int index) {
+    assert(builder != null);
+    if (index < 0 || (childCount != null && index >= childCount)) return null;
+    Widget child;
+    try {
+      child = builder(context, index);
+    } catch (exception, stackTrace) {
+      child = _createErrorWidget(exception, stackTrace);
+    }
+    if (child == null) return null;
+    final Key key = child.key != null ? _SaltedValueKey(child.key) : null;
+    if (addRepaintBoundaries) child = RepaintBoundary(child: child);
+    if (addSemanticIndexes) {
+      final int semanticIndex = semanticIndexCallback(child, index);
+      if (semanticIndex != null)
+        child = IndexedSemantics(
+            index: semanticIndex + semanticIndexOffset, child: child);
+    }
+    if (addAutomaticKeepAlives) child = AutomaticKeepAlive(child: child);
+    return KeyedSubtree(child: child, key: key);
+  }
+
+  ///监听 在可见的列表中 显示的第一个位置和最后一个位置
+  @override
+  void didFinishLayout(int firstIndex, int lastIndex) {
+    // TODO: implement didFinishLayout
+    super.didFinishLayout(firstIndex, lastIndex);
+  }
+
+  @override
+  double estimateMaxScrollOffset(int firstIndex, int lastIndex,
+      double leadingScrollOffset, double trailingScrollOffset) {
+    print(
+        'firstIndex sss : $firstIndex, lastIndex ssss : $lastIndex, leadingScrollOffset ssss : $leadingScrollOffset,'
+        'trailingScrollOffset ssss : $trailingScrollOffset  ');
+    return super.estimateMaxScrollOffset(
+        firstIndex, lastIndex, leadingScrollOffset, trailingScrollOffset);
+  }
+}
+
+class MyApp23 extends State<ListViewController> {
+  ScrollController controller;
+  var list = new List<String>.generate(100, (i) => "item $i");
+  @override
+  void initState() {
+    // TODO: implement initState
+    controller = new ScrollController();
+    controller.addListener(() {
+      var position = controller.position;
+      var offset = controller.initialScrollOffset;
+      var maxScrollExtent2 = controller.position.maxScrollExtent;
+      var minScrollExtent = controller.position.minScrollExtent;
+//      LogUtil.e("aaaaaaaaaaaaa position  "+ position.toString());
+//      LogUtil.e("aaaaaaaaaaaaa offset"+ offset .toStr/*ing());
+//      LogUtil.e("aaaaaaaaaaaaa maxScrollExtent2"+ maxScrollExtent2.toString());
+//      LogUtil.e("aaaaaaaaaaaaa minScrollExtent"+ minSc*/rollExtent.toString());
+//      controller.childrenDelegate;
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    var list = new List<String>.generate(40, (i) => "item $i");
     return new MaterialApp(
-        title: "Transform",
-        home: new Scaffold(
-            appBar: AppBar(
-              title: Text('Transform'),
-            ),
-            body: new ListView.builder(
-              itemCount: list.length,
-              itemBuilder: (context, index) {
-                return new Dismissible(
-                    key: new Key(list[index]),
-                    onDismissed: (direction) {
-                      //被移除回掉
-                      list.removeAt(index);
-                      var item = list[index];
-                      Scaffold.of(context).showSnackBar(
-                          new SnackBar(content: new Text("$item")));
-                    },
-                    child: new ListTile(
-                      title: new Text(list[index]),
-                    ));
-              },
-            )));
+      title: "Transform",
+      home: new Scaffold(
+        appBar: AppBar(
+          title: Text('Transform'),
+        ),
+        body: buildListView(),
+      ),
+    );
+  }
+
+  Widget buildListView() {
+    var listView = Container(
+      child: new ListView.custom(
+        controller: controller,
+        cacheExtent: 1.0, // 只有设置了1.0 才能够准确的标记position 位置
+        childrenDelegate: MyChildrenDelegate(
+          (BuildContext context, int index) {
+            return new Dismissible(
+                key: new Key(list[index]),
+                onDismissed: (direction) {
+                  //被移除回掉
+                  list.removeAt(index);
+                  var item = list[index];
+                  Scaffold.of(context)
+                      .showSnackBar(new SnackBar(content: new Text("$item")));
+                },
+                child: new ListTile(
+                  title: new Text(list[index]),
+                ));
+          },
+          childCount: list.length,
+        ),
+        /*itemBuilder: (context, index) {
+        return new Dismissible(
+            key: new Key(list[index]),
+            onDismissed: (direction) {
+              //被移除回掉
+              list.removeAt(index);
+              var item = list[index];
+              Scaffold.of(context).showSnackBar(
+                  new SnackBar(content: new Text("$item")));
+            },
+            child: new ListTile(
+              title: new Text(list[index]),
+            ));
+      },*/
+      ),
+    );
+    return listView;
   }
 }
 
