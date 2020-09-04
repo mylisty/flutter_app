@@ -10,7 +10,7 @@ class AssuranceCardRequestParams {
 	String userType;
 	String carLicense;
 	num longitude;
-
+//  static const String ss= "a";
 	AssuranceCardRequestParams({this.carHeadPhoto, this.driverId, this.orderSn, this.latitude, this.tyreInfoList, this.bigCustomOrderSn, this.driverName, this.driverPhone, this.userType, this.carLicense, this.longitude});
 
 	AssuranceCardRequestParams.fromJson(Map<String, dynamic> json) {

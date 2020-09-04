@@ -8,6 +8,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/PopRoute.dart';
+import 'package:flutter_app/res_colours.dart';
+import 'package:flutter_app/res_styles.dart';
 import 'package:flutter_picker/flutter_picker.dart';
 //import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -15,28 +17,234 @@ import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'package:flutter/services.dart';
 import 'package:popup_window/popup_window.dart';
+import 'package:scroll_to_index/scroll_to_index.dart';
 //import 'package:transparent_image/transparent_image.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'dart:async';
 import 'PickerData.dart';
 import 'Test.dart';
 import 'dialog.dart';
-
+import 'dart:math' as math;
+// Myapp105  CustomScrollView
+// Myapp106  srcrol View index
 void main() {
   runApp(
-      /*  new MyApp1(
+    /* new MyApp26(
         item: new List<String>.generate(300, (i)=> "item$i"),
       )*/
-//      new ListViewController()
-//     new MyApp29()
-      /*  new MaterialApp(
+//      new Myapp106()
+
+    new MaterialApp(
       title: '',
-      home: new  OverlayPage(),
-    ),*/
-      new MaterialApp(
+      home: new ListViewController(),
+    ),
+/*      new MaterialApp(
     title: '',
-    home: new MyApp29(),
-  ));
+    home: new TabbarBgColorTest(),*/
+  );
+}
+
+class MyApp105 extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return new _CustomScrollViewPage();
+  }
+}
+
+class _CustomScrollViewPage extends State<MyApp105> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        body: Stack(
+      children: <Widget>[
+        Container(
+            height: 340,
+            decoration: BoxDecoration(
+                gradient: new LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [Colors.cyan, Colors.white, Colors.blue])))
+      ],
+    )
+
+        /*SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            Container(
+              height: 500,
+              color: Colors.red,
+              child: Text("data"),
+            ),
+            Container(
+              height: 300,
+              child: ListView.builder(
+//                  shrinkWrap: false,
+//                  physics: new NeverScrollableScrollPhysics(),
+                  itemCount: 30,
+                  itemBuilder: (context, index) {
+                    return new ListTile(
+                      leading: new Icon(Icons.message),
+                      title: Text('aaaa$index'),
+                    );
+                  }),
+            ),
+            Container(
+              height: 200,
+              color: Colors.blue,
+              child: Text("data"),
+            ),
+          ],
+        ),
+      )*/
+
+        );
+    /*Scaffold(
+            body: CustomScrollView(
+              physics: const BouncingScrollPhysics(),
+              slivers: <Widget>[
+                SliverAppBar(
+                  stretch: true,
+                  onStretchTrigger: () {
+                    // Function callback for stretch
+                    return;
+                  },
+                  expandedHeight: 300.0,
+                  flexibleSpace: FlexibleSpaceBar(
+                    stretchModes: <StretchMode>[
+                      StretchMode.zoomBackground,
+                      StretchMode.blurBackground,
+                      StretchMode.fadeTitle,
+                    ],
+                    centerTitle: true,
+                    title: const Text('Flight Report'),
+                    background: Stack(
+                      fit: StackFit.expand,
+                      children: [
+                        Image.network(
+                          'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl-2.jpg',
+                          fit: BoxFit.cover,
+                        ),
+                        const DecoratedBox(
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment(0.0, 0.5),
+                              end: Alignment(0.0, 0.0),
+                              colors: <Color>[
+                                Color(0x60000000),
+                                Color(0x00000000),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                SliverList(
+                  delegate: SliverChildListDelegate([
+                    ListTile(
+                      leading: Icon(Icons.wb_sunny),
+                      title: Text('Sunday'),
+                      subtitle: Text('sunny, h: 80, l: 65'),
+                    ),
+                    ListTile(
+                      leading: Icon(Icons.wb_sunny),
+                      title: Text('Monday'),
+                      subtitle: Text('sunny, h: 80, l: 65'),
+                    ),
+                    // ListTiles++
+                  ]),
+                ),
+              ],
+            ),
+          );*/ /* CustomScrollView(
+            slivers: <Widget>[
+              const SliverAppBar(
+                pinned: true,
+                expandedHeight: 100.0,
+                flexibleSpace: FlexibleSpaceBar(
+                  title: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text("data"),
+                  ),
+                ),
+              ),
+              SliverFixedExtentList(
+                itemExtent: 50,
+                delegate: SliverChildBuilderDelegate(
+                        (BuildContext context, int index) {
+                      return Container(
+                        alignment: Alignment.center,
+                        color: Colors.lightBlue[100 * (index % 9)],
+                        child: Text('List Item $index'),
+                      );
+                    },
+                    childCount: 50
+                ),
+              ),
+              SliverGrid(
+                gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                  maxCrossAxisExtent: 200.0,
+                  mainAxisSpacing: 10.0,
+                  crossAxisSpacing: 10.0,
+                  childAspectRatio: 4.0,
+                ),
+                delegate: SliverChildBuilderDelegate(
+                      (BuildContext context, int index) {
+                    return Container(
+                      alignment: Alignment.center,
+                      color: Colors.teal[100 * (index % 9)],
+                      child: Text('Grid Item $index'),
+                    );
+                  },
+                  childCount: 50,
+                ),
+              ),
+
+            ],
+          );*/ /*new ListView.builder(
+        itemCount: 50,
+        itemBuilder: (context, index) {
+          return new ListTile(
+            leading: new Icon(Icons.message),
+            title: Text('aaaa$index'),
+          );
+        })*/
+    /* DefaultTextStyle(
+        style: Theme.of(context).textTheme.bodyText2,
+        child: LayoutBuilder(
+          builder: (BuildContext context, BoxConstraints viewportConstraints) {
+            return SingleChildScrollView(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  minHeight: viewportConstraints.maxHeight,
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    Container(
+                      // A fixed-height child.
+                      color: const Color(0xffeeee00), // Yellow
+                      height: 120.0,
+                      alignment: Alignment.center,
+                      child: const Text('Fixed Height Content'),
+                    ),
+                    Container(
+                      // Another fixed-height child.
+                      color: const Color(0xff008000), // Green
+                      height: 120.0,
+                      alignment: Alignment.center,
+                      child: const Text('Fixed Height Content'),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        ),
+      );*/
+  }
 }
 
 /*
@@ -218,45 +426,66 @@ class _TabbarBgColorTesttate extends State<TabbarBgColorTest>
             title: Text("ScaffoldTest"),
             //TabBar布置
             bottom: PreferredSize(
-              preferredSize: Size.fromHeight(48),
+              preferredSize: _selectedIndex == 0
+                  ? Size.fromHeight(48)
+                  : Size.fromHeight(0),
               child: Material(
                 color: Colors.cyan,
-                child: TabBar(
-                  // indicator: ColorTabIndicator(Colors.black),//选中标签颜色
-                  indicatorColor: Colors.black, //选中下划线颜色,如果使用了indicator这里设置无效
-                  controller: _tabController,
-                  labelColor: Colors.white,
-                  unselectedLabelColor: Colors.yellow,
-                  indicatorPadding: EdgeInsets.all(10),
-                  tabs: _tabs
-                      .map((item) => Tab(
-                            child: Container(child: Text(item)),
-                          ))
-                      .toList(),
+                child: Offstage(
+                  offstage: _selectedIndex != 0,
+                  child: TabBar(
+                    // indicator: ColorTabIndicator(Colors.black),//选中标签颜色
+                    indicatorColor: Colors.black, //选中下划线颜色,如果使用了indicator这里设置无效
+                    controller: _tabController,
+                    labelColor: Colors.white,
+                    unselectedLabelColor: Colors.yellow,
+                    indicatorPadding: EdgeInsets.all(10),
+                    tabs: _tabs
+                        .map((item) => Tab(
+                              child: Container(child: Text(item)),
+                            ))
+                        .toList(),
+                  ),
                 ),
               ),
             )),
-        body: TabBarView(
-          controller: _tabController,
-          children: _tabs
-              .map((item) => Container(
-                    color: Colors.blueGrey,
-                    alignment: AlignmentDirectional.center,
-                    child: Text(item),
-                  ))
-              .toList(),
-        ),
+        body: _selectedIndex == 0
+            ? TabBarView(
+                controller: _tabController,
+                children: _tabs
+                    .map((item) => Container(
+                          color: Colors.blueGrey,
+                          alignment: AlignmentDirectional.center,
+                          child: Text(item),
+                        ))
+                    .toList(),
+              )
+            : Text("data"),
         bottomNavigationBar: BottomNavigationBar(
           items: [
             BottomNavigationBarItem(
-                title: Text("Home"), icon: Icon(Icons.home)),
+//              backgroundColor: Colors.blue,
+              icon: Icon(Icons.home),
+              title: Text("首页"),
+            ),
             BottomNavigationBarItem(
-                title: Text("Business"), icon: Icon(Icons.business)),
+//              backgroundColor: Colors.green,
+              icon: Icon(Icons.message),
+              title: Text("消息"),
+            ),
             BottomNavigationBarItem(
-                title: Text("School"), icon: Icon(Icons.school))
+//              backgroundColor: Colors.amber,
+              icon: Icon(Icons.shopping_cart),
+              title: Text("购物车"),
+            ),
+            BottomNavigationBarItem(
+//              backgroundColor: Colors.red,
+              icon: Icon(Icons.person),
+              title: Text("个人中心"),
+            ),
           ],
+          type: BottomNavigationBarType.fixed,
           currentIndex: _selectedIndex,
-          fixedColor: Colors.green,
           onTap: (index) {
             setState(() {
               _selectedIndex = index;
@@ -2017,7 +2246,7 @@ class TextFieldState extends State<MyApp29>
                     ]),
                     borderRadius: BorderRadius.circular(50),
                   ),
-                  child:RaisedButton(
+                  child: RaisedButton(
                     onPressed: () {},
                     child: Text("RaiseButton"),
                     shape: new StadiumBorder(
@@ -2027,15 +2256,14 @@ class TextFieldState extends State<MyApp29>
                       ),
                     ),
 //              highlightColor: Colors.amber,
-                    splashColor:  Color(0xff20DDAA),
+                    splashColor: Color(0xff20DDAA),
                     //    colorBrightness:Brightness.light ,
-                  ) ,
+                  ),
                 ),
                 RaisedButton(
                   onPressed: () {},
                   textColor: Colors.white,
                   clipBehavior: Clip.hardEdge,
-
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(Radius.circular(22.0))),
                   padding: const EdgeInsets.all(0.0),
@@ -2053,9 +2281,12 @@ class TextFieldState extends State<MyApp29>
                       ),
                     ),
                     padding: const EdgeInsets.all(10.0),
-                    child: Text('立即申请',textAlign: TextAlign.center,),
+                    child: Text(
+                      '立即申请',
+                      textAlign: TextAlign.center,
+                    ),
                   ),
-                  splashColor:  Color(0xff20DDAA),
+                  splashColor: Color(0xff20DDAA),
                 ),
               ],
             ),
@@ -2064,7 +2295,8 @@ class TextFieldState extends State<MyApp29>
             alignment: Alignment.bottomCenter,
             child: Offstage(
                 offstage: false,
-                child: IntrinsicHeight( // // 自适应高度
+                child: IntrinsicHeight(
+                  // // 自适应高度
                   child: SlideTransition(
                     position: animation,
                     child: Container(
@@ -2112,6 +2344,7 @@ class TextFieldState extends State<MyApp29>
                               ),
                               // highlightColor: Colors.red,
                               hoverColor: Colors.amberAccent,
+
                               icon: Icon(
                                 Icons.phone,
                                 color: Colors.white,
@@ -2627,6 +2860,18 @@ class MyApp26 extends StatelessWidget {
                       height: 8,
                     ),
                   ),
+                  Container(
+                    alignment: Alignment.bottomCenter,
+                    padding: const EdgeInsets.all(11.0),
+                    decoration: BoxDecoration(
+                      color: Colors.red,
+                      borderRadius:
+                          new BorderRadius.all(new Radius.circular(50.0)),
+//                      shape: BoxShape.circle
+                    ),
+                    child: Text("data"),
+//                    transform: new Matrix4.rotationZ(0.3),
+                  )
                 ],
               ),
             )));
@@ -2771,6 +3016,115 @@ class SecondScreen extends StatelessWidget {
   }
 }
 
+class Myapp106 extends StatelessWidget {
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Scroll To Index Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: MyHomePage106(title: 'Scroll To Index Demo'),
+    );
+  }
+}
+
+class MyHomePage106 extends StatefulWidget {
+  MyHomePage106({Key key, this.title}) : super(key: key);
+
+  final String title;
+
+  @override
+  _MyHomePage106State createState() => _MyHomePage106State();
+}
+
+class _MyHomePage106State extends State<MyHomePage106> {
+  static const maxCount = 100;
+  final random = math.Random();
+//  final scrollDirection = Axis.vertical;
+
+  AutoScrollController controller;
+  List<List<int>> randomList;
+  var list = new List<dynamic>.generate(100, (i) => i);
+  @override
+  void initState() {
+    super.initState();
+    controller = AutoScrollController(
+        viewportBoundaryGetter: () => Rect.fromLTRB(0, 0, 0, MediaQuery.of(context).padding.bottom),
+//        axis: scrollDirection
+    );
+    randomList = List.generate(maxCount, (index) => <int>[index, (1000 * random.nextDouble()).toInt()]);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.title),
+      ),
+      body:  ListView(
+        controller: controller,
+        cacheExtent: 1.0,
+        children: list.map((data) {
+          return Padding(
+            padding: EdgeInsets.all(8),
+            child: _getRow(data, math.max(data.toDouble(), 50.0)),
+          );
+        }).toList(),
+
+      )/*ListView(
+//        scrollDirection: scrollDirection,
+        controller: controller,
+        children: randomList.map<Widget>((data) {
+          return Padding(
+            padding: EdgeInsets.all(8),
+            child: _getRow(data[0], math.max(data[1].toDouble(), 50.0)),
+          );
+        }).toList(),
+      )*/,
+      floatingActionButton: FloatingActionButton(
+        onPressed: _scrollToIndex,
+        tooltip: 'Increment',
+        child: Text("10"),
+      ),
+    );
+  }
+
+  Future _scrollToIndex() async {
+    await controller.scrollToIndex(10, preferPosition: AutoScrollPosition.begin);
+    controller.highlight(10);
+  }
+
+  Widget _getRow(int index, double height) {
+    return _wrapScrollTag(
+        index: index,
+        child: Container(
+          padding: EdgeInsets.all(8),
+          alignment: Alignment.topCenter,
+          height: height,
+          decoration: BoxDecoration(
+              border: Border.all(
+                  color: Colors.lightBlue,
+                  width: 4
+              ),
+              borderRadius: BorderRadius.circular(12)
+          ),
+          child: Text('index: $index, height: $height'),
+        )
+    );
+  }
+
+  Widget _wrapScrollTag({int index, Widget child})
+  => AutoScrollTag(
+    key: ValueKey(index),
+    controller: controller,
+    index: index,
+    child: child,
+    highlightColor: Colors.black.withOpacity(0.1),
+  );
+}
+
 class ListViewController extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -2852,23 +3206,32 @@ class MyChildrenDelegate extends SliverChildBuilderDelegate {
 }
 
 class MyApp23 extends State<ListViewController> {
-  ScrollController controller;
+//  ScrollController controller;
   var list = new List<String>.generate(100, (i) => "item $i");
+  List<GlobalKey> keys=<GlobalKey>[];
+  ScrollController controller;
   @override
   void initState() {
     // TODO: implement initState
+    for(int i=0;i<list.length;i++){
+      keys.add(GlobalKey(debugLabel:i.toString()));
+    }
+
     controller = new ScrollController();
     controller.addListener(() {
       var position = controller.position;
       var offset = controller.initialScrollOffset;
       var maxScrollExtent2 = controller.position.maxScrollExtent;
       var minScrollExtent = controller.position.minScrollExtent;
-//      LogUtil.e("aaaaaaaaaaaaa position  "+ position.toString());
-//      LogUtil.e("aaaaaaaaaaaaa offset"+ offset .toStr/*ing());
-//      LogUtil.e("aaaaaaaaaaaaa maxScrollExtent2"+ maxScrollExtent2.toString());
-//      LogUtil.e("aaaaaaaaaaaaa minScrollExtent"+ minSc*/rollExtent.toString());
+      LogUtil.e("aaaaaaaaaaaaa position  "+ position.toString());
+      LogUtil.e("aaaaaaaaaaaaa     controller.offset ${    controller.offset}" );
+      LogUtil.e("aaaaaaaaaaaaa offset"+ offset .toString());
+      LogUtil.e("aaaaaaaaaaaaa maxScrollExtent2"+ maxScrollExtent2.toString());
+      LogUtil.e("aaaaaaaaaaaaa minScrollExtent"+ minScrollExtent.toString());
 //      controller.childrenDelegate;
+
     });
+
     super.initState();
   }
 
@@ -2880,13 +3243,27 @@ class MyApp23 extends State<ListViewController> {
         appBar: AppBar(
           title: Text('Transform'),
         ),
-        body: buildListView(),
+        body: Column(
+          children: <Widget>[
+            RaisedButton(onPressed: ()  async {
+              // 页面不可见的部分就跳转不了
+              RenderBox box=keys[1].currentContext.findRenderObject();
+              Offset offset = box.localToGlobal(Offset.zero);
+
+              LogUtil.e(" offset sss  ${offset.dy}");
+              LogUtil.e(" offset distance  ${offset.distance}");
+              LogUtil.e(" offset distanceSquared  ${offset.distanceSquared}");
+            },child: Text("data"),),
+            Expanded(child: buildListView(),),
+          ],
+        ),
       ),
     );
   }
 
   Widget buildListView() {
-    var listView = Container(
+
+   /* var listView = Container(
       child: new ListView.custom(
         controller: controller,
         cacheExtent: 1.0, // 只有设置了1.0 才能够准确的标记position 位置
@@ -2902,29 +3279,35 @@ class MyApp23 extends State<ListViewController> {
                       .showSnackBar(new SnackBar(content: new Text("$item")));
                 },
                 child: new ListTile(
+                  key:keys[index],
                   title: new Text(list[index]),
                 ));
           },
           childCount: list.length,
         ),
-        /*itemBuilder: (context, index) {
-        return new Dismissible(
-            key: new Key(list[index]),
-            onDismissed: (direction) {
-              //被移除回掉
-              list.removeAt(index);
-              var item = list[index];
-              Scaffold.of(context).showSnackBar(
-                  new SnackBar(content: new Text("$item")));
-            },
+      ),
+    );*/
+    int a = -1;
+    var listView = Container(
+      child: ListView(
+        controller: controller,
+        children: list.map<Widget>((data) {
+          a++;
+          LogUtil.e("aaaaaaaaaaaaaaa $a" );
+          return Padding(
+            padding: EdgeInsets.all(8),
             child: new ListTile(
-              title: new Text(list[index]),
-            ));
-      },*/
+              key:keys[a],
+              title: new Text(list[a]),
+            ),
+          );
+        }).toList(),
       ),
     );
     return listView;
   }
+
+
 }
 
 class MyApp22 extends StatelessWidget {
@@ -2978,7 +3361,8 @@ class MyApp22 extends StatelessWidget {
                     children: <Widget>[
                       Expanded(
                         child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start, //左边对齐,
+                          crossAxisAlignment:
+                              CrossAxisAlignment.start, //水平方向左边对齐,
                           children: <Widget>[Text("为哦十分out"), Text("了升级附加赛")],
                         ),
                       ),
@@ -3173,7 +3557,7 @@ class MyApp18 extends StatelessWidget {
 }
 
 class MyApp17 extends StatelessWidget {
-  List<String> list = ["a", "c", "c"];
+  List<String> list = ["a", "c", "c", "s"];
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
@@ -3183,7 +3567,6 @@ class MyApp17 extends StatelessWidget {
               title: Text('AspectRatio'),
             ),
             body: new Container(
-                height: 200,
                 child: gridViewDefaultCount(
                     list) /*new AspectRatio(
                 aspectRatio: 2, //宽高比例
@@ -3211,9 +3594,9 @@ class MyApp17 extends StatelessWidget {
 
   Widget gridViewDefaultCount(List<String> list) {
     return GridView.count(
-//      padding: EdgeInsets.all(5.0),
+      padding: EdgeInsets.all(5.0),
       //一行多少个
-      crossAxisCount: 2,
+      crossAxisCount: 4,
       //滚动方向
       scrollDirection: Axis.vertical,
       // 左右间隔
@@ -3231,8 +3614,8 @@ class MyApp17 extends StatelessWidget {
     List<Widget> lists = [];
     for (var item in list) {
       lists.add(new Container(
-        height: 50.0,
-        width: 50.0,
+        height: 20.0,
+        width: 20.0,
         color: Colors.yellow,
         child: new Center(child: Text('a')),
       ));
@@ -3318,25 +3701,45 @@ class MyApp14 extends StatelessWidget {
             appBar: AppBar(
               title: Text('缩放布局'),
             ),
-            body: new Container(
-              width: 400.0,
-              height: 400.0,
-              color: Colors.black,
+            body: Center(
+                child: Container(
+              width: 50,
+              height: 50,
+              padding: EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                  color: Color(0x330000FF),
+                  /*   border:
+                      Border.all(color: Colors.red, width: 2, style: BorderStyle.solid),
+                      borderRadius: BorderRadius.all(Radius.circular(10)),*/
+//                      boxShadow: [BoxShadow(color: Colors.blue, offset: Offset(5, 5))],
+//                      gradient: LinearGradient(colors: [Colors.blue, Colors.yellow]),
+
+//                      backgroundBlendMode: BlendMode.srcATop,
+                  shape: BoxShape.circle),
+//                  foregroundDecoration: FlutterLogoDecoration(),
+//                  transform: Matrix4.rotationZ(1),
+              child: new Text(
+                "100",
+//                    textDirection: TextDirection.rtl,
+                style: TextStyle(),
+              ),
+//                  alignment: Alignment(0, 0),
+              alignment: AlignmentDirectional.center,
+            )) /* new Padding(
+              padding: EdgeInsets.all(10),
               child: new FittedBox(
-                fit: BoxFit.contain,
+                fit: BoxFit.fill,
                 alignment: Alignment.topLeft,
-                child: new Container(
-                  color: Colors.greenAccent,
-                  child: Text(
-                    '缩放布局',
-                    style: new TextStyle(
-                      //style 无用
-                      color: Colors.white,
-                    ),
+                child: Text(
+                  '缩放布局',
+                  style: new TextStyle(
+                    //style 无用
+                    color: Colors.black,
                   ),
                 ),
               ),
-            )));
+            )*/
+            ));
   }
 }
 

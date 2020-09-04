@@ -73,6 +73,31 @@ void main() {
         .map((tea) => tea.toUpperCase()).toList();*/
      // print(loudTeaList.toString());
    // print(say("a", "b"));
+
+    const String name = "AA";
+    // 如果需要在编译时就固定变量的值，可以使用 const 类型变量
+    // 如果 Const 变量是类级别的，需要标记为 static const
+    // 使用with关键字折叠其他类以实现代码重用。当属性和方法重复时，以当前类为准。
+    // 如果想使用和Java接口一样的功能可以使用Mixins和implements两种方式
+//    name = 'A';
+    var foo = const [];
+    final bar = const [];
+    const baz = [];
+  /*  foo = ["aaaaa"];
+    bar = ["aaaa"];
+    baz = ["aaaa"];*/
   });
 
+}
+mixin  A {
+  void a() {
+    print('fun a => by a');
+  }
+}
+
+class B with A {
+  @override
+  void a() {
+    print('fun a => by b');
+  }
 }

@@ -38,6 +38,7 @@ dependencies:
   popup_window: ^1.0.0+3
   bloc: ^4.0.0
   flutter_bloc: ^4.0.0
+  scroll_to_index: ^1.0.6
 dev_dependencies:
   flutter_test:
     sdk: flutter
