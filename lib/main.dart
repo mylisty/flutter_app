@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:math';
+
 // ignore: avoid_web_libraries_in_flutter
 import 'dart:ui' as prefix0;
 import 'package:common_utils/common_utils.dart';
@@ -11,6 +12,7 @@ import 'package:flutter_app/PopRoute.dart';
 import 'package:flutter_app/res_colours.dart';
 import 'package:flutter_app/res_styles.dart';
 import 'package:flutter_picker/flutter_picker.dart';
+
 //import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
@@ -18,6 +20,7 @@ import 'dart:async';
 import 'package:flutter/services.dart';
 import 'package:popup_window/popup_window.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
+
 //import 'package:transparent_image/transparent_image.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'dart:async';
@@ -25,6 +28,7 @@ import 'PickerData.dart';
 import 'Test.dart';
 import 'dialog.dart';
 import 'dart:math' as math;
+
 // Myapp105  CustomScrollView
 // Myapp106  srcrol View index
 void main() {
@@ -36,7 +40,7 @@ void main() {
 
     new MaterialApp(
       title: '',
-      home: new ListViewController(),
+      home: TabbarBgColorTest(),
     ),
 /*      new MaterialApp(
     title: '',
@@ -262,6 +266,7 @@ class OverlayPageState extends State<OverlayPage> {
   String _bodyText = '点击效果';
   GlobalKey anchorKey = GlobalKey();
   double dx = 0;
+
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -401,11 +406,18 @@ class TabbarBgColorTest extends StatefulWidget {
 }
 
 class _TabbarBgColorTesttate extends State<TabbarBgColorTest>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin , AutomaticKeepAliveClientMixin {
   int _selectedIndex = 0;
   GlobalKey<ScaffoldState> _key = GlobalKey();
   final List<String> _tabs = ["新闻", "历史", "图片"];
   TabController _tabController;
+  PageController _pageController = PageController();
+  List<Widget> pageList = [
+    MyApp4(),
+    Myapp106(),
+    MyApp2(),
+    MyApp3(),
+  ];
 
   // PageController _pageController;
   @override
@@ -425,21 +437,20 @@ class _TabbarBgColorTesttate extends State<TabbarBgColorTest>
         appBar: AppBar(
             title: Text("ScaffoldTest"),
             //TabBar布置
-            bottom: PreferredSize(
-              preferredSize: _selectedIndex == 0
-                  ? Size.fromHeight(48)
-                  : Size.fromHeight(0),
+           /* bottom: PreferredSize(
+              preferredSize: Size.fromHeight(48),
               child: Material(
                 color: Colors.cyan,
                 child: Offstage(
                   offstage: _selectedIndex != 0,
                   child: TabBar(
                     // indicator: ColorTabIndicator(Colors.black),//选中标签颜色
-                    indicatorColor: Colors.black, //选中下划线颜色,如果使用了indicator这里设置无效
+                    indicatorColor: Colors.black,
+                    //选中下划线颜色,如果使用了indicator这里设置无效
                     controller: _tabController,
                     labelColor: Colors.white,
                     unselectedLabelColor: Colors.yellow,
-                    indicatorPadding: EdgeInsets.all(10),
+//                    indicatorPadding: EdgeInsets.all(10),
                     tabs: _tabs
                         .map((item) => Tab(
                               child: Container(child: Text(item)),
@@ -448,8 +459,8 @@ class _TabbarBgColorTesttate extends State<TabbarBgColorTest>
                   ),
                 ),
               ),
-            )),
-        body: _selectedIndex == 0
+            )*/),
+        body:_currentPage() /*_selectedIndex == 0
             ? TabBarView(
                 controller: _tabController,
                 children: _tabs
@@ -460,12 +471,44 @@ class _TabbarBgColorTesttate extends State<TabbarBgColorTest>
                         ))
                     .toList(),
               )
-            : Text("data"),
+            : pageList[_selectedIndex]*/,
         bottomNavigationBar: BottomNavigationBar(
           items: [
             BottomNavigationBarItem(
 //              backgroundColor: Colors.blue,
-              icon: Icon(Icons.home),
+              icon: Container(
+                width: 35,
+                height: 35,
+                child: Stack(
+                  children: <Widget>[
+                    Positioned(
+                      top: 10,
+                      left: 5,
+                      child: Icon(Icons.message),
+                    ),
+                    Positioned(
+                      right: 0,
+                      top: 0,
+                      child: Container(
+                        width: 15,
+                        height: 15,
+                        child: new ClipOval(
+                          child: new Container(
+                            alignment: Alignment.center,
+                            width: 15,
+                            height: 15,
+                            color: Colors.red,
+                            child: Text(
+                              "1",
+                              style: TextStyle(color: Colors.white, fontSize: 10),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
               title: Text("首页"),
             ),
             BottomNavigationBarItem(
@@ -487,6 +530,7 @@ class _TabbarBgColorTesttate extends State<TabbarBgColorTest>
           type: BottomNavigationBarType.fixed,
           currentIndex: _selectedIndex,
           onTap: (index) {
+            _pageController.jumpToPage(index);
             setState(() {
               _selectedIndex = index;
             });
@@ -494,6 +538,24 @@ class _TabbarBgColorTesttate extends State<TabbarBgColorTest>
           },
         ));
   }
+  // 底部导航对应的页面
+  Widget _currentPage() {
+    return PageView.builder(
+         onPageChanged: (index) {
+           _selectedIndex = index;
+           setState(() {});
+         },
+//        physics: NeverScrollableScrollPhysics(),
+        controller: _pageController,
+        itemCount: pageList.length,
+        itemBuilder: (context,index) {
+          return pageList[index];
+        }
+    );
+  }
+
+  @override
+  bool get wantKeepAlive => true;
 }
 
 class MyApp104 extends StatelessWidget {
@@ -519,6 +581,7 @@ class MenuHomePage extends StatefulWidget {
 class MenuHomePageState extends State<MenuHomePage> {
   //首次运行中间文字显示点击效果
   String _bodyText = '点击效果';
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -700,6 +763,7 @@ class _testLiandongState3 extends State<MyApp103> {
   final List<FixedExtentScrollController> scrollController = [];
   final List<GlobalKey<_StateViewState>> _keys = [];
   bool firstIn = true;
+
   @override
   void initState() {
     super.initState();
@@ -734,6 +798,7 @@ class _testLiandongState3 extends State<MyApp103> {
   int position = 0;
   List<OverlayEntry> overlayEntryList = List<OverlayEntry>();
   OverlayEntry weixinOverlayEntry;
+
   void showWeixinButtonView() {
     weixinOverlayEntry = new OverlayEntry(builder: (context) {
       return new Positioned(
@@ -1066,6 +1131,7 @@ class _testLiandongState3 extends State<MyApp103> {
 
 class _StateView extends StatefulWidget {
   final WidgetBuilder builder;
+
   const _StateView({Key key, this.builder}) : super(key: key);
 
   @override
@@ -1149,6 +1215,7 @@ class _testLiandongState extends State<MyApp101> {
   String isCourseValue = "bbb";
   String isChapterValue = "bbb";
   Map _ChapterNameList = {"bbb": "1", "sdfsdf": "2", "ldjfsjdf": "3"};
+
   @override
   void initState() {
     super.initState();
@@ -1226,6 +1293,7 @@ class _MyHomePageState2 extends State<MyHomePage> {
   final double listSpec = 4.0;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   String stateText;
+
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
@@ -1918,19 +1986,19 @@ class MyApp31 extends StatelessWidget {
             title: Text('居中布局示例'),
           ),
           /**
-        Wrap({
-        Key key,
-        this.direction = Axis.horizontal,//主轴（mainAxis）的方向，默认为水平。
-        this.alignment = WrapAlignment.start,//主轴方向上的对齐方式，默认为start。
-        this.spacing = 0.0,//主轴方向上的间距。
-        this.runAlignment = WrapAlignment.start,//run的对齐方式。run可以理解为新的行或者列，如果是水平方向布局的话，run可以理解为新的一行。
-        this.runSpacing = 0.0,//run的间距。
-        this.crossAxisAlignment = WrapCrossAlignment.start,//交叉轴（crossAxis）方向上的对齐方式。
-        this.textDirection,//文本方向。
-        this.verticalDirection = VerticalDirection.down,//定义了children摆放顺序，默认是down，见Flex相关属性介绍。
-        List<Widget> children = const <Widget>[],//
-        })
-      */
+              Wrap({
+              Key key,
+              this.direction = Axis.horizontal,//主轴（mainAxis）的方向，默认为水平。
+              this.alignment = WrapAlignment.start,//主轴方向上的对齐方式，默认为start。
+              this.spacing = 0.0,//主轴方向上的间距。
+              this.runAlignment = WrapAlignment.start,//run的对齐方式。run可以理解为新的行或者列，如果是水平方向布局的话，run可以理解为新的一行。
+              this.runSpacing = 0.0,//run的间距。
+              this.crossAxisAlignment = WrapCrossAlignment.start,//交叉轴（crossAxis）方向上的对齐方式。
+              this.textDirection,//文本方向。
+              this.verticalDirection = VerticalDirection.down,//定义了children摆放顺序，默认是down，见Flex相关属性介绍。
+              List<Widget> children = const <Widget>[],//
+              })
+           */
           body: Wrap(children: <Widget>[
 //              for (String item in tags) TagItem(item)
           ]) /*Column(
@@ -2022,6 +2090,7 @@ class LinearGradientState extends State<MyApp30> {
 
   //这是个key吧，机制问题
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -2079,6 +2148,7 @@ class TextFieldState extends State<MyApp29>
   var controller;
   AnimationController animationController;
   Animation<Offset> animation;
+
   @override
   void initState() {
     super.initState();
@@ -2116,13 +2186,18 @@ class TextFieldState extends State<MyApp29>
                   child: TextField(
                     controller: controller,
                     //    maxLength: 30,//最大长度，设置此项会让TextField右下角有一个输入数量的统计字符串
-                    maxLines: 1, //最大行数
-                    autocorrect: true, //是否自动更正
-                    autofocus: false, //是否自动对焦
-                    obscureText: false, //是否是密码
-                    textAlign: TextAlign.start, //文本对齐方式
-                    style: TextStyle(
-                        fontSize: 16, color: Colors.black87), //输入文本的样式
+                    maxLines: 1,
+                    //最大行数
+                    autocorrect: true,
+                    //是否自动更正
+                    autofocus: false,
+                    //是否自动对焦
+                    obscureText: false,
+                    //是否是密码
+                    textAlign: TextAlign.start,
+                    //文本对齐方式
+                    style: TextStyle(fontSize: 16, color: Colors.black87),
+                    //输入文本的样式
                     //| inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],//允许的输入格式
                     inputFormatters: [
                       BlacklistingTextInputFormatter(RegExp("[a-z]")),
@@ -2133,7 +2208,8 @@ class TextFieldState extends State<MyApp29>
                       print('change $text');
                     },
                     cursorWidth: 2.0,
-                    cursorColor: Colors.black87, //光标颜色,
+                    cursorColor: Colors.black87,
+                    //光标颜色,
                     dragStartBehavior: DragStartBehavior.down,
                     // this.dragStartBehavior = DragStartBehavior.down,
                     scrollPadding: EdgeInsets.all(20),
@@ -2925,12 +3001,18 @@ class FirstScreen extends StatelessWidget {
         return new ListTile(
           title: new TextField(
             //    maxLength: 30,//最大长度，设置此项会让TextField右下角有一个输入数量的统计字符串
-            maxLines: 1, //最大行数
-            autocorrect: true, //是否自动更正
-            autofocus: false, //是否自动对焦
-            obscureText: false, //是否是密码
-            textAlign: TextAlign.start, //文本对齐方式
-            style: TextStyle(fontSize: 16, color: Colors.black87), //输入文本的样式
+            maxLines: 1,
+            //最大行数
+            autocorrect: true,
+            //是否自动更正
+            autofocus: false,
+            //是否自动对焦
+            obscureText: false,
+            //是否是密码
+            textAlign: TextAlign.start,
+            //文本对齐方式
+            style: TextStyle(fontSize: 16, color: Colors.black87),
+            //输入文本的样式
             //| inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],//允许的输入格式
             inputFormatters: [
               BlacklistingTextInputFormatter(RegExp("[a-z]")),
@@ -2941,7 +3023,8 @@ class FirstScreen extends StatelessWidget {
               print('change $text');
             },
             cursorWidth: 2.0,
-            cursorColor: Colors.black87, //光标颜色,
+            cursorColor: Colors.black87,
+            //光标颜色,
             dragStartBehavior: DragStartBehavior.down,
             // this.dragStartBehavior = DragStartBehavior.down,
             scrollPadding: EdgeInsets.all(20),
@@ -2996,8 +3079,10 @@ class FirstScreen extends StatelessWidget {
 class SecondScreen extends StatelessWidget {
   String title;
   String dec;
+
   SecondScreen({Key key, @required this.title, @required this.dec})
       : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -3039,31 +3124,40 @@ class MyHomePage106 extends StatefulWidget {
   _MyHomePage106State createState() => _MyHomePage106State();
 }
 
-class _MyHomePage106State extends State<MyHomePage106> {
+class _MyHomePage106State extends State<MyHomePage106> with AutomaticKeepAliveClientMixin{
   static const maxCount = 100;
   final random = math.Random();
+
 //  final scrollDirection = Axis.vertical;
 
   AutoScrollController controller;
   List<List<int>> randomList;
   var list = new List<dynamic>.generate(100, (i) => i);
+
   @override
   void initState() {
     super.initState();
     controller = AutoScrollController(
-        viewportBoundaryGetter: () => Rect.fromLTRB(0, 0, 0, MediaQuery.of(context).padding.bottom),
+      viewportBoundaryGetter: () =>
+          Rect.fromLTRB(0, 0, 0, MediaQuery.of(context).padding.bottom),
 //        axis: scrollDirection
     );
-    randomList = List.generate(maxCount, (index) => <int>[index, (1000 * random.nextDouble()).toInt()]);
+    randomList = List.generate(maxCount,
+        (index) => <int>[index, (1000 * random.nextDouble()).toInt()]);
+    LogUtil.e("aaaaaaaaaaaaaaaaaaa initState");
   }
-
+  @override
+  void dispose() {
+    LogUtil.e("aaaaaaaaaaaaaaaaaaa dispose");
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body:  ListView(
+      body: ListView(
         controller: controller,
         cacheExtent: 1.0,
         children: list.map((data) {
@@ -3072,8 +3166,7 @@ class _MyHomePage106State extends State<MyHomePage106> {
             child: _getRow(data, math.max(data.toDouble(), 50.0)),
           );
         }).toList(),
-
-      )/*ListView(
+      ) /*ListView(
 //        scrollDirection: scrollDirection,
         controller: controller,
         children: randomList.map<Widget>((data) {
@@ -3082,7 +3175,8 @@ class _MyHomePage106State extends State<MyHomePage106> {
             child: _getRow(data[0], math.max(data[1].toDouble(), 50.0)),
           );
         }).toList(),
-      )*/,
+      )*/
+      ,
       floatingActionButton: FloatingActionButton(
         onPressed: _scrollToIndex,
         tooltip: 'Increment',
@@ -3092,7 +3186,8 @@ class _MyHomePage106State extends State<MyHomePage106> {
   }
 
   Future _scrollToIndex() async {
-    await controller.scrollToIndex(10, preferPosition: AutoScrollPosition.begin);
+    await controller.scrollToIndex(10,
+        preferPosition: AutoScrollPosition.begin);
     controller.highlight(10);
   }
 
@@ -3104,25 +3199,23 @@ class _MyHomePage106State extends State<MyHomePage106> {
           alignment: Alignment.topCenter,
           height: height,
           decoration: BoxDecoration(
-              border: Border.all(
-                  color: Colors.lightBlue,
-                  width: 4
-              ),
-              borderRadius: BorderRadius.circular(12)
-          ),
+              border: Border.all(color: Colors.lightBlue, width: 4),
+              borderRadius: BorderRadius.circular(12)),
           child: Text('index: $index, height: $height'),
-        )
-    );
+        ));
   }
 
-  Widget _wrapScrollTag({int index, Widget child})
-  => AutoScrollTag(
-    key: ValueKey(index),
-    controller: controller,
-    index: index,
-    child: child,
-    highlightColor: Colors.black.withOpacity(0.1),
-  );
+  Widget _wrapScrollTag({int index, Widget child}) => AutoScrollTag(
+        key: ValueKey(index),
+        controller: controller,
+        index: index,
+        child: child,
+        highlightColor: Colors.black.withOpacity(0.1),
+      );
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }
 
 class ListViewController extends StatefulWidget {
@@ -3152,6 +3245,7 @@ class MyChildrenDelegate extends SliverChildBuilderDelegate {
             childCount: childCount,
             addAutomaticKeepAlives: addAutomaticKeepAlive,
             addRepaintBoundaries: addRepaintBoundaries);
+
   // Return a Widget for the given Exception
   Widget _createErrorWidget(dynamic exception, StackTrace stackTrace) {
     final FlutterErrorDetails details = FlutterErrorDetails(
@@ -3208,13 +3302,14 @@ class MyChildrenDelegate extends SliverChildBuilderDelegate {
 class MyApp23 extends State<ListViewController> {
 //  ScrollController controller;
   var list = new List<String>.generate(100, (i) => "item $i");
-  List<GlobalKey> keys=<GlobalKey>[];
+  List<GlobalKey> keys = <GlobalKey>[];
   ScrollController controller;
+
   @override
   void initState() {
     // TODO: implement initState
-    for(int i=0;i<list.length;i++){
-      keys.add(GlobalKey(debugLabel:i.toString()));
+    for (int i = 0; i < list.length; i++) {
+      keys.add(GlobalKey(debugLabel: i.toString()));
     }
 
     controller = new ScrollController();
@@ -3223,13 +3318,12 @@ class MyApp23 extends State<ListViewController> {
       var offset = controller.initialScrollOffset;
       var maxScrollExtent2 = controller.position.maxScrollExtent;
       var minScrollExtent = controller.position.minScrollExtent;
-      LogUtil.e("aaaaaaaaaaaaa position  "+ position.toString());
-      LogUtil.e("aaaaaaaaaaaaa     controller.offset ${    controller.offset}" );
-      LogUtil.e("aaaaaaaaaaaaa offset"+ offset .toString());
-      LogUtil.e("aaaaaaaaaaaaa maxScrollExtent2"+ maxScrollExtent2.toString());
-      LogUtil.e("aaaaaaaaaaaaa minScrollExtent"+ minScrollExtent.toString());
+      LogUtil.e("aaaaaaaaaaaaa position  " + position.toString());
+      LogUtil.e("aaaaaaaaaaaaa     controller.offset ${controller.offset}");
+      LogUtil.e("aaaaaaaaaaaaa offset" + offset.toString());
+      LogUtil.e("aaaaaaaaaaaaa maxScrollExtent2" + maxScrollExtent2.toString());
+      LogUtil.e("aaaaaaaaaaaaa minScrollExtent" + minScrollExtent.toString());
 //      controller.childrenDelegate;
-
     });
 
     super.initState();
@@ -3245,16 +3339,21 @@ class MyApp23 extends State<ListViewController> {
         ),
         body: Column(
           children: <Widget>[
-            RaisedButton(onPressed: ()  async {
-              // 页面不可见的部分就跳转不了
-              RenderBox box=keys[1].currentContext.findRenderObject();
-              Offset offset = box.localToGlobal(Offset.zero);
+            RaisedButton(
+              onPressed: () async {
+                // 页面不可见的部分就跳转不了
+                RenderBox box = keys[1].currentContext.findRenderObject();
+                Offset offset = box.localToGlobal(Offset.zero);
 
-              LogUtil.e(" offset sss  ${offset.dy}");
-              LogUtil.e(" offset distance  ${offset.distance}");
-              LogUtil.e(" offset distanceSquared  ${offset.distanceSquared}");
-            },child: Text("data"),),
-            Expanded(child: buildListView(),),
+                LogUtil.e(" offset sss  ${offset.dy}");
+                LogUtil.e(" offset distance  ${offset.distance}");
+                LogUtil.e(" offset distanceSquared  ${offset.distanceSquared}");
+              },
+              child: Text("data"),
+            ),
+            Expanded(
+              child: buildListView(),
+            ),
           ],
         ),
       ),
@@ -3262,8 +3361,7 @@ class MyApp23 extends State<ListViewController> {
   }
 
   Widget buildListView() {
-
-   /* var listView = Container(
+    /* var listView = Container(
       child: new ListView.custom(
         controller: controller,
         cacheExtent: 1.0, // 只有设置了1.0 才能够准确的标记position 位置
@@ -3293,11 +3391,11 @@ class MyApp23 extends State<ListViewController> {
         controller: controller,
         children: list.map<Widget>((data) {
           a++;
-          LogUtil.e("aaaaaaaaaaaaaaa $a" );
+          LogUtil.e("aaaaaaaaaaaaaaa $a");
           return Padding(
             padding: EdgeInsets.all(8),
             child: new ListTile(
-              key:keys[a],
+              key: keys[a],
               title: new Text(list[a]),
             ),
           );
@@ -3306,8 +3404,6 @@ class MyApp23 extends State<ListViewController> {
     );
     return listView;
   }
-
-
 }
 
 class MyApp22 extends StatelessWidget {
@@ -3558,6 +3654,7 @@ class MyApp18 extends StatelessWidget {
 
 class MyApp17 extends StatelessWidget {
   List<String> list = ["a", "c", "c", "s"];
+
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
@@ -3865,6 +3962,7 @@ class _LoginPageState extends State<MyApp10> {
   String userName;
   String passWord;
   GlobalKey<FormState> loginkey = new GlobalKey<FormState>();
+
   static bool isLoginPassword(String input) {
     RegExp mobile = new RegExp(r"(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$");
     return mobile.hasMatch(input);
@@ -4111,7 +4209,7 @@ class MyApp5 extends StatelessWidget {
   }
 }
 
-class MyApp4 extends StatelessWidget {
+class MyApp4 extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
@@ -4171,7 +4269,7 @@ class MyApp2 extends StatelessWidget {
         floatingActionButton: new Theme(
             data: Theme.of(context),
             child: new FloatingActionButton(
-              onPressed: () {
+              onPressed: () async {
                 //launch("https://baidu.com");
                 http.get("http://httpbin.org/").then((response) {
                   print("response${response.statusCode}");
