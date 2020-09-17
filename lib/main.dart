@@ -478,17 +478,16 @@ class _TabbarBgColorTesttate extends State<TabbarBgColorTest>
 //              backgroundColor: Colors.blue,
               icon: Container(
                 width: 35,
-                height: 35,
+                height: 25,
                 child: Stack(
                   children: <Widget>[
                     Positioned(
-                      top: 10,
                       left: 5,
                       child: Icon(Icons.message),
                     ),
                     Positioned(
                       right: 0,
-                      top: 0,
+                      top: -0,
                       child: Container(
                         width: 15,
                         height: 15,
@@ -545,7 +544,7 @@ class _TabbarBgColorTesttate extends State<TabbarBgColorTest>
            _selectedIndex = index;
            setState(() {});
          },
-//        physics: NeverScrollableScrollPhysics(),
+        physics: NeverScrollableScrollPhysics(),
         controller: _pageController,
         itemCount: pageList.length,
         itemBuilder: (context,index) {
