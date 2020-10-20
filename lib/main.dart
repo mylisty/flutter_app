@@ -31,21 +31,234 @@ import 'dart:math' as math;
 
 // Myapp105  CustomScrollView
 // Myapp106  srcrol View index
+//StickyDemo  // 吸顶效果
 void main() {
   runApp(
     /* new MyApp26(
         item: new List<String>.generate(300, (i)=> "item$i"),
       )*/
-//      new Myapp106()
+//      new MyApp105()
 
     new MaterialApp(
       title: '',
-      home: TabbarBgColorTest(),
+      home: MyApp29(),
     ),
 /*      new MaterialApp(
     title: '',
     home: new TabbarBgColorTest(),*/
   );
+}
+
+
+const url =
+    'http://www.pptbz.com/pptpic/UploadFiles_6909/201203/2012031220134655.jpg';
+
+class TestPage extends StatefulWidget {
+  @override
+  _TestPageState createState() => _TestPageState();
+}
+
+class _TestPageState extends State<TestPage> {
+  var tabTitle = [
+    '页面1',
+    '页面2',
+    '页面3',
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return new DefaultTabController(
+        length: tabTitle.length,
+        child: Scaffold(
+          body: new NestedScrollView(
+            headerSliverBuilder: (context, bool) {
+              return [
+                SliverAppBar(
+                  expandedHeight: 200.0,
+                  floating: true,
+                  pinned: true,
+                  flexibleSpace: FlexibleSpaceBar(
+                      centerTitle: false,
+                      title: Text("data"),
+                      background: Image.network(
+                        url,
+                        fit: BoxFit.cover,
+                      )),
+                ),
+                new SliverPersistentHeader(
+                  delegate: new SliverTabBarDelegate(
+                    /**
+                        const TabBar({
+                        Key key,
+                        @required this.tabs,//显示的标签内容，一般使用Tab对象,也可以是其他的Widget
+                        this.controller,//TabController对象
+                        this.isScrollable = false,//是否可滚动
+                        this.indicatorColor,//指示器颜色
+                        this.indicatorWeight = 2.0,//指示器高度
+                        this.indicatorPadding = EdgeInsets.zero,//底部指示器的Padding
+                        this.indicator,//指示器decoration，例如边框等
+                        this.indicatorSize,//指示器大小计算方式，TabBarIndicatorSize.label跟文字等宽,TabBarIndicatorSize.tab跟每个tab等宽
+                        this.labelColor,//选中label颜色
+                        this.labelStyle,//选中label的Style
+                        this.labelPadding,//每个label的padding值
+                        this.unselectedLabelColor,//未选中label颜色
+                        this.unselectedLabelStyle,//未选中label的Style
+                        }) : assert(tabs != null),
+                        assert(isScrollable != null),
+                        assert(indicator != null || (indicatorWeight != null && indicatorWeight > 0.0)),
+                        assert(indicator != null || (indicatorPadding != null)),
+                        super(key: key);
+                     */
+                    new TabBar(
+                      tabs: tabTitle.map((f) => Tab(text: f)).toList(),
+                      indicatorColor: Colors.white,
+                      unselectedLabelColor:   Color(0xFF666666),
+                      labelColor: Colors.white,
+                      indicator: const BoxDecoration(
+                        color: Colors.red,
+                        borderRadius: const BorderRadius.all(
+                            const Radius.circular(50)), //弧度
+                      ),
+                    ),
+                    color: Colors.white,
+                  ),
+                  pinned: true,
+                ),
+              ];
+            },
+            body: TabBarView(
+              children: tabTitle
+                  .map((s) => ListView.builder(
+                itemBuilder: (context, int) => Text("123"),
+                itemCount: 100,
+              ))
+                  .toList(),
+            ),
+          ),
+        ));
+  }
+}
+
+class SliverTabBarDelegate extends SliverPersistentHeaderDelegate {
+  final TabBar widget;
+  final Color color;
+
+  const SliverTabBarDelegate(this.widget, {this.color})
+      : assert(widget != null);
+
+  @override
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
+    return new Container(
+      child: widget,
+      color: color,
+    );
+  }
+
+  @override
+  bool shouldRebuild(SliverTabBarDelegate oldDelegate) {
+    return false;
+  }
+
+  @override
+  double get maxExtent => widget.preferredSize.height;
+
+  @override
+  double get minExtent => widget.preferredSize.height;
+}
+
+
+
+
+
+
+
+
+class StickyDemo extends StatefulWidget {
+  final String title;
+
+  StickyDemo({Key key, this.title}) : super(key: key);
+
+  @override
+  _StickyDemoState createState() => _StickyDemoState();
+}
+
+class _StickyDemoState extends State<StickyDemo>
+    with SingleTickerProviderStateMixin {
+  TabController tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    this.tabController = TabController(length: 2, vsync: this);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: CustomScrollView(
+        slivers: <Widget>[
+          SliverAppBar(
+            pinned: true,
+            elevation: 0,
+            expandedHeight: 250,
+            flexibleSpace: FlexibleSpaceBar(
+              title: Text(this.widget.title),
+              background: Image.network(
+                'http://img1.mukewang.com/5c18cf540001ac8206000338.jpg',
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+          SliverPersistentHeader(
+            pinned: true,
+            delegate: StickyTabBarDelegate(
+              child: TabBar(
+                labelColor: Colors.black,
+                controller: this.tabController,
+                tabs: <Widget>[
+                  Tab(text: 'Home'),
+                  Tab(text: 'Profile'),
+                ],
+              ),
+            ),
+          ),
+          SliverFillRemaining(
+            child: TabBarView(
+              controller: this.tabController,
+              children: <Widget>[
+                Center(child: Text('Content of Home')),
+                Center(child: Text('Content of Profile')),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class StickyTabBarDelegate extends SliverPersistentHeaderDelegate {
+  final TabBar child;
+
+  StickyTabBarDelegate({@required this.child});
+
+  @override
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
+    return this.child;
+  }
+
+  @override
+  double get maxExtent => this.child.preferredSize.height;
+
+  @override
+  double get minExtent => this.child.preferredSize.height;
+
+  @override
+  bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) {
+    return true;
+  }
 }
 
 class MyApp105 extends StatefulWidget {
@@ -58,7 +271,7 @@ class MyApp105 extends StatefulWidget {
 class _CustomScrollViewPage extends State<MyApp105> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return /*Scaffold(
         body: Stack(
       children: <Widget>[
         Container(
@@ -69,7 +282,7 @@ class _CustomScrollViewPage extends State<MyApp105> {
                     end: Alignment.bottomCenter,
                     colors: [Colors.cyan, Colors.white, Colors.blue])))
       ],
-    )
+    )*/
 
         /*SingleChildScrollView(
         child: Column(
@@ -100,113 +313,170 @@ class _CustomScrollViewPage extends State<MyApp105> {
           ],
         ),
       )*/
-
-        );
-    /*Scaffold(
-            body: CustomScrollView(
-              physics: const BouncingScrollPhysics(),
-              slivers: <Widget>[
-                SliverAppBar(
-                  stretch: true,
-                  onStretchTrigger: () {
-                    // Function callback for stretch
-                    return;
-                  },
-                  expandedHeight: 300.0,
-                  flexibleSpace: FlexibleSpaceBar(
-                    stretchModes: <StretchMode>[
-                      StretchMode.zoomBackground,
-                      StretchMode.blurBackground,
-                      StretchMode.fadeTitle,
-                    ],
-                    centerTitle: true,
-                    title: const Text('Flight Report'),
-                    background: Stack(
-                      fit: StackFit.expand,
-                      children: [
-                        Image.network(
-                          'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl-2.jpg',
-                          fit: BoxFit.cover,
-                        ),
-                        const DecoratedBox(
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              begin: Alignment(0.0, 0.5),
-                              end: Alignment(0.0, 0.0),
-                              colors: <Color>[
-                                Color(0x60000000),
-                                Color(0x00000000),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                SliverList(
-                  delegate: SliverChildListDelegate([
-                    ListTile(
-                      leading: Icon(Icons.wb_sunny),
-                      title: Text('Sunday'),
-                      subtitle: Text('sunny, h: 80, l: 65'),
-                    ),
-                    ListTile(
-                      leading: Icon(Icons.wb_sunny),
-                      title: Text('Monday'),
-                      subtitle: Text('sunny, h: 80, l: 65'),
-                    ),
-                    // ListTiles++
-                  ]),
-                ),
+        Scaffold(
+      body: CustomScrollView(
+        physics: const ClampingScrollPhysics(), //BouncingScrollPhysics 弹性效果   ClampingScrollPhysics  夹击
+        reverse: false,// 反转页面
+//        shrinkWrap: true,
+//      dragStartBehavior: DragStartBehavior.start,
+//        cacheExtent: ,
+//          anchor: 0.1 ,
+           primary: false,
+        slivers: <Widget>[
+          SliverAppBar(
+            stretch: true,
+            onStretchTrigger: () {
+              // Function callback for stretch
+              return;
+            },
+            expandedHeight: 300.0,
+            flexibleSpace: FlexibleSpaceBar(
+              stretchModes: <StretchMode>[
+                StretchMode.zoomBackground,
+                StretchMode.blurBackground,
+                StretchMode.fadeTitle,
               ],
-            ),
-          );*/ /* CustomScrollView(
-            slivers: <Widget>[
-              const SliverAppBar(
-                pinned: true,
-                expandedHeight: 100.0,
-                flexibleSpace: FlexibleSpaceBar(
-                  title: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text("data"),
+              centerTitle: false,
+              title: const Text('Flight Report'),
+              background: Stack(
+                fit: StackFit.expand,
+                children: [
+                  Image.network(
+                    'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl-2.jpg',
+                    fit: BoxFit.cover,
                   ),
-                ),
+                  const DecoratedBox(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment(0.0, 0.5),
+                        end: Alignment(0.0, 0.0),
+                        colors: <Color>[
+                          Color(0x60000000),
+                          Color(0x00000000),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Opacity(
+                    opacity: 0.3,
+                    child: Container(
+                      width: 200,
+                      height: 200,
+                      color: Colors.red,
+                    ),
+                  )
+                ],
               ),
-              SliverFixedExtentList(
-                itemExtent: 50,
-                delegate: SliverChildBuilderDelegate(
-                        (BuildContext context, int index) {
-                      return Container(
-                        alignment: Alignment.center,
-                        color: Colors.lightBlue[100 * (index % 9)],
-                        child: Text('List Item $index'),
-                      );
-                    },
-                    childCount: 50
-                ),
+            ),
+          ),
+          SliverList(
+            delegate: SliverChildListDelegate([
+              ListTile(
+                leading: Icon(Icons.wb_sunny),
+                title: Text('Sunday'),
+                subtitle: Text('sunny, h: 80, l: 65'),
               ),
-              SliverGrid(
-                gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                  maxCrossAxisExtent: 200.0,
-                  mainAxisSpacing: 10.0,
-                  crossAxisSpacing: 10.0,
-                  childAspectRatio: 4.0,
-                ),
-                delegate: SliverChildBuilderDelegate(
-                      (BuildContext context, int index) {
-                    return Container(
-                      alignment: Alignment.center,
-                      color: Colors.teal[100 * (index % 9)],
-                      child: Text('Grid Item $index'),
-                    );
-                  },
-                  childCount: 50,
-                ),
+              ListTile(
+                leading: Icon(Icons.center_focus_weak),
+                title: Text('Monday'),
+                subtitle: Text('sunny, h: 80, l: 65'),
+              ),
+              ListTile(
+                leading: Icon(Icons.wb_sunny),
+                title: Text('Monday'),
+                subtitle: Text('sunny, h: 80, l: 65'),
+              ),
+              ListTile(
+                leading: Icon(Icons.wb_sunny),
+                title: Text('Monday'),
+                subtitle: Text('sunny, h: 80, l: 65'),
+              ),
+              ListTile(
+                leading: Icon(Icons.wb_sunny),
+                title: Text('Monday'),
+                subtitle: Text('sunny, h: 80, l: 65'),
+              ),
+              ListTile(
+                leading: Icon(Icons.wb_sunny),
+                title: Text('Monday'),
+                subtitle: Text('sunny, h: 80, l: 65'),
+              ),
+              ListTile(
+                leading: Icon(Icons.wb_sunny),
+                title: Text('Monday'),
+                subtitle: Text('sunny, h: 80, l: 65'),
+              ),
+              ListTile(
+                leading: Icon(Icons.wb_sunny),
+                title: Text('Monday'),
+                subtitle: Text('sunny, h: 80, l: 65'),
+              ),
+              ListTile(
+                leading: Icon(Icons.wb_sunny),
+                title: Text('Monday'),
+                subtitle: Text('sunny, h: 80, l: 65'),
+              ),
+              ListTile(
+                leading: Icon(Icons.wb_sunny),
+                title: Text('Monday'),
+                subtitle: Text('sunny, h: 80, l: 65'),
+              ),
+              ListTile(
+                leading: Icon(Icons.wb_sunny),
+                title: Text('Monday'),
+                subtitle: Text('sunny, h: 80, l: 65'),
               ),
 
-            ],
-          );*/ /*new ListView.builder(
+              // ListTiles++
+            ]),
+          ),
+        ],
+      ),
+    );
+    /*  CustomScrollView(
+      slivers: <Widget>[
+        const SliverAppBar(
+          pinned: true,
+          expandedHeight: 100.0,
+          flexibleSpace: FlexibleSpaceBar(
+            title: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text("data"),
+            ),
+          ),
+        ),
+        SliverFixedExtentList(
+          itemExtent: 50,
+          delegate:
+              SliverChildBuilderDelegate((BuildContext context, int index) {
+            return Container(
+              alignment: Alignment.center,
+              color: Colors.lightBlue[100 * (index % 9)],
+              child: Text('List Item $index'),
+            );
+          }, childCount: 50),
+        ),
+        SliverGrid(
+          gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+            maxCrossAxisExtent: 200.0,
+            mainAxisSpacing: 10.0,
+            crossAxisSpacing: 10.0,
+            childAspectRatio: 4.0,
+          ),
+          delegate: SliverChildBuilderDelegate(
+            (BuildContext context, int index) {
+              return Container(
+                alignment: Alignment.center,
+                color: Colors.teal[100 * (index % 9)],
+                child: Text('Grid Item $index'),
+              );
+            },
+            childCount: 50,
+          ),
+        ),
+      ],
+    );*/
+    /*new ListView.builder(
         itemCount: 50,
         itemBuilder: (context, index) {
           return new ListTile(
@@ -406,7 +676,7 @@ class TabbarBgColorTest extends StatefulWidget {
 }
 
 class _TabbarBgColorTesttate extends State<TabbarBgColorTest>
-    with SingleTickerProviderStateMixin , AutomaticKeepAliveClientMixin {
+    with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   int _selectedIndex = 0;
   GlobalKey<ScaffoldState> _key = GlobalKey();
   final List<String> _tabs = ["新闻", "历史", "图片"];
@@ -435,9 +705,9 @@ class _TabbarBgColorTesttate extends State<TabbarBgColorTest>
     return Scaffold(
         key: _key,
         appBar: AppBar(
-            title: Text("ScaffoldTest"),
-            //TabBar布置
-           /* bottom: PreferredSize(
+          title: Text("ScaffoldTest"),
+          //TabBar布置
+          /* bottom: PreferredSize(
               preferredSize: Size.fromHeight(48),
               child: Material(
                 color: Colors.cyan,
@@ -459,8 +729,10 @@ class _TabbarBgColorTesttate extends State<TabbarBgColorTest>
                   ),
                 ),
               ),
-            )*/),
-        body:_currentPage() /*_selectedIndex == 0
+            )*/
+        ),
+        body:
+            _currentPage() /*_selectedIndex == 0
             ? TabBarView(
                 controller: _tabController,
                 children: _tabs
@@ -471,7 +743,8 @@ class _TabbarBgColorTesttate extends State<TabbarBgColorTest>
                         ))
                     .toList(),
               )
-            : pageList[_selectedIndex]*/,
+            : pageList[_selectedIndex]*/
+        ,
         bottomNavigationBar: BottomNavigationBar(
           items: [
             BottomNavigationBarItem(
@@ -499,7 +772,8 @@ class _TabbarBgColorTesttate extends State<TabbarBgColorTest>
                             color: Colors.red,
                             child: Text(
                               "1",
-                              style: TextStyle(color: Colors.white, fontSize: 10),
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 10),
                             ),
                           ),
                         ),
@@ -537,20 +811,20 @@ class _TabbarBgColorTesttate extends State<TabbarBgColorTest>
           },
         ));
   }
+
   // 底部导航对应的页面
   Widget _currentPage() {
     return PageView.builder(
-         onPageChanged: (index) {
-           _selectedIndex = index;
-           setState(() {});
-         },
+        onPageChanged: (index) {
+          _selectedIndex = index;
+          setState(() {});
+        },
         physics: NeverScrollableScrollPhysics(),
         controller: _pageController,
         itemCount: pageList.length,
-        itemBuilder: (context,index) {
+        itemBuilder: (context, index) {
           return pageList[index];
-        }
-    );
+        });
   }
 
   @override
@@ -2147,7 +2421,7 @@ class TextFieldState extends State<MyApp29>
   var controller;
   AnimationController animationController;
   Animation<Offset> animation;
-
+  TextEditingController rechargeController = TextEditingController();
   @override
   void initState() {
     super.initState();
@@ -2180,7 +2454,48 @@ class TextFieldState extends State<MyApp29>
           Center(
             child: Column(
               children: <Widget>[
-                new Container(
+                Container(
+                  height: 56.0,
+                  decoration: BoxDecoration(
+                    border:
+                    Border(bottom: BorderSide(color: Colors.black12, width: 1)),
+                  ),
+                  child: Container(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        Container(
+                          height: double.infinity,
+                          margin: EdgeInsets.only(top: 8),
+                          alignment: Alignment.topLeft,
+                          child: Text(
+                            "¥",
+                            style:
+                            TextStyle(fontSize: 24, color: CommonColors.text_66),
+                          ),
+                        ),
+                        SizedBox(width: 8.0),
+                        Expanded(
+                          child: TextField(
+                            autofocus: true,
+                            controller: rechargeController,
+                            keyboardType: TextInputType.number,
+                            style:
+                            TextStyle(color: CommonColors.text_33, fontSize: 48),
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                            ),
+                            inputFormatters: <TextInputFormatter>[
+                              WhitelistingTextInputFormatter(RegExp("[0-9.]")),
+                              //只输入数字
+                              LengthLimitingTextInputFormatter(10) //限制长度
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),new Container(
                   width: 200,
                   child: TextField(
                     controller: controller,
@@ -3123,7 +3438,8 @@ class MyHomePage106 extends StatefulWidget {
   _MyHomePage106State createState() => _MyHomePage106State();
 }
 
-class _MyHomePage106State extends State<MyHomePage106> with AutomaticKeepAliveClientMixin{
+class _MyHomePage106State extends State<MyHomePage106>
+    with AutomaticKeepAliveClientMixin {
   static const maxCount = 100;
   final random = math.Random();
 
@@ -3145,11 +3461,13 @@ class _MyHomePage106State extends State<MyHomePage106> with AutomaticKeepAliveCl
         (index) => <int>[index, (1000 * random.nextDouble()).toInt()]);
     LogUtil.e("aaaaaaaaaaaaaaaaaaa initState");
   }
+
   @override
   void dispose() {
     LogUtil.e("aaaaaaaaaaaaaaaaaaa dispose");
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -4208,7 +4526,7 @@ class MyApp5 extends StatelessWidget {
   }
 }
 
-class MyApp4 extends StatelessWidget{
+class MyApp4 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
