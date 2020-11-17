@@ -49,7 +49,6 @@ void main() {
   );
 }
 
-
 const url =
     'http://www.pptbz.com/pptpic/UploadFiles_6909/201203/2012031220134655.jpg';
 
@@ -112,7 +111,7 @@ class _TestPageState extends State<TestPage> {
                     new TabBar(
                       tabs: tabTitle.map((f) => Tab(text: f)).toList(),
                       indicatorColor: Colors.white,
-                      unselectedLabelColor:   Color(0xFF666666),
+                      unselectedLabelColor: Color(0xFF666666),
                       labelColor: Colors.white,
                       indicator: const BoxDecoration(
                         color: Colors.red,
@@ -129,9 +128,9 @@ class _TestPageState extends State<TestPage> {
             body: TabBarView(
               children: tabTitle
                   .map((s) => ListView.builder(
-                itemBuilder: (context, int) => Text("123"),
-                itemCount: 100,
-              ))
+                        itemBuilder: (context, int) => Text("123"),
+                        itemCount: 100,
+                      ))
                   .toList(),
             ),
           ),
@@ -166,13 +165,6 @@ class SliverTabBarDelegate extends SliverPersistentHeaderDelegate {
   @override
   double get minExtent => widget.preferredSize.height;
 }
-
-
-
-
-
-
-
 
 class StickyDemo extends StatefulWidget {
   final String title;
@@ -315,13 +307,14 @@ class _CustomScrollViewPage extends State<MyApp105> {
       )*/
         Scaffold(
       body: CustomScrollView(
-        physics: const ClampingScrollPhysics(), //BouncingScrollPhysics 弹性效果   ClampingScrollPhysics  夹击
-        reverse: false,// 反转页面
+        physics:
+            const ClampingScrollPhysics(), //BouncingScrollPhysics 弹性效果   ClampingScrollPhysics  夹击
+        reverse: false, // 反转页面
 //        shrinkWrap: true,
 //      dragStartBehavior: DragStartBehavior.start,
 //        cacheExtent: ,
 //          anchor: 0.1 ,
-           primary: false,
+        primary: false,
         slivers: <Widget>[
           SliverAppBar(
             stretch: true,
@@ -2455,10 +2448,30 @@ class TextFieldState extends State<MyApp29>
             child: Column(
               children: <Widget>[
                 Container(
+                  child: Text(//设置带背景色 的高亮水波纹 效果（Material 和 InkWeel 组合使用）
+                    "涉及多方了解上的飞机，设计的法律上京东方。所经历的计算机撒旦解放，使得开发商开发圣诞节",
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                        foreground: Paint()..color = Colors.blue, fontSize: 18),
+                  ),
+                ),
+                RichText(text: TextSpan(
+                  children: [
+                    TextSpan(
+                      text: "aa",
+                      recognizer: TapGestureRecognizer()..onTap = (){
+                        LogUtil.e("aaaaaaaaa ");
+                      }
+                    ),
+                  ]
+                ),),
+                Container(
                   height: 56.0,
                   decoration: BoxDecoration(
-                    border:
-                    Border(bottom: BorderSide(color: Colors.black12, width: 1)),
+                    border: Border(
+                        bottom: BorderSide(color: Colors.black12, width: 1)),
                   ),
                   child: Container(
                     child: Row(
@@ -2470,8 +2483,8 @@ class TextFieldState extends State<MyApp29>
                           alignment: Alignment.topLeft,
                           child: Text(
                             "¥",
-                            style:
-                            TextStyle(fontSize: 24, color: CommonColors.text_66),
+                            style: TextStyle(
+                                fontSize: 24, color: CommonColors.text_66),
                           ),
                         ),
                         SizedBox(width: 8.0),
@@ -2480,8 +2493,8 @@ class TextFieldState extends State<MyApp29>
                             autofocus: true,
                             controller: rechargeController,
                             keyboardType: TextInputType.number,
-                            style:
-                            TextStyle(color: CommonColors.text_33, fontSize: 48),
+                            style: TextStyle(
+                                color: CommonColors.text_33, fontSize: 48),
                             decoration: InputDecoration(
                               border: InputBorder.none,
                             ),
@@ -2495,7 +2508,8 @@ class TextFieldState extends State<MyApp29>
                       ],
                     ),
                   ),
-                ),new Container(
+                ),
+                new Container(
                   width: 200,
                   child: TextField(
                     controller: controller,
@@ -4519,7 +4533,21 @@ class MyApp5 extends StatelessWidget {
                       color: const Color(0xffff0000),
                       fontStyle: FontStyle.italic,
                       fontWeight: FontWeight.bold,
-                      fontSize: 25))
+                      fontSize: 25)),
+              /* Text(
+                 'Greetings, planet!',
+                 style: TextStyle(
+                   fontSize: 40,
+                   foreground: Paint()
+                     ..shader = Gradient.linear(
+                       const Offset(0, 20),
+                       const Offset(150, 20),
+                       <Color>[
+                         Colors.red,
+                         Colors.yellow,
+                       ],
+                     )
+                ),*/
             ],
           ),
         ));
