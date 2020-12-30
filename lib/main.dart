@@ -11,7 +11,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/PopRoute.dart';
 import 'package:flutter_app/res_colours.dart';
 import 'package:flutter_app/res_styles.dart';
+import 'package:flutter_app/sort/animation.dart';
 import 'package:flutter_picker/flutter_picker.dart';
+import 'package:flutter_swiper/flutter_swiper.dart';
 
 //import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -31,7 +33,9 @@ import 'dart:math' as math;
 
 // Myapp105  CustomScrollView
 // Myapp106  srcrol View index
-//StickyDemo  // 吸顶效果
+//StickyDemo  TestPage  HomeFragmentPage2 // 吸顶效果
+// MyApp108 头部隐藏和显示效果
+// 底部弹窗 跟随键盘动
 void main() {
   runApp(
     /* new MyApp26(
@@ -40,13 +44,581 @@ void main() {
 //      new MyApp105()
 
     new MaterialApp(
-      title: '',
-      home: MyApp29(),
+      title: 'aaa',
+      home: MainPage(),
     ),
 /*      new MaterialApp(
     title: '',
     home: new TabbarBgColorTest(),*/
   );
+}
+
+class MainPage extends StatefulWidget {
+  @override
+  _MainPageState createState() => _MainPageState();
+}
+
+class _MainPageState extends State<MainPage> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: ListView(
+        children: [
+          new RaisedButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => AnimationPage(),
+                ),
+              );
+            },
+            color: Colors.lightBlue,
+            child: Text(
+              "动画",
+              style: new TextStyle(color: Colors.black),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class BasicPage extends StatefulWidget {
+  @override
+  _BasicPageState createState() => _BasicPageState();
+}
+
+class _BasicPageState extends State<BasicPage> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("showModalBottomSheet"),
+      ),
+      body: Center(),
+      bottomNavigationBar: BottomAppBar(
+        child: bottomNewCommentButton(),
+      ),
+    );
+  }
+
+  Container bottomNewCommentButton() {
+    return Container(
+      child: RaisedButton(
+        child: Text("Publish",
+            style: TextStyle(fontSize: 20.0, color: Colors.white)),
+        color: Colors.blue[300],
+        onPressed: () {
+          showModalBottomSheet(
+              context: context,
+              builder: (BuildContext context) {
+                return new AnimatedPadding(
+                  padding: MediaQuery.of(context).viewInsets,
+                  duration: const Duration(milliseconds: 100),
+                  child: Container(
+                    child: textField(),
+                    padding: EdgeInsets.all(7),
+                  ),
+                );
+              });
+        },
+      ),
+      height: 50,
+    );
+  }
+
+  Row textField() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: <Widget>[
+        Expanded(
+          child: new TextField(
+            decoration: InputDecoration(
+              hintText: 'Say something here...',
+              border: null,
+              focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.blue[300]),
+              ),
+            ),
+            keyboardType: TextInputType.text,
+            maxLength: 250,
+            maxLines: 10,
+          ),
+        ),
+        IconButton(
+          icon: Icon(Icons.send),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        )
+      ],
+    );
+  }
+}
+
+//滚动最大距离
+const APPBAR_SCROLL_OFFSET = 100;
+
+class MyApp108 extends StatefulWidget {
+  @override
+  _TabNavigatorState createState() => _TabNavigatorState();
+}
+
+class _TabNavigatorState extends State<MyApp108> {
+  List _imageUrl = [
+    'https://dimg04.c-ctrip.com/images/zg0o180000014yl20DEA4.jpg',
+    'https://dimg04.c-ctrip.com/images/zg0f180000014vrut370F.jpg',
+    'https://dimg04.c-ctrip.com/images/zg0n18000001528jhD6B2.jpg'
+  ];
+  double appBarAlpha = 0;
+
+  __onScroll(offset) {
+    double alpha = offset / APPBAR_SCROLL_OFFSET;
+    if (alpha < 0) {
+      alpha = 0;
+    } else if (alpha > 1) {
+      alpha = 1;
+    }
+    setState(() {
+      appBarAlpha = alpha;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        body: Stack(
+      children: <Widget>[
+        MediaQuery.removePadding(
+            context: context,
+            removeTop: true,
+            //监听列表的滚动
+            child: NotificationListener(
+              //监听滚动后要调用的方法
+              // ignore: missing_return
+              onNotification: (scrollNotification) {
+                //只有当是更新状态下和是第0个child的时候才会调用
+                if (scrollNotification is ScrollUpdateNotification &&
+                    scrollNotification.depth == 0) {
+                  __onScroll(scrollNotification.metrics.pixels);
+                }
+              },
+              child: ListView(
+                children: <Widget>[
+                  Container(
+                    height: 110,
+                    child: Swiper(
+                      //item的数量
+                      itemCount: _imageUrl.length,
+                      //自动播放
+                      autoplay: true,
+                      itemBuilder: (BuildContext context, int index) {
+                        return Image.network(
+                          _imageUrl[index],
+                          fit: BoxFit.fill,
+                        );
+                      },
+                      //banner上添加指示器
+                      pagination: SwiperPagination(),
+                    ),
+                  ),
+                  Container(
+                    height: 800,
+                    child: ListTile(
+                      title: Text("哈哈"),
+                    ),
+                  )
+                ],
+              ),
+            )),
+        //通过Opacity的透明度来控制appBar的显示与隐藏
+        // opacity:透明度，0.0 到 1.0，0.0表示完全透明，1.0表示完全不透明
+        Opacity(
+          opacity: appBarAlpha,
+          child: Container(
+            height: 80,
+            decoration: BoxDecoration(
+              color: Colors.white,
+            ),
+            child: Center(
+              child: Padding(
+                padding: EdgeInsets.only(top: 20),
+                child: Text("首页"),
+              ),
+            ),
+          ),
+        )
+      ],
+    ));
+  }
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+}
+
+class HomeFragmentPage2 extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return _HomeFragmentPageState2();
+  }
+}
+
+class _HomeFragmentPageState2 extends State {
+  @override
+  Widget build(BuildContext context) {
+    return new Scaffold(
+        body: CustomScrollView(
+      slivers: <Widget>[
+        new SliverList(
+          delegate:
+              new SliverChildBuilderDelegate((BuildContext context, int index) {
+            return new Container(
+              margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+              child: new Column(
+                children: <Widget>[
+//              banner
+                  new Container(
+                      height: 300,
+                      child: new Image.network(
+                        "https://upload.jianshu.io/users/upload_avatars/3884536/d847a50f1da0.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/240/h/240",
+                        fit: BoxFit.cover,
+                      )),
+//               功能栏
+                  new Container(
+                    height: 100,
+                    color: Colors.greenAccent,
+                    child: new Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Expanded(
+                          child: new GestureDetector(
+                            child: new Column(
+                              children: <Widget>[
+                                new Icon(
+                                  Icons.add_shopping_cart,
+                                  size: 45,
+                                ),
+                                new Text(
+                                  "交易查询",
+                                  style: new TextStyle(
+                                      fontSize: 12, color: Colors.black38),
+                                )
+                              ],
+                              mainAxisAlignment: MainAxisAlignment.center,
+                            ),
+                            onTap: () {
+                              Fluttertoast.showToast(
+                                msg: "点击了交易查询",
+                              );
+                            },
+                          ),
+                          flex: 1,
+                        ),
+                        Expanded(
+                          child: new GestureDetector(
+                            child: new Column(
+                              children: <Widget>[
+                                new Icon(
+                                  Icons.add_shopping_cart,
+                                  size: 45,
+                                ),
+                                new Text(
+                                  "我的仓单",
+                                  style: new TextStyle(
+                                      fontSize: 12, color: Colors.black38),
+                                )
+                              ],
+                              mainAxisAlignment: MainAxisAlignment.center,
+                            ),
+                            onTap: () {
+                              Fluttertoast.showToast(
+                                msg: "点击了我的仓单",
+                              );
+                            },
+                          ),
+                          flex: 1,
+                        ),
+                        Expanded(
+                          child: new GestureDetector(
+                            child: new Column(
+                              children: <Widget>[
+                                new Icon(
+                                  Icons.add_shopping_cart,
+                                  size: 45,
+                                ),
+                                new Text(
+                                  "资金管理",
+                                  style: new TextStyle(
+                                      fontSize: 12, color: Colors.black38),
+                                )
+                              ],
+                              mainAxisAlignment: MainAxisAlignment.center,
+                            ),
+                            onTap: () {
+                              Fluttertoast.showToast(
+                                msg: "点击了资金管理",
+                              );
+                            },
+                          ),
+                          flex: 1,
+                        ),
+                        Expanded(
+                          child: new GestureDetector(
+                            child: new Column(
+                              children: <Widget>[
+                                new Icon(
+                                  Icons.add_shopping_cart,
+                                  size: 45,
+                                ),
+                                new Text(
+                                  "用户中心",
+                                  style: new TextStyle(
+                                      fontSize: 12, color: Colors.black38),
+                                )
+                              ],
+                              mainAxisAlignment: MainAxisAlignment.center,
+                            ),
+                            onTap: () {
+                              Fluttertoast.showToast(
+                                msg: "点击了用户中心",
+                              );
+                            },
+                          ),
+                          flex: 1,
+                        ),
+                      ],
+                    ),
+                  ),
+                  // 交易信息
+                  new Container(
+                    height: 130,
+                    child: new Center(
+                      child: new ListView.builder(
+                          padding: EdgeInsets.all(10.0),
+                          itemCount: 4,
+                          scrollDirection: Axis.vertical,
+                          itemBuilder: (BuildContext context, int index) {
+                            return new InkWell(
+                              child: new Container(
+                                child: new Card(
+                                  elevation: 15.0,
+                                  shape: const RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(14.0))),
+                                  child: new Container(
+                                    padding: EdgeInsets.all(8.0),
+                                    child: new Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: <Widget>[
+                                        new Text("小麦"),
+                                        new Text("安徽省合肥市"),
+                                        new Text("2170"),
+                                        new Text("0.9%")
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              onTap: () => _listItemOnTap(index),
+                            );
+                          }),
+                    ),
+                  ),
+                  new Container(
+                    width: double.infinity,
+                    height: 10,
+                    color: Colors.black12,
+                  ),
+                  new Container(
+                    padding: EdgeInsets.fromLTRB(15, 10, 0, 10),
+                    child: new Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        new Container(
+                          width: 3,
+                          height: 16,
+//                      color: Colors.red,
+                          decoration: new BoxDecoration(
+                              border:
+                                  new Border.all(color: Colors.red, width: 0.5),
+                              color: Colors.red,
+                              borderRadius: new BorderRadius.circular((20.0))),
+                        ),
+                        new Container(
+                          padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                          child: new Text(
+                            "行业快讯",
+                            style: new TextStyle(
+                                fontSize: 17.0, color: new Color(0xFF333333)),
+                            textAlign: TextAlign.center,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }, childCount: 1),
+        ),
+        new SliverList(
+            delegate: new SliverChildBuilderDelegate(
+                (BuildContext context, int index) {
+          return new InkWell(
+            child: new Container(
+              child: new Card(
+                elevation: 15.0,
+                shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(14.0))),
+                child: new Container(
+                  padding: EdgeInsets.all(8.0),
+                  child: new Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      new Text("小麦"),
+                      new Text("安徽省合肥市"),
+                      new Text("2170"),
+                      new Text("0.9%")
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            onTap: () => _listItemOnTap(index),
+          );
+        }, childCount: 10))
+      ],
+    ));
+  }
+
+  _listItemOnTap(int index) {
+    Fluttertoast.showToast(msg: "当前点击的是list里的第$index");
+  }
+}
+
+class MyApp107 extends StatefulWidget {
+  @override
+  _TestPageState2 createState() => _TestPageState2();
+}
+
+class _TestPageState2 extends State<MyApp107> {
+  Widget build(BuildContext context) {
+    return Scaffold(
+        body: Stack(
+      children: [
+        CustomScrollView(
+          slivers: [
+            new SliverList(
+                delegate: new SliverChildBuilderDelegate(
+                    (BuildContext context, int index) {
+              return new Container(
+                height: 400,
+                child: new ListView.builder(
+                    padding: EdgeInsets.all(10.0),
+                    itemCount: 1,
+                    scrollDirection: Axis.vertical,
+                    itemBuilder: (BuildContext context, int index) {
+                      return new InkWell(
+                        child: new Container(
+                          child: new Card(
+                            elevation: 15.0,
+                            shape: const RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(14.0))),
+                            child: new Container(
+                              padding: EdgeInsets.all(8.0),
+                              child: new Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+                                  new Text("小麦"),
+                                  new Text("安徽省合肥市"),
+                                  new Text("2170"),
+                                  new Text("0.9%")
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        onTap: () => {},
+                      );
+                    }),
+              );
+            }, childCount: 1)),
+            new SliverList(
+                delegate: new SliverChildBuilderDelegate(
+                    (BuildContext context, int index) {
+              return new InkWell(
+                child: new Container(
+                  child: new Card(
+                    elevation: 15.0,
+                    shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(14.0))),
+                    child: new Container(
+                      padding: EdgeInsets.all(8.0),
+                      child: new Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          new Text("小麦"),
+                          new Text("安徽省合肥市"),
+                          new Text("2170"),
+                          new Text("0.9%")
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                onTap: () => {},
+              );
+            }, childCount: 10)),
+            new SliverList(
+                delegate: new SliverChildBuilderDelegate(
+                    (BuildContext context, int index) {
+              return new InkWell(
+                child: new Container(
+                  height: 400,
+                  color: Colors.blueAccent,
+                  child: Text("data"),
+                ),
+                onTap: () => {},
+              );
+            }, childCount: 1)),
+          ],
+        ),
+        Container(
+          height: 50,
+          child: Container(
+            child: Text(
+              //设置带背景色 的高亮水波纹 效果（Material 和 InkWeel 组合使用）
+              "涉及多方了解上的飞机，设计的法律上京东方。所经历的计算机撒旦解放，使得开发商开发圣诞节",
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  foreground: Paint()..color = Colors.blue,
+                  fontSize: 17),
+            ),
+          ),
+        ),
+      ],
+    ));
+  }
 }
 
 const url =
@@ -195,7 +767,29 @@ class _StickyDemoState extends State<StickyDemo>
             elevation: 0,
             expandedHeight: 250,
             flexibleSpace: FlexibleSpaceBar(
-              title: Text(this.widget.title),
+              title: Container(
+                child: Row(
+                  children: [
+                    IconButton(
+                        icon: Icon(
+                          Icons.arrow_back_ios,
+                          color: CommonColors.color_1D1D1D,
+                          size: 20.0,
+                        ),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        }),
+                    Container(
+                      child: Text(
+                        "山东省两件粉色哦让我就分手了发动机三六九等翻领设计的封建势力的分裂三六九等发酵",
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                        style: CommonStyles.style17_33,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
               background: Image.network(
                 'http://img1.mukewang.com/5c18cf540001ac8206000338.jpg',
                 fit: BoxFit.cover,
@@ -307,9 +901,10 @@ class _CustomScrollViewPage extends State<MyApp105> {
       )*/
         Scaffold(
       body: CustomScrollView(
-        physics:
-            const ClampingScrollPhysics(), //BouncingScrollPhysics 弹性效果   ClampingScrollPhysics  夹击
-        reverse: false, // 反转页面
+        physics: const ClampingScrollPhysics(),
+        //BouncingScrollPhysics 弹性效果   ClampingScrollPhysics  夹击
+        reverse: false,
+        // 反转页面
 //        shrinkWrap: true,
 //      dragStartBehavior: DragStartBehavior.start,
 //        cacheExtent: ,
@@ -330,7 +925,6 @@ class _CustomScrollViewPage extends State<MyApp105> {
                 StretchMode.fadeTitle,
               ],
               centerTitle: false,
-              title: const Text('Flight Report'),
               background: Stack(
                 fit: StackFit.expand,
                 children: [
@@ -2415,6 +3009,7 @@ class TextFieldState extends State<MyApp29>
   AnimationController animationController;
   Animation<Offset> animation;
   TextEditingController rechargeController = TextEditingController();
+
   @override
   void initState() {
     super.initState();
@@ -2448,25 +3043,27 @@ class TextFieldState extends State<MyApp29>
             child: Column(
               children: <Widget>[
                 Container(
-                  child: Text(//设置带背景色 的高亮水波纹 效果（Material 和 InkWeel 组合使用）
+                  child: Text(
+                    //设置带背景色 的高亮水波纹 效果（Material 和 InkWeel 组合使用）
                     "涉及多方了解上的飞机，设计的法律上京东方。所经历的计算机撒旦解放，使得开发商开发圣诞节",
                     overflow: TextOverflow.ellipsis,
                     maxLines: 1,
                     style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                        foreground: Paint()..color = Colors.blue, fontSize: 18),
+                        fontWeight: FontWeight.bold,
+                        foreground: Paint()..color = Colors.blue,
+                        fontSize: 18),
                   ),
                 ),
-                RichText(text: TextSpan(
-                  children: [
+                RichText(
+                  text: TextSpan(children: [
                     TextSpan(
-                      text: "aa",
-                      recognizer: TapGestureRecognizer()..onTap = (){
-                        LogUtil.e("aaaaaaaaa ");
-                      }
-                    ),
-                  ]
-                ),),
+                        text: "aa",
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () {
+                            LogUtil.e("aaaaaaaaa ");
+                          }),
+                  ]),
+                ),
                 Container(
                   height: 56.0,
                   decoration: BoxDecoration(
@@ -2499,6 +3096,7 @@ class TextFieldState extends State<MyApp29>
                               border: InputBorder.none,
                             ),
                             inputFormatters: <TextInputFormatter>[
+                              // ignore: deprecated_member_use
                               WhitelistingTextInputFormatter(RegExp("[0-9.]")),
                               //只输入数字
                               LengthLimitingTextInputFormatter(10) //限制长度
@@ -2638,6 +3236,9 @@ class TextFieldState extends State<MyApp29>
 //              highlightColor: Colors.amber,
                   splashColor: Colors.amber,
                   //    colorBrightness:Brightness.light ,
+                ),
+                Container(
+                  child: Text("data"),
                 ),
                 Container(
                   width: 160,
