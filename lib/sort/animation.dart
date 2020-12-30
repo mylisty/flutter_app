@@ -11,6 +11,7 @@ class AnimationPage extends StatefulWidget {
 
 //  https://flutter.cn/docs/development/ui/animations/tutorial 学习
 // 跨页面切换的动效  https://flutter.cn/docs/cookbook/navigation/hero-animations 可以用hero
+// https://medium.com/flutterdevs/cliprrect-clippath-in-flutter-4c41abe4e8 clipdemo
 class _AnimationState extends State<AnimationPage> {
   GlobalKey key = GlobalKey();
 
