@@ -6,6 +6,7 @@ import 'dart:ui' as prefix0;
 import 'package:common_utils/common_utils.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/PopRoute.dart';
@@ -15,15 +16,12 @@ import 'package:flutter_app/sort/animation.dart';
 import 'package:flutter_picker/flutter_picker.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 
-//import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'package:flutter/services.dart';
-import 'package:popup_window/popup_window.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 
-//import 'package:transparent_image/transparent_image.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'dart:async';
 import 'PickerData.dart';
@@ -38,19 +36,19 @@ import 'dart:math' as math;
 // 底部弹窗 跟随键盘动
 void main() {
   runApp(
-    /* new MyApp26(
+      /* new MyApp26(
         item: new List<String>.generate(300, (i)=> "item$i"),
       )*/
-//      new MyApp105()
+      new MyApp101()
 
-    new MaterialApp(
+      /* new MaterialApp(
       title: 'aaa',
-      home: MainPage(),
-    ),
+      home: StickyDemo(),
+    ),*/
 /*      new MaterialApp(
     title: '',
     home: new TabbarBgColorTest(),*/
-  );
+      );
 }
 
 class MainPage extends StatefulWidget {
@@ -59,6 +57,20 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
+  // 定义 ValueNotifier 对象 _counter
+  final ValueNotifier<int> _counter = ValueNotifier<int>(0);
+
+  // 页面滑动控制器
+  PageController _ctrl;
+
+  @override
+  void initState() {
+    _ctrl = PageController(
+      viewportFraction: 0.9,
+    )..addListener(() {});
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -79,11 +91,41 @@ class _MainPageState extends State<MainPage> {
               style: new TextStyle(color: Colors.black),
             ),
           ),
+          new RaisedButton(
+            onPressed: () {
+              _counter.value++;
+            },
+            color: Colors.lightBlue,
+            child: ValueListenableBuilder(
+              builder: (BuildContext context, value, Widget child) {
+                return Text(
+                  "动画${_counter.value}",
+                  style: new TextStyle(color: Colors.black),
+                );
+              },
+              valueListenable: _counter,
+            ),
+          ),
+          Container(
+            color: Colors.black,
+            child: Transform(
+              alignment: Alignment.topRight,
+              transform: Matrix4.skewY(0.3)..rotateZ(-math.pi / 12.0),
+              child: Container(
+                padding: const EdgeInsets.all(8.0),
+                color: const Color(0xFFE8581C),
+                child: const Text('Apartment for rent!'),
+              ),
+            ),
+          ),
         ],
       ),
     );
   }
 }
+
+typedef ValueWidgetBuilder<T> = Widget Function(
+    BuildContext context, T value, Widget child);
 
 class BasicPage extends StatefulWidget {
   @override
@@ -114,6 +156,7 @@ class _BasicPageState extends State<BasicPage> {
           showModalBottomSheet(
               context: context,
               builder: (BuildContext context) {
+                // 5126。86 2176.03
                 return new AnimatedPadding(
                   padding: MediaQuery.of(context).viewInsets,
                   duration: const Duration(milliseconds: 100),
@@ -682,7 +725,7 @@ class _TestPageState extends State<TestPage> {
                      */
                     new TabBar(
                       tabs: tabTitle.map((f) => Tab(text: f)).toList(),
-                      indicatorColor: Colors.white,
+                      indicatorColor: Colors.blue,
                       unselectedLabelColor: Color(0xFF666666),
                       labelColor: Colors.white,
                       indicator: const BoxDecoration(
@@ -2090,27 +2133,33 @@ class _testLiandongState extends State<MyApp101> {
             title: Text('pageView Image'),
           ),
           body: Container(
-            child: DropdownButton(
-              isExpanded: true,
-              value: isCourseValue,
-              items: _CourseNameList.map((item) {
-                return DropdownMenuItem(
-                  child: Text(item),
-                  value: item,
-                );
-              }).toList(),
-              onChanged: (value) {
-                setState(() {
-                  isCourseValue = value; //一级
-                  isChapterValue = _ChapterNameList[isCourseValue]; //二级
-                  LogUtil.e(
-                      "aaaaaaaaaaaaaaaaa isChapterValuev " + isChapterValue);
-                  LogUtil.e(
-                      "aaaaaaaaaaaaaaaaa  isCourseValue " + isCourseValue);
-                });
-              },
-            ),
-          ),
+              child: Column(
+            children: [
+              Container(
+                child: DropdownButton(
+                  isExpanded: true,
+                  value: isCourseValue,
+                  items: _CourseNameList.map((item) {
+                    return DropdownMenuItem(
+                      child: Text(item),
+                      value: item,
+                    );
+                  }).toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      isCourseValue = value; //一级
+                      isChapterValue = _ChapterNameList[isCourseValue]; //二级
+                      LogUtil.e("aaaaaaaaaaaaaaaaa isChapterValuev " +
+                          isChapterValue);
+                      LogUtil.e(
+                          "aaaaaaaaaaaaaaaaa  isCourseValue " + isCourseValue);
+                    });
+                  },
+                ),
+                width: 200,
+              )
+            ],
+          )),
         ));
   }
 }
@@ -3247,7 +3296,7 @@ class TextFieldState extends State<MyApp29>
                     gradient: const LinearGradient(colors: [
                       Color(0xFFFF9224),
                       Color(0xFFFF9224),
-                      Color(0xFFFF3D10)
+                      Color(0xFF18B37F)
                     ]),
                     borderRadius: BorderRadius.circular(50),
                   ),
