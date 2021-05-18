@@ -13,6 +13,11 @@ import 'package:flutter_app/PopRoute.dart';
 import 'package:flutter_app/res_colours.dart';
 import 'package:flutter_app/res_styles.dart';
 import 'package:flutter_app/sort/animation.dart';
+import 'package:flutter_app/sort/flutterprovider/providerspage.dart';
+import 'package:flutter_app/sort/provider/model/model.dart';
+import 'package:flutter_app/sort/provider/model/secondModel.dart';
+import 'package:flutter_app/sort/provider/provier_demo.dart';
+import 'package:flutter_app/sort/provider/provier_page2.dart';
 import 'package:flutter_picker/flutter_picker.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 
@@ -20,6 +25,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 
 import 'package:webview_flutter/webview_flutter.dart';
@@ -29,6 +35,9 @@ import 'Test.dart';
 import 'dialog.dart';
 import 'dart:math' as math;
 
+import 'http_base_util.dart';
+
+// https://www.jianshu.com/p/7cff367dbdde 快捷键
 // Myapp105  CustomScrollView
 // Myapp106  srcrol View index
 //StickyDemo  TestPage  HomeFragmentPage2 // 吸顶效果
@@ -36,19 +45,53 @@ import 'dart:math' as math;
 // 底部弹窗 跟随键盘动
 void main() {
   runApp(
-      /* new MyApp26(
+    /* new MyApp26(
         item: new List<String>.generate(300, (i)=> "item$i"),
       )*/
-      new MyApp101()
-
-      /* new MaterialApp(
+    // new MyApp101()
+    new MyProviderApp(),
+    /*new MaterialApp(
       title: 'aaa',
-      home: StickyDemo(),
+      home: MultiProvider(
+        providers: [
+          // If you want to provide more than one class, you can use MultiProvider:
+        ],
+        child: ProviderTestPage(),
+      ),
     ),*/
 /*      new MaterialApp(
     title: '',
     home: new TabbarBgColorTest(),*/
-      );
+  );
+}
+
+class MyProviderApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => ModelTest()),
+        ChangeNotifierProxyProvider<ModelTest, SecondModel>(
+          // ChangeNotifierProxyProvider自动dipose 已有实例的话 用ChangeNotifierProxyProvider.value
+          create: (context) => SecondModel(),
+          update: (context, modelTest, secondModel) {
+            print("aaachange ${modelTest.totalPrice}");
+            secondModel.setValue = modelTest.totalPrice.toInt();
+            return secondModel;
+          },
+        )
+      ],
+      child: MaterialApp(
+        title: "provier",
+        initialRoute: '/',
+        routes: {
+          '/': (context) => ProviderTestPage(),
+          '/catalog': (context) => ProviderTestPage2(),
+          '/pages': (context) => ProvidersPage(),
+        },
+      ),
+    );
+  }
 }
 
 class MainPage extends StatefulWidget {
@@ -2126,41 +2169,67 @@ class _testLiandongState extends State<MyApp101> {
 
   @override
   Widget build(BuildContext context) {
-    return new MaterialApp(
-        title: "pageView",
-        home: new Scaffold(
-          appBar: AppBar(
-            title: Text('pageView Image'),
+    return new Scaffold(
+      appBar: AppBar(
+        title: Text('pageView Image'),
+      ),
+      body: Container(
+          child: Column(
+        children: [
+          Container(
+            child: DropdownButton(
+              isExpanded: true,
+              value: isCourseValue,
+              items: _CourseNameList.map((item) {
+                return DropdownMenuItem(
+                  child: Text(item),
+                  value: item,
+                );
+              }).toList(),
+              onChanged: (value) {
+                setState(() {
+                  isCourseValue = value; //一级
+                  isChapterValue = _ChapterNameList[isCourseValue]; //二级
+                  LogUtil.e(
+                      "aaaaaaaaaaaaaaaaa isChapterValuev " + isChapterValue);
+                  LogUtil.e(
+                      "aaaaaaaaaaaaaaaaa  isCourseValue " + isCourseValue);
+                });
+              },
+            ),
+            width: 200,
           ),
-          body: Container(
-              child: Column(
-            children: [
-              Container(
-                child: DropdownButton(
-                  isExpanded: true,
-                  value: isCourseValue,
-                  items: _CourseNameList.map((item) {
-                    return DropdownMenuItem(
-                      child: Text(item),
-                      value: item,
-                    );
-                  }).toList(),
-                  onChanged: (value) {
-                    setState(() {
-                      isCourseValue = value; //一级
-                      isChapterValue = _ChapterNameList[isCourseValue]; //二级
-                      LogUtil.e("aaaaaaaaaaaaaaaaa isChapterValuev " +
-                          isChapterValue);
-                      LogUtil.e(
-                          "aaaaaaaaaaaaaaaaa  isCourseValue " + isCourseValue);
-                    });
-                  },
-                ),
-                width: 200,
-              )
-            ],
-          )),
-        ));
+          FloatingActionButton(
+            onPressed: () {
+              // String url =
+              //     'https://cebs-api.solandenergy.com/app/auth/swap/driver/sendverifycode';
+              // Map<String, dynamic> queryParameters = {};
+              // queryParameters['phone'] = "13136105770";
+              // HttpBaseUtil().request(context,
+              //     url: url,
+              //     queryParameters: queryParameters,
+              //     method: RequestMethod.post);
+              Navigator.push(context, MaterialPageRoute<void>(
+                builder: (BuildContext context) {
+                  return Scaffold(
+                    appBar: AppBar(title: Text('My Page')),
+                    body: Center(
+                      child: TextButton(
+                        child: Text('POP'),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                      ),
+                    ),
+                  );
+                },
+              ));
+            },
+            child: Text("text"),
+          )
+        ],
+      )),
+    );
   }
 }
 
