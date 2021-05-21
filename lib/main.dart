@@ -58,7 +58,7 @@ void main() {
       navigatorKey: Get.key,
       home: GetDemoPage(),
       navigatorObservers: [
-        new MiddleWare(),
+        new MiddleWare(), // 可接听路由情况
       ],
       getPages: [
         GetPage(name: "/Other", page: () => Other()),
