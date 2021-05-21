@@ -22,6 +22,9 @@ import 'package:flutter_picker/flutter_picker.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
+import 'package:get/get_navigation/get_navigation.dart';
+import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'package:flutter/services.dart';
@@ -35,6 +38,7 @@ import 'Test.dart';
 import 'dialog.dart';
 import 'dart:math' as math;
 
+import 'getThird/get_page.dart';
 import 'http_base_util.dart';
 
 // https://www.jianshu.com/p/7cff367dbdde 快捷键
@@ -49,22 +53,46 @@ void main() {
         item: new List<String>.generate(300, (i)=> "item$i"),
       )*/
     // new MyApp101()
-    new MyProviderApp(),
-    /*new MaterialApp(
-      title: 'aaa',
-      home: MultiProvider(
-        providers: [
-          // If you want to provide more than one class, you can use MultiProvider:
-        ],
-        child: ProviderTestPage(),
-      ),
-    ),*/
+    GetMaterialApp(
+      defaultTransition: Transition.rightToLeftWithFade,
+      navigatorKey: Get.key,
+      home: GetDemoPage(),
+      navigatorObservers: [
+        new MiddleWare(),
+      ],
+      getPages: [
+        GetPage(name: "/Other", page: () => Other()),
+      ],
+    ),
+
 /*      new MaterialApp(
     title: '',
     home: new TabbarBgColorTest(),*/
   );
 }
 
+class MiddleWare extends NavigatorObserver {
+  @override
+  void didPop(Route route, Route previousRoute) {
+    // TODO: implement didPop
+    super.didPop(route, previousRoute);
+  }
+
+  @override
+  void didPush(Route route, Route previousRoute) {
+    // TODO: implement didPush
+    print("GOING TO ROUTE2 ${route.settings.toString()}");
+    super.didPush(route, previousRoute);
+  }
+
+  @override
+  void didRemove(Route route, Route previousRoute) {
+    // TODO: implement didRemove
+    super.didRemove(route, previousRoute);
+  }
+}
+
+/// Provider 使用demo
 class MyProviderApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -72,7 +100,7 @@ class MyProviderApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (context) => ModelTest()),
         ChangeNotifierProxyProvider<ModelTest, SecondModel>(
-          // ChangeNotifierProxyProvider自动dipose 已有实例的话 用ChangeNotifierProxyProvider.value
+          // ChangeNotifierProxyProvider自动disPose已有实例的话 用ChangeNotifierProxyProvider.value
           create: (context) => SecondModel(),
           update: (context, modelTest, secondModel) {
             print("aaachange ${modelTest.totalPrice}");
