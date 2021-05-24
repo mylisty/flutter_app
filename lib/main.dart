@@ -33,6 +33,7 @@ import 'package:scroll_to_index/scroll_to_index.dart';
 
 import 'package:webview_flutter/webview_flutter.dart';
 import 'dart:async';
+import ' button/button_page.dart';
 import 'PickerData.dart';
 import 'Test.dart';
 import 'dialog.dart';
@@ -56,12 +57,12 @@ void main() {
     GetMaterialApp(
       defaultTransition: Transition.rightToLeftWithFade,
       navigatorKey: Get.key,
-      home: GetDemoPage(),
+      home: ButtonPage("button"),
       navigatorObservers: [
         new MiddleWare(), // 可接听路由情况
       ],
       getPages: [
-        GetPage(name: "/Other", page: () => Other()),
+        GetPage(name: "/ButtonPage",transition: Transition.fadeIn, page: () => ButtonPage("button")),
       ],
     ),
 
@@ -521,7 +522,7 @@ class _HomeFragmentPageState2 extends State {
                       child: new ListView.builder(
                           padding: EdgeInsets.all(10.0),
                           itemCount: 4,
-                          scrollDirection: Axis.vertical,
+                          scrollDirection: Axis.horizontal,
                           itemBuilder: (BuildContext context, int index) {
                             return new InkWell(
                               child: new Container(
