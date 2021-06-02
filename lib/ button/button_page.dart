@@ -65,9 +65,10 @@ class ButtonPage extends BasePage {
                     width: 280.0,
                     style: BorderStyle.none,
                   ))),*/
+                  //菱角
                   shape: MaterialStateProperty.all(BeveledRectangleBorder(
                       borderRadius: BorderRadius.circular(8))),
-                  //菱角
+
                   textStyle:
                       MaterialStateProperty.all(TextStyle(fontSize: 44)), //字体大小
                 ),

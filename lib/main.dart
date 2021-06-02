@@ -10,6 +10,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/PopRoute.dart';
+import 'package:flutter_app/progress/progress_page.dart';
 import 'package:flutter_app/res_colours.dart';
 import 'package:flutter_app/res_styles.dart';
 import 'package:flutter_app/sort/animation.dart';
@@ -39,25 +40,29 @@ import 'Test.dart';
 import 'dialog.dart';
 import 'dart:math' as math;
 
+import 'drawer/drawer_page.dart';
 import 'getThird/get_page.dart';
 import 'http_base_util.dart';
-
+// flutter demo https://github.com/nisrulz/flutter-examples
+// demo https://github.com/OpenFlutter/Flutter-Notebook
 // https://www.jianshu.com/p/7cff367dbdde 快捷键
-// Myapp105  CustomScrollView
+// Myapp105  CustomScrollView  https://www.jianshu.com/p/2ba93e7bb8ea 参考CustomScrollView
 // Myapp106  srcrol View index
 //StickyDemo  TestPage  HomeFragmentPage2 // 吸顶效果
 // MyApp108 头部隐藏和显示效果
 // 底部弹窗 跟随键盘动
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(
     /* new MyApp26(
         item: new List<String>.generate(300, (i)=> "item$i"),
       )*/
-    // new MyApp101()
     GetMaterialApp(
       defaultTransition: Transition.rightToLeftWithFade,
       navigatorKey: Get.key,
-      home: ButtonPage("button"),
+      // home: ButtonPage("button"),
+      // home: BasicPage(),
+      home: ProgressPage(),
       navigatorObservers: [
         new MiddleWare(), // 可接听路由情况
       ],
@@ -65,6 +70,8 @@ void main() {
         GetPage(name: "/ButtonPage",transition: Transition.fadeIn, page: () => ButtonPage("button")),
       ],
     ),
+
+
 
 /*      new MaterialApp(
     title: '',
@@ -309,7 +316,7 @@ class _TabNavigatorState extends State<MyApp108> {
       children: <Widget>[
         MediaQuery.removePadding(
             context: context,
-            removeTop: true,
+            removeTop: false,
             //监听列表的滚动
             child: NotificationListener(
               //监听滚动后要调用的方法
@@ -337,7 +344,7 @@ class _TabNavigatorState extends State<MyApp108> {
                         );
                       },
                       //banner上添加指示器
-                      pagination: SwiperPagination(),
+                      pagination: SwiperPagination(builder: DotSwiperPaginationBuilder(activeColor: Colors.red)),
                     ),
                   ),
                   Container(
@@ -882,31 +889,9 @@ class _StickyDemoState extends State<StickyDemo>
             elevation: 0,
             expandedHeight: 250,
             flexibleSpace: FlexibleSpaceBar(
-              title: Container(
-                child: Row(
-                  children: [
-                    IconButton(
-                        icon: Icon(
-                          Icons.arrow_back_ios,
-                          color: CommonColors.color_1D1D1D,
-                          size: 20.0,
-                        ),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        }),
-                    Container(
-                      child: Text(
-                        "山东省两件粉色哦让我就分手了发动机三六九等翻领设计的封建势力的分裂三六九等发酵",
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
-                        style: CommonStyles.style17_33,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              title: Text('开学季 Pinned 效果'),
               background: Image.network(
-                'http://img1.mukewang.com/5c18cf540001ac8206000338.jpg',
+                "https://goss.cfp.cn/creative/vcg/800/new/VCG211165042753.jpg",
                 fit: BoxFit.cover,
               ),
             ),

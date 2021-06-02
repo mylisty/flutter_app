@@ -33,6 +33,7 @@ class _ProviderState extends State<ProviderTestPage> {
 
   @override
   Widget build(BuildContext context) {
+    var modelTest = context.watch<ModelTest>();
     return Scaffold(
       appBar: AppBar(
         title: Text('provider'),
@@ -56,6 +57,11 @@ class _ProviderState extends State<ProviderTestPage> {
                   _testAdd(20, 1);
                 },
                 child: Text("add2"),
+              ),
+              TextButton(
+                onPressed: () {
+                },
+                child: Text("test ${modelTest.totalPrice}"),
               ),
               Container(
                 child: Consumer<SecondModel>(
