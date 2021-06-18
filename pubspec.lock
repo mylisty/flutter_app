@@ -91,7 +91,7 @@ packages:
       name: cupertino_icons
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.1.3"
+    version: "1.0.3"
   decimal:
     dependency: transitive
     description:
@@ -276,7 +276,7 @@ packages:
       name: popup_window
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "1.0.0+5"
+    version: "1.1.2"
   provider:
     dependency: "direct main"
     description:

@@ -10,6 +10,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/PopRoute.dart';
+import 'package:flutter_app/pop/pop_page.dart';
 import 'package:flutter_app/progress/progress_page.dart';
 import 'package:flutter_app/res_colours.dart';
 import 'package:flutter_app/res_styles.dart';
@@ -29,6 +30,7 @@ import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'package:flutter/services.dart';
+import 'package:popup_window/popup_window.dart';
 import 'package:provider/provider.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 
@@ -43,6 +45,7 @@ import 'dart:math' as math;
 import 'drawer/drawer_page.dart';
 import 'getThird/get_page.dart';
 import 'http_base_util.dart';
+
 // flutter demo https://github.com/nisrulz/flutter-examples
 // demo https://github.com/OpenFlutter/Flutter-Notebook
 // https://www.jianshu.com/p/7cff367dbdde 快捷键
@@ -60,18 +63,19 @@ void main() {
     GetMaterialApp(
       defaultTransition: Transition.rightToLeftWithFade,
       navigatorKey: Get.key,
-      // home: ButtonPage("button"),
+      home: ButtonPage("button"),
       // home: BasicPage(),
-      home: ProgressPage(),
+      // home: PopPage(),
       navigatorObservers: [
         new MiddleWare(), // 可接听路由情况
       ],
       getPages: [
-        GetPage(name: "/ButtonPage",transition: Transition.fadeIn, page: () => ButtonPage("button")),
+        GetPage(
+            name: "/ButtonPage",
+            transition: Transition.fadeIn,
+            page: () => ButtonPage("button")),
       ],
     ),
-
-
 
 /*      new MaterialApp(
     title: '',
@@ -344,7 +348,9 @@ class _TabNavigatorState extends State<MyApp108> {
                         );
                       },
                       //banner上添加指示器
-                      pagination: SwiperPagination(builder: DotSwiperPaginationBuilder(activeColor: Colors.red)),
+                      pagination: SwiperPagination(
+                          builder: DotSwiperPaginationBuilder(
+                              activeColor: Colors.red)),
                     ),
                   ),
                   Container(
@@ -1543,15 +1549,26 @@ class MenuHomePageState extends State<MenuHomePage> {
   String _bodyText = '点击效果';
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+   /* final RenderBox button = context.findRenderObject();
+    final RenderBox overlay = Overlay.of(context).context.findRenderObject();
+    final RelativeRect position = RelativeRect.fromRect(
+      Rect.fromPoints(
+        button.localToGlobal(Offset(0,0), ancestor: overlay),
+        button.localToGlobal(button.size.bottomRight(Offset.zero),
+            ancestor: overlay),
+      ),
+      Offset.zero & overlay.size,
+    );*/
     return new Scaffold(
       appBar: new AppBar(
         title: new Text('弹出菜单演示'),
         actions: <Widget>[
-          /*
-          下面是一个弹出菜单按钮，包含两个属性点击属性和弹出菜单子项的建立
-          其中<String>是表示这个弹出菜单的value内容是String类型
-           */
           new PopupMenuButton<String>(
               //这是点击弹出菜单的操作，点击对应菜单后，改变屏幕中间文本状态，将点击的菜单值赋予屏幕中间文本
               onSelected: (String value) {
@@ -1559,6 +1576,7 @@ class MenuHomePageState extends State<MenuHomePage> {
                   _bodyText = value;
                 });
               },
+              offset: Offset(-60.0, 10.0),
               //这是弹出菜单的建立，包含了两个子项，分别是增加和删除以及他们对应的值
               itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
                     PopupMenuItem(
@@ -1581,16 +1599,98 @@ class MenuHomePageState extends State<MenuHomePage> {
                       ),
                       value: '这是删除',
                     )
-                  ])
+                  ]),
         ],
       ),
       //这是屏幕主体包含一个中央空间，里面是一个文本内容以及字体大小
-      body: new Center(
-        child: new Text(
-          _bodyText,
-          style: new TextStyle(fontSize: 20.0),
+      body: Container(
+
+        child: Stack(
+          children: [
+            TextButton(
+                onPressed: () {
+                /*  showWindow(
+                      position: position,
+                      context: context,
+                      duration: 300,
+                      onWindowShow: () {},
+                      onWindowDismiss: () {},
+                      windowBuilder: (BuildContext context,
+                          Animation<double> animation,
+                          Animation<double> secondaryAnimation) {
+                        return FadeTransition(
+                          opacity: animation,
+                          child: SizeTransition(
+                            sizeFactor: animation,
+                            child: Container(
+                              color: Colors.greenAccent,
+                              height: 40,
+                              width: 40,
+                            ),
+                          ),
+                        );
+                      });*/
+                },
+                child: Text("data")),
+            Positioned(
+              top: 0,
+              bottom: 40,
+              child: PopupWindowButton(
+                  offset: Offset(0, 40),
+                  buttonBuilder: (BuildContext context) {
+                    return Text("ddffff");
+                  },
+                  windowBuilder: (BuildContext context, Animation<double> animation,
+                      Animation<double> secondaryAnimation) {
+                    return FadeTransition(
+                      opacity: animation,
+                      child: SizeTransition(
+                        sizeFactor: animation,
+                        child: Container(
+                          color: Colors.greenAccent,
+                          height: 40,
+                          width: 40,
+                        ),
+                      ),
+                    );
+                  },
+                  onWindowShow: () {
+                    print('PopupWindowButton window show');
+                  },
+                  onWindowDismiss: () {
+                    print('PopupWindowButton window dismiss');
+                  }),
+            ),
+          ],
         ),
-      ),
+      ) /* new Center(
+        child: PopupWindowButton(
+            offset: Offset(0, 40),
+            buttonBuilder: (BuildContext context) {
+              return Text("ddffff");
+            },
+            windowBuilder: (BuildContext context, Animation<double> animation,
+                Animation<double> secondaryAnimation) {
+              return FadeTransition(
+                opacity: animation,
+                child: SizeTransition(
+                  sizeFactor: animation,
+                  child: Container(
+                    color: Colors.greenAccent,
+                    height: 40,
+                    width: 40,
+                  ),
+                ),
+              );
+            },
+            onWindowShow: () {
+              print('PopupWindowButton window show');
+            },
+            onWindowDismiss: () {
+              print('PopupWindowButton window dismiss');
+            }),
+      )*/
+      ,
     );
   }
 }
@@ -1885,14 +1985,17 @@ class _testLiandongState3 extends State<MyApp103> {
                 },
                 child: Text("click"),
               ),
-              /*GestureDetector(
-                child: Text("clic",style: TextStyle(fontSize: 44),),
+              GestureDetector(
+                child: Text(
+                  "clic",
+                  style: TextStyle(fontSize: 44),
+                ),
                 onTap: () {
 //                  showOverlay(context);
 //                Toast2.show(context: context,message: "sljfjsf");
 //                  showWeixinButtonView();
                 },
-              ),*/
+              ),
               Container(
                 height: 241,
                 child: Row(

@@ -113,6 +113,186 @@ class ButtonPage extends BasePage {
                 child: Text("elevatedButton"),
               ),
               IconButton(icon: Icon(Icons.add), onPressed: () {}),
+              /*  Container(
+                width: 280,
+                height: 48,
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                    shadowColor: MaterialStateProperty.all(
+                      Color(0xFF64EDAC),
+                    ),
+                    backgroundColor: MaterialStateProperty.all(
+                      Color(0xFF00D1CD),
+                    ),
+                    shape: MaterialStateProperty.all(
+                      const RoundedRectangleBorder(
+                          side: BorderSide.none,
+                          borderRadius: BorderRadius.all(Radius.circular(48))),
+                    ),
+                  ),
+                  onPressed: () {
+                    _logIn();
+                  },
+                  child: Text(
+                    "登录",
+                    style: TextStyle(fontSize: 18, color: Colors.white),
+                  ),
+                ),
+              ),*/
+              /*    new Container(
+                decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: <Color>[
+                        Color(0xff25D1D1),
+                        Color(0xff3BE6AD),
+                        Color(0xff20DDAA)
+                      ],
+                    ),
+                    // 渐变色
+                    borderRadius: BorderRadius.circular(25)),
+                child: new Material(
+                  //INK可以实现装饰容器
+                  child: new Ink(
+                    //用ink圆角矩形
+                    // color: Colors.red,
+                    decoration: new BoxDecoration(
+                      //不能同时”使用Ink的变量color属性以及decoration属性，两个只能存在一个
+                      color: Colors.purple,
+                      //设置圆角
+                      borderRadius: new BorderRadius.all(new Radius.circular(25.0)),
+                    ),
+                    child: new InkWell(
+                      //圆角设置,给水波纹也设置同样的圆角
+                      //如果这里不设置就会出现矩形的水波纹效果
+                      borderRadius: new BorderRadius.circular(25.0),
+                      //设置点击事件回调
+                      onTap: () {
+
+                      },
+                      child: new Container(
+                        width: 300.0,
+                        height: 50.0,
+                        //设置child 居中
+                        alignment: Alignment(0, 0),
+                        child: Text("登录",style: TextStyle(color: Colors.white,fontSize: 16.0),),
+                      ),
+                    ),
+                  ),
+                ),
+              ),*/
+              Container(
+                width: 280,
+                height: 48,
+                decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: <Color>[
+                        Color(0xff25D1D1),
+                        Color(0xff3BE6AD),
+                        Color(0xff20DDAA)
+                      ],
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Color(0xff3BE6AD),
+                        spreadRadius: 1.0,
+                        offset: Offset(1.0, 1.0),
+                      ),
+                    ],
+                    // 渐变色
+                    borderRadius: BorderRadius.circular(25)),
+                child: RaisedButton(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(25)),
+                  color: Colors.transparent,
+                  // 设为透明色
+                  elevation: 0,
+                  // 正常时阴影隐藏
+                  highlightElevation: 0,
+                  // 点击时阴影隐藏
+                  onPressed: () {
+                  },
+                  child: Text(
+                    '登 录',
+                    style: TextStyle(color: Colors.white, fontSize: 20),
+                  ),
+                ),
+              ),
+              Container(
+                width: 280,
+                height: 48,
+                decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: <Color>[
+                        Color(0xff25D1D1),
+                        Color(0xff3BE6AD),
+                        Color(0xff20DDAA)
+                      ],
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Color(0xff3BE6AD),
+                        spreadRadius: 1.0,
+                        offset: Offset(1.0, 1.0),
+                      ),
+                    ],
+                    // 渐变色
+                    borderRadius: BorderRadius.circular(25)),
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(
+                        Colors.transparent
+                    ),
+                    elevation: MaterialStateProperty.all(0),
+                    shadowColor: MaterialStateProperty.all(
+                      Color(0xff3BE6AD),
+                    ),
+                    shape: MaterialStateProperty.all(
+                      const RoundedRectangleBorder(
+                          side: BorderSide.none,
+                          borderRadius: BorderRadius.all(Radius.circular(25))),
+                    ),
+                  ),
+                  // 点击时阴影隐藏
+                  onPressed: () {
+                  },
+                  child: Text(
+                    '登 录',
+                    style: TextStyle(color: Colors.white, fontSize: 20),
+                  ),
+                ),
+              ),
+              /*RaisedButton(
+                onPressed: () {},
+                textColor: Colors.white,
+                clipBehavior: Clip.hardEdge,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(22.0))),
+                padding: const EdgeInsets.all(0.0),
+                child: Material(
+                  child: InkWell(
+                    child: Container(
+                      width: 260,
+                      height: 44,
+                      alignment: Alignment.center,
+                      decoration: const BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: <Color>[
+                            Color(0xff25D1D1),
+                            Color(0xff3BE6AD),
+                            Color(0xff20DDAA)
+                          ],
+                        ),
+                      ),
+                      padding: const EdgeInsets.all(10.0),
+                      child:Text(
+                        '登录',
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
+                ),
+                splashColor: Color(0xff20DDAA),
+              ),*/
             ],
           ),
           Align(

@@ -34,4 +34,9 @@ class ModelTest extends ChangeNotifier {
     _items.remove(item);
     notifyListeners();
   }
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+  }
 }

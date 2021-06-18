@@ -29,6 +29,8 @@ bool isLoginPassword(String input) {
 String say2(String from, String msg, [String device]) =>   '$from says $msg';
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
+    // double a =33.modPow(exponent, modulus);
+    // print("logintPasswordaaa  ${a.toStringAsFixed(2)}");
    /* // Build our app and trigger a frame.
     await tester.pumpWidget(MyApp());
 
