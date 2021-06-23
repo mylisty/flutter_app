@@ -45,6 +45,7 @@ import 'dart:math' as math;
 import 'drawer/drawer_page.dart';
 import 'getThird/get_page.dart';
 import 'http_base_util.dart';
+import 'material/material_page.dart';
 
 // flutter demo https://github.com/nisrulz/flutter-examples
 // demo https://github.com/OpenFlutter/Flutter-Notebook
@@ -63,7 +64,7 @@ void main() {
     GetMaterialApp(
       defaultTransition: Transition.rightToLeftWithFade,
       navigatorKey: Get.key,
-      home: ButtonPage("button"),
+      home: MaterialPageTest(),
       // home: BasicPage(),
       // home: PopPage(),
       navigatorObservers: [
@@ -4051,70 +4052,81 @@ class MyApp26 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new MaterialApp(
-        title: "列表",
-        home: new Scaffold(
-            appBar: AppBar(
-              title: Text('居中布局示例'),
-            ),
-            body: new Center(
-              child: new Column(
-                children: <Widget>[
-                  GestureDetector(
-                    child: new ClipOval(
-                      child: new SizedBox(
-                        width: 50,
-                        height: 50,
+    return  Material(
+              child: new Center(
+                child: Container(
+                  color: Colors.white,
+                  child: new Column(
+                    children: <Widget>[
+                      new Image.asset(
+                        'assets/images/qr_zhilun.jpg',
+                        fit: BoxFit.fill,
+                      ),
+                      GestureDetector(
+                        child: new ClipOval(
+                          child: new SizedBox(
+                            width: 50,
+                            height: 50,
+                            child: new Image.asset(
+                              'assets/images/qr_zhilun.jpg',
+                              fit: BoxFit.fill,
+                            ),
+                          ),
+                        ),
+                        onTap: () {
+                          //  show(context);
+                        },
+                      ),
+                      Container(
+                        height: 30,
+                        color: Colors.red,
+                      ),
+                      Container(
+                        height: 30,
+                        color: Colors.red,
+                      ),
+                      new CircleAvatar(
+                        radius: 40,
+                        backgroundImage: AssetImage("assets/images/qr_zhilun.jpg"),
+                      ),
+                      new Container(
+                        width: 72.0,
+                        height: 72.0,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          image: DecorationImage(
+                            image: AssetImage(
+                              "assets/images/ant_installment_icon.png",
+                            ),
+                          ),
+                        ),
+                      ),
+                      new ClipRRect(
+                        borderRadius:
+                            new BorderRadius.all(new Radius.circular(100)),
                         child: new Image.asset(
-                          'assets/images/qr_zhilun.jpg',
-                          fit: BoxFit.fill,
+                          "assets/images/qr_zhilun.jpg",
+                          width: 14,
+                          height: 8,
                         ),
                       ),
-                    ),
-                    onTap: () {
-                      //  show(context);
-                    },
-                  ),
-                  new CircleAvatar(
-                    radius: 40,
-                    backgroundImage: AssetImage("assets/images/qr_zhilun.jpg"),
-                  ),
-                  new Container(
-                    width: 72.0,
-                    height: 72.0,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      image: DecorationImage(
-                        image: AssetImage(
-                          "assets/images/ant_installment_icon.png",
-                        ),
-                      ),
-                    ),
-                  ),
-                  new ClipRRect(
-                    borderRadius:
-                        new BorderRadius.all(new Radius.circular(100)),
-                    child: new Image.asset(
-                      "assets/images/qr_zhilun.jpg",
-                      width: 14,
-                      height: 8,
-                    ),
-                  ),
-                  Container(
-                    alignment: Alignment.bottomCenter,
-                    padding: const EdgeInsets.all(11.0),
-                    decoration: BoxDecoration(
-                      color: Colors.red,
-                      borderRadius:
-                          new BorderRadius.all(new Radius.circular(50.0)),
+                      Container(
+                        alignment: Alignment.bottomCenter,
+                        padding: const EdgeInsets.all(11.0),
+                        decoration: BoxDecoration(
+                          color: Colors.red,
+                          borderRadius:
+                              new BorderRadius.all(new Radius.circular(50.0)),
 //                      shape: BoxShape.circle
-                    ),
-                    child: Text("data"),
+                        ),
+                        child: Text("data"),
 //                    transform: new Matrix4.rotationZ(0.3),
-                  )
-                ],
+                      )
+                    ],
+                  ),
+                ),
               ),
-            )));
+            );
   }
 }
 
