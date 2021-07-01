@@ -55,6 +55,8 @@ import 'material/material_page.dart';
 //StickyDemo  TestPage  HomeFragmentPage2 // 吸顶效果
 // MyApp108 头部隐藏和显示效果
 // 底部弹窗 跟随键盘动
+// const 是编译时常量，用 const 修饰的常量，必须在声明时初始化，并且是可以确定的值。
+// 而 final 则是运行时常量，用 final 修饰的常量，必须在声明时初始化，或者在构造函数中初始化，但它的值可以动态计算
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(
@@ -113,7 +115,8 @@ class MyProviderApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (context) => ModelTest()),
         ChangeNotifierProxyProvider<ModelTest, SecondModel>(
-          // ChangeNotifierProxyProvider自动disPose已有实例的话 用ChangeNotifierProxyProvider.value
+          // ChangeNotifierProxyProvider自动disPose已有实例的话 可以用于合并实例
+          // 用ChangeNotifierProxyProvider.value 需要手动销毁实例
           create: (context) => SecondModel(),
           update: (context, modelTest, secondModel) {
             print("aaachange ${modelTest.totalPrice}");
@@ -1556,7 +1559,7 @@ class MenuHomePageState extends State<MenuHomePage> {
 
   @override
   Widget build(BuildContext context) {
-   /* final RenderBox button = context.findRenderObject();
+    /* final RenderBox button = context.findRenderObject();
     final RenderBox overlay = Overlay.of(context).context.findRenderObject();
     final RelativeRect position = RelativeRect.fromRect(
       Rect.fromPoints(
@@ -1605,12 +1608,11 @@ class MenuHomePageState extends State<MenuHomePage> {
       ),
       //这是屏幕主体包含一个中央空间，里面是一个文本内容以及字体大小
       body: Container(
-
         child: Stack(
           children: [
             TextButton(
                 onPressed: () {
-                /*  showWindow(
+                  /*  showWindow(
                       position: position,
                       context: context,
                       duration: 300,
@@ -1641,7 +1643,8 @@ class MenuHomePageState extends State<MenuHomePage> {
                   buttonBuilder: (BuildContext context) {
                     return Text("ddffff");
                   },
-                  windowBuilder: (BuildContext context, Animation<double> animation,
+                  windowBuilder: (BuildContext context,
+                      Animation<double> animation,
                       Animation<double> secondaryAnimation) {
                     return FadeTransition(
                       opacity: animation,
@@ -3488,7 +3491,8 @@ class TextFieldState extends State<MyApp29>
                     borderRadius: BorderRadius.circular(50),
                   ),
                   child: RaisedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                    },
                     child: Text("RaiseButton"),
                     shape: new StadiumBorder(
                       side: new BorderSide(
@@ -4052,81 +4056,79 @@ class MyApp26 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  Material(
-              child: new Center(
-                child: Container(
-                  color: Colors.white,
-                  child: new Column(
-                    children: <Widget>[
-                      new Image.asset(
-                        'assets/images/qr_zhilun.jpg',
-                        fit: BoxFit.fill,
-                      ),
-                      GestureDetector(
-                        child: new ClipOval(
-                          child: new SizedBox(
-                            width: 50,
-                            height: 50,
-                            child: new Image.asset(
-                              'assets/images/qr_zhilun.jpg',
-                              fit: BoxFit.fill,
-                            ),
-                          ),
-                        ),
-                        onTap: () {
-                          //  show(context);
-                        },
-                      ),
-                      Container(
-                        height: 30,
-                        color: Colors.red,
-                      ),
-                      Container(
-                        height: 30,
-                        color: Colors.red,
-                      ),
-                      new CircleAvatar(
-                        radius: 40,
-                        backgroundImage: AssetImage("assets/images/qr_zhilun.jpg"),
-                      ),
-                      new Container(
-                        width: 72.0,
-                        height: 72.0,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          image: DecorationImage(
-                            image: AssetImage(
-                              "assets/images/ant_installment_icon.png",
-                            ),
-                          ),
-                        ),
-                      ),
-                      new ClipRRect(
-                        borderRadius:
-                            new BorderRadius.all(new Radius.circular(100)),
-                        child: new Image.asset(
-                          "assets/images/qr_zhilun.jpg",
-                          width: 14,
-                          height: 8,
-                        ),
-                      ),
-                      Container(
-                        alignment: Alignment.bottomCenter,
-                        padding: const EdgeInsets.all(11.0),
-                        decoration: BoxDecoration(
-                          color: Colors.red,
-                          borderRadius:
-                              new BorderRadius.all(new Radius.circular(50.0)),
-//                      shape: BoxShape.circle
-                        ),
-                        child: Text("data"),
-//                    transform: new Matrix4.rotationZ(0.3),
-                      )
-                    ],
+    return Material(
+      child: new Center(
+        child: Container(
+          color: Colors.white,
+          child: new Column(
+            children: <Widget>[
+              new Image.asset(
+                'assets/images/qr_zhilun.jpg',
+                fit: BoxFit.fill,
+              ),
+              GestureDetector(
+                child: new ClipOval(
+                  child: new SizedBox(
+                    width: 50,
+                    height: 50,
+                    child: new Image.asset(
+                      'assets/images/qr_zhilun.jpg',
+                      fit: BoxFit.fill,
+                    ),
+                  ),
+                ),
+                onTap: () {
+                  //  show(context);
+                },
+              ),
+              Container(
+                height: 30,
+                color: Colors.red,
+              ),
+              Container(
+                height: 30,
+                color: Colors.red,
+              ),
+              new CircleAvatar(
+                radius: 40,
+                backgroundImage: AssetImage("assets/images/qr_zhilun.jpg"),
+              ),
+              new Container(
+                width: 72.0,
+                height: 72.0,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  image: DecorationImage(
+                    image: AssetImage(
+                      "assets/images/ant_installment_icon.png",
+                    ),
                   ),
                 ),
               ),
-            );
+              new ClipRRect(
+                borderRadius: new BorderRadius.all(new Radius.circular(100)),
+                child: new Image.asset(
+                  "assets/images/qr_zhilun.jpg",
+                  width: 14,
+                  height: 8,
+                ),
+              ),
+              Container(
+                alignment: Alignment.bottomCenter,
+                padding: const EdgeInsets.all(11.0),
+                decoration: BoxDecoration(
+                  color: Colors.red,
+                  borderRadius: new BorderRadius.all(new Radius.circular(50.0)),
+//                      shape: BoxShape.circle
+                ),
+                child: Text("data"),
+//                    transform: new Matrix4.rotationZ(0.3),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }
 

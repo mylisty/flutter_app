@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_app/dialog.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 
 /// @ProjectName: flutter_app
@@ -150,10 +151,11 @@ class Popup extends StatelessWidget {
                   child: child,
                   onTap: () {
                     //点击子child
-                    if (onClick != null) {
+                    /*if (onClick != null) {
                       Navigator.of(context).pop();
                       onClick();
-                    }
+                    }*/
+                    show(context);
                   }),
               left: left,
               top: top,

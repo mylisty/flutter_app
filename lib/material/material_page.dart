@@ -1,5 +1,7 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/main.dart';
 
 /// @ProjectName: flutter_app
 /// @Description:
@@ -23,8 +25,8 @@ class _MaterialPageState extends State<MaterialPageTest> {
       child: new Center(
         child: Container(
           child: new Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            // 问题出现在这里 只要不设置center 就没有中间的横线了
+            mainAxisAlignment: MainAxisAlignment.center,
+            // 问题出现在这里 只要不设置center 并且图片要设置大小 就没有中间的横线了 安卓只要设置了大小就没问题了
             children: childe2(),
           ),
         ),
@@ -40,10 +42,8 @@ class _MaterialPageState extends State<MaterialPageTest> {
       ),
       Container(
         height: 135,
-        width: 255, // 需要设置图片大小才能 把子view 之间的横线去掉
         child: new Image.asset(
           'assets/images/up_version.png',
-
           fit: BoxFit.fill,
         ),
       ),
@@ -59,7 +59,7 @@ class _MaterialPageState extends State<MaterialPageTest> {
           ),
         ),
         onTap: () {
-          //  show(context);
+          UpdateDialog.showUpdateDialog(context, '1.修复已知bug\n2.优化用户体验', false);
         },
       ),
       Container(
@@ -138,5 +138,113 @@ class _MaterialPageState extends State<MaterialPageTest> {
         height: 20,
       ),
     ];
+  }
+}
+
+///created by WGH
+///on 2020/7/23
+///description:版本更新提示弹窗
+class UpdateDialog extends Dialog {
+  final String upDateContent;
+  final bool isForce;
+
+  UpdateDialog({this.upDateContent, this.isForce});
+
+  @override
+  Widget build(BuildContext context) {
+    return StatefulBuilder(
+      builder: (BuildContext context, void Function(void Function()) setState) {
+        return Center(
+          child: Container(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Container(
+                  width: 319,
+                  height: 370,
+                  child: Stack(
+                    children: <Widget>[
+
+                      Container(
+                        color: Colors.white,
+                        width: double.infinity,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Container(
+                              margin: EdgeInsets.only(top: 110),
+                              child: Text('发现新版本',
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      color: Colors.white,
+                                      decoration: TextDecoration.none)),
+                            ),
+                            Text(upDateContent,
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.black54,
+                                    decoration: TextDecoration.none)),
+                            Container(
+                              width: 250,
+                              height: 42,
+                              margin: EdgeInsets.only(bottom: 15),
+                              child: RaisedButton(
+                                  color: Colors.red,
+                                  shape: StadiumBorder(),
+                                  child: Text(
+                                    '立即更新',
+                                    style: TextStyle(
+                                        fontSize: 20, color: Colors.white),
+                                  ),
+                                  onPressed: () {}),
+                            )
+                          ],
+                        ),
+                      ),
+                      Image.asset(
+                        'assets/images/up_version.png',
+                        fit: BoxFit.cover,
+                      ),
+                    ],
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: Offstage(
+                    offstage: isForce,
+                    child: Container(
+                        margin: EdgeInsets.only(top: 30),
+                        child: Image.asset(
+                          'assets/images/up_version.png',
+                          width: 35,
+                          height: 35,
+                        )),
+                  ),
+                )
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  static showUpdateDialog(
+      BuildContext context, String mUpdateContent, bool mIsForce) {
+    return showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (BuildContext context) {
+          return WillPopScope(
+              child: UpdateDialog(
+                  upDateContent: mUpdateContent, isForce: mIsForce),
+              onWillPop: _onWillPop);
+        });
+  }
+
+  static Future<bool> _onWillPop() async {
+    return false;
   }
 }

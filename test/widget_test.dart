@@ -88,6 +88,8 @@ void main() {
   /*  foo = ["aaaaa"];
     bar = ["aaaa"];
     baz = ["aaaa"];*/
+     var b = new B();
+     b.a();
   });
 
 }
@@ -100,6 +102,13 @@ mixin  A {
 class B with A {
   @override
   void a() {
-    print('fun a => by b');
+    // TODO: implement a
+    super.a();
   }
+  @override
+  String toString() {
+    // TODO: implement toString
+    return super.toString();
+  }
+
 }
