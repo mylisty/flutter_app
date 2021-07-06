@@ -20,6 +20,7 @@ import 'package:flutter_app/sort/provider/model/model.dart';
 import 'package:flutter_app/sort/provider/model/secondModel.dart';
 import 'package:flutter_app/sort/provider/provier_demo.dart';
 import 'package:flutter_app/sort/provider/provier_page2.dart';
+import 'package:flutter_app/watermark/workmark_page.dart';
 import 'package:flutter_picker/flutter_picker.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 
@@ -39,6 +40,7 @@ import 'dart:async';
 import ' button/button_page.dart';
 import 'PickerData.dart';
 import 'Test.dart';
+import 'canvas/canvas_page.dart';
 import 'dialog.dart';
 import 'dart:math' as math;
 
@@ -66,7 +68,7 @@ void main() {
     GetMaterialApp(
       defaultTransition: Transition.rightToLeftWithFade,
       navigatorKey: Get.key,
-      home: MaterialPageTest(),
+      home: CanvasPage(),
       // home: BasicPage(),
       // home: PopPage(),
       navigatorObservers: [
@@ -84,6 +86,117 @@ void main() {
     title: '',
     home: new TabbarBgColorTest(),*/
   );
+}
+
+class LCTabbarController extends StatefulWidget {
+  LCTabbarController({Key key}) : super(key: key);
+
+  @override
+  _LCTabbarControllerState createState() => _LCTabbarControllerState();
+}
+
+class _LCTabbarControllerState extends State<LCTabbarController> {
+  int currentIndex;
+  final pages = [MyApp3(), MyApp3(), MyApp3(), MyApp3()];
+  List titles = ["首页", "发现", "消息", "我的"];
+  List normalImgUrls = [
+    "http://img4.imgtn.bdimg.com/it/u=3432620279,1821211839&fm=26&gp=0.jpg",
+    "http://img4.imgtn.bdimg.com/it/u=3432620279,1821211839&fm=26&gp=0.jpg",
+    "http://img4.imgtn.bdimg.com/it/u=3432620279,1821211839&fm=26&gp=0.jpg",
+    "http://img4.imgtn.bdimg.com/it/u=3432620279,1821211839&fm=26&gp=0.jpg"
+  ];
+  List selectedImgUrls = [
+    "http://img2.imgtn.bdimg.com/it/u=1414450711,2877842653&fm=26&gp=0.jpg",
+    "http://img2.imgtn.bdimg.com/it/u=1414450711,2877842653&fm=26&gp=0.jpg",
+    "http://img2.imgtn.bdimg.com/it/u=1414450711,2877842653&fm=26&gp=0.jpg",
+    "http://img2.imgtn.bdimg.com/it/u=1414450711,2877842653&fm=26&gp=0.jpg",
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    currentIndex = 0;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    double itemWidth = MediaQuery.of(context).size.width / 5;
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("底部导航栏"),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: Container(
+        width: 70,
+        height: 70,
+        padding: EdgeInsets.all(5),
+        margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(35),
+          color: Colors.white,
+        ),
+        child: FloatingActionButton(
+          child: Icon(Icons.add),
+          onPressed: () {
+            print("你点击了ADD");
+            //调整进入Addpage()
+          },
+          elevation: 5,
+          backgroundColor: Colors.yellow,
+        ),
+      ),
+      bottomNavigationBar: BottomAppBar(
+        child: Row(children: <Widget>[
+          SizedBox(height: 49, width: itemWidth, child: tabbar(0)),
+          SizedBox(height: 49, width: itemWidth, child: tabbar(1)),
+          SizedBox(
+            height: 49,
+            width: itemWidth,
+          ),
+          SizedBox(height: 49, width: itemWidth, child: tabbar(2)),
+          SizedBox(height: 49, width: itemWidth, child: tabbar(3)),
+        ]),
+      ),
+      body: pages[currentIndex],
+    );
+  }
+
+  // 自定义BottomAppBar
+  Widget tabbar(int index) {
+    //设置默认未选中的状态
+    TextStyle style = TextStyle(fontSize: 12, color: Colors.black);
+    String imgUrl = normalImgUrls[index];
+    if (currentIndex == index) {
+      //选中的话
+      style = TextStyle(fontSize: 13, color: Colors.blue);
+      imgUrl = selectedImgUrls[index];
+    }
+    //构造返回的Widget
+    Widget item = Container(
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Image.network(imgUrl, width: 25, height: 25),
+            Text(
+              titles[index],
+              style: style,
+            )
+          ],
+        ),
+        onTap: () {
+          if (currentIndex != index) {
+            setState(() {
+              currentIndex = index;
+            });
+          }
+        },
+      ),
+    );
+    return item;
+  }
 }
 
 class MiddleWare extends NavigatorObserver {
@@ -3491,8 +3604,7 @@ class TextFieldState extends State<MyApp29>
                     borderRadius: BorderRadius.circular(50),
                   ),
                   child: RaisedButton(
-                    onPressed: () {
-                    },
+                    onPressed: () {},
                     child: Text("RaiseButton"),
                     shape: new StadiumBorder(
                       side: new BorderSide(
@@ -4050,14 +4162,13 @@ class _HomePagerState extends State<ViewPager> {
 */
 
 class MyApp26 extends StatelessWidget {
-  final List<String> item;
 
-  MyApp26({Key key, @required this.item}) : super(key: key);
+  MyApp26({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      child: new Center(
+    return Scaffold(
+      body: new Center(
         child: Container(
           color: Colors.white,
           child: new Column(
@@ -4073,7 +4184,7 @@ class MyApp26 extends StatelessWidget {
                     height: 50,
                     child: new Image.asset(
                       'assets/images/qr_zhilun.jpg',
-                      fit: BoxFit.fill,
+                      fit: BoxFit.cover,
                     ),
                   ),
                 ),
@@ -5357,7 +5468,7 @@ class MyApp6 extends StatelessWidget {
   }
 }
 
-class MyApp5 extends StatelessWidget {
+class TextPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
