@@ -95,6 +95,7 @@ class TextFieldPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var fa = new FocusNode();
     return new Scaffold(
       appBar: new AppBar(
         title: new Text('$result'),
@@ -102,6 +103,7 @@ class TextFieldPage extends StatelessWidget {
       body: ListView(
         children: [
           new TextField(
+            focusNode: fa,
             controller: rechargeController,
             //    maxLength: 30,//最大长度，设置此项会让TextField右下角有一个输入数量的统计字符串
             maxLines: 1,
@@ -294,6 +296,14 @@ class TextFieldPage extends StatelessWidget {
                   border: InputBorder.none),
             ),
           ),
+          SizedBox(
+            height: 35,
+          ),
+          ElevatedButton(
+              onPressed: () {
+                fa.unfocus();
+              },
+              child: Text("test")),
         ],
       ),
     );
