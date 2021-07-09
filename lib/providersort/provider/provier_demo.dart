@@ -2,12 +2,12 @@
 import 'package:common_utils/common_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/sort/flutterprovider/providerspage.dart';
-import 'package:flutter_app/sort/provider/model/item.dart';
-import 'package:flutter_app/sort/provider/model/model.dart';
-import 'package:flutter_app/sort/provider/model/secondModel.dart';
-import 'package:flutter_app/sort/provider/provier_page2.dart';
+import 'package:flutter_app/providersort/provider/provier_page2.dart';
 import 'package:provider/provider.dart';
+
+import 'model/item.dart';
+import 'model/model.dart';
+import 'model/secondModel.dart';
 
 /// @ProjectName: flutter_app
 /// @Description:

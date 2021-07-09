@@ -15,15 +15,15 @@ import '../main.dart';
 ///  @UpdateRemark: 更新说明
 // https://www.jianshu.com/p/5982e2322f3b 贝塞尔曲线 学习
 // https://juejin.cn/post/6981110738584600607
-class CanvasPage extends StatefulWidget {
+class CanvasPage2 extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return _CanvasPageState();
+    return _CanvasPageState2();
   }
 }
 
 // https://blog.csdn.net/tianzhilan0/article/details/107692508
-class _CanvasPageState extends State<CanvasPage> {
+class _CanvasPageState2 extends State<CanvasPage2> {
   @override
   void initState() {
     super.initState();
@@ -161,14 +161,14 @@ class M extends CustomPainter {
   }
 }
 
-class LCTabbarController extends StatefulWidget {
-  LCTabbarController({Key key}) : super(key: key);
+class LCTabbarController2 extends StatefulWidget {
+  LCTabbarController2({Key key}) : super(key: key);
 
   @override
-  _LCTabbarControllerState createState() => _LCTabbarControllerState();
+  _LCTabbarControllerState2 createState() => _LCTabbarControllerState2();
 }
 
-class _LCTabbarControllerState extends State<LCTabbarController> {
+class _LCTabbarControllerState2 extends State<LCTabbarController2> {
   int currentIndex;
   final pages = [MyApp3(), MyApp3(), MyApp3(), MyApp3()];
   List titles = ["首页", "发现", "消息", "我的"];
@@ -205,11 +205,12 @@ class _LCTabbarControllerState extends State<LCTabbarController> {
       floatingActionButton: Stack(
         children: [
           Container(
+            width: 120,
+            height: 120,
             child: WaveLoadingWidget(
               backgroundColor:  Colors.white,
               foregroundColor: Colors.white,
-              waveColor:  Colors.white
-              ,
+              waveColor:  Colors.white,
             ),
           ),
           Container(
@@ -366,10 +367,10 @@ class WaveLoadingPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    double side = min(120,120);
+    double side = min(size.width, size.height);
     double radius = side / 2.0;
     _circlePath.reset();
-    _circlePath.addRect(Rect.fromLTWH(0, 50, side, side));
+    _circlePath.addArc(Rect.fromLTWH(0, 0, side, side), 0, 4 * pi);
     double waveWidth = side * 0.8;
     double waveHeight = side / 6;
     _wavePath.reset();
@@ -383,6 +384,7 @@ class WaveLoadingPainter extends CustomPainter {
     _wavePath.relativeLineTo(0, radius+3);
     _wavePath.lineTo(-waveWidth, side);
     _wavePath.close();
+
     var combine = Path.combine(PathOperation.intersect, _circlePath, _wavePath);
     canvas.drawPath(combine, _paint);
     // canvas.clipPath(combine);
