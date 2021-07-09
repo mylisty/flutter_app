@@ -2,6 +2,7 @@ import 'dart:collection';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 
 import '../res_colours.dart';
@@ -92,10 +93,12 @@ class TextFieldPage extends StatelessWidget {
   String platformVersion = 'Unknown';
   var demoPlugin = const MethodChannel('demo.plugin');
   TextEditingController rechargeController = TextEditingController();
-
+   bool s = true;
   @override
   Widget build(BuildContext context) {
     var fa = new FocusNode();
+    // https://book.flutterchina.club/chapter3/input_and_form.html#_3-7-2-%E8%A1%A8%E5%8D%95form
+    // checkBox flutter_sujian_select 1.0.1
     return new Scaffold(
       resizeToAvoidBottomInset: false, // 防止底部被键盘遮挡
       appBar: new AppBar(
@@ -107,6 +110,12 @@ class TextFieldPage extends StatelessWidget {
         },
         child: ListView(
           children: [
+            Checkbox( onChanged: (b) {
+                 s = !s;
+            }, value: s,splashRadius: 44,mouseCursor: MouseCursor.defer,),
+            Checkbox(value: s, onChanged: (b) {
+              s = !s;
+            }),
             new TextField(
               focusNode: fa,
               controller: rechargeController,
@@ -117,7 +126,8 @@ class TextFieldPage extends StatelessWidget {
               autocorrect: true,
               onSubmitted: (str) {
                 print("sub");
-              },// 键盘 提交按钮监听
+              },
+              // 键盘 提交按钮监听
               textInputAction: TextInputAction.send,
               /*是否自动对焦
               autofocus: false,
