@@ -97,188 +97,37 @@ class TextFieldPage extends StatelessWidget {
   Widget build(BuildContext context) {
     var fa = new FocusNode();
     return new Scaffold(
+      resizeToAvoidBottomInset: false, // 防止底部被键盘遮挡
       appBar: new AppBar(
         title: new Text('$result'),
       ),
-      body: ListView(
-        children: [
-          new TextField(
-            focusNode: fa,
-            controller: rechargeController,
-            //    maxLength: 30,//最大长度，设置此项会让TextField右下角有一个输入数量的统计字符串
-            maxLines: 1,
-            //最大行数
-            autocorrect: true,
-            /*          //是否自动更正
-            autofocus: false,
-            //是否自动对焦
-            obscureText: false,*/
-            //是否是密码
-            textAlign: TextAlign.start,
-            //文本对齐方式
-            style: TextStyle(fontSize: 16, color: Colors.black87),
-            //输入文本的样式
-            onChanged: (text) {
-              //内容改变的回调
-              print('change $text');
-            },
-            cursorWidth: 2.0,
-            cursorColor: Colors.black87,
-            //光标颜色,
-            dragStartBehavior: DragStartBehavior.down,
-            // this.dragStartBehavior = DragStartBehavior.down,
-            scrollPadding: EdgeInsets.all(20),
-            inputFormatters: [
-              // FilteringTextInputFormatter.allow(RegExp(r'[0-9]')), // 只允许输入样式
-              FilteringTextInputFormatter.deny(RegExp("[0-9]")), // 不允许的样式
-              // 不允许输入的
-              LengthLimitingTextInputFormatter(5)
-            ],
-            decoration: new InputDecoration(
-                enabled: true,
-                labelText: "输入账户",
-                // 悬浮提示\
-                hintText: "phone",
-                hintStyle: new TextStyle(fontSize: 16),
-                // prefixIcon: Icon(Icons.phone_android),// 左侧内图标
-                icon: Icon(Icons.phone_android),
-                // 左侧外图标
-                suffixIcon: GestureDetector(
-                  child: Icon(Icons.navigate_next),
-                  onTap: () {
-                    print("print clcik");
-                  },
-                ),
-                errorText: null,
-                // 设置为null errorBorder 失效
-                /*   border: new OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8.0),
-                      borderSide: BorderSide(color: Colors.red)
-                  ),*/
-//                  border: new UnderlineInputBorder( //OutlineInputBorder 边框
-//                      borderSide: BorderSide(color: Colors.black87 ),
-//                      borderRadius: BorderRadius.circular(7.0)
-//                  ),
-                border: new UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black12)),
-                // 聚焦时
-                focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.blue)),
-                disabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black12)),
-                // 未聚焦时
-                enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black)),
-                errorBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.red))),
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          Container(
-            height: 143,
-            margin: EdgeInsets.symmetric(horizontal: 25),
-            padding: EdgeInsets.all(10),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8.0),
-                border: Border.all(color: Colors.black12, width: 1)),
-            child: TextField(
-              maxLines: 5,
-              maxLength: 200,
-              decoration: InputDecoration(
-                  contentPadding: EdgeInsets.all(10),
-                  hintText: "输入内容",
-                  counterStyle: TextStyle(color: Colors.blue),
-                  border: InputBorder.none
-                  /* border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8.0))*/
-                  ),
-            ),
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          Container(
-            margin: EdgeInsets.symmetric(horizontal: 25),
-            child: TextFormField(
-              keyboardType: TextInputType.visiblePassword,
-              maxLines: 1,
-              autofillHints: <String>[AutofillHints.password],
-              scrollPadding: EdgeInsets.all(25),
-              textAlign: TextAlign.start,
-              decoration: InputDecoration(
-                filled: true,
-                isCollapsed: true,
-                contentPadding:
-                    EdgeInsets.symmetric(horizontal: 29, vertical: 11),
-                fillColor: CommonColors.color_99,
-                hintText: "请输入域帐号密码",
-                hintStyle: TextStyle(fontSize: 14, color: CommonColors.text_33),
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                    borderSide: BorderSide.none),
-              ),
-            ),
-          ),
-          Container(
-            height: 56.0,
-            decoration: BoxDecoration(
-              border:
-                  Border(bottom: BorderSide(color: Colors.black12, width: 1)),
-            ),
-            child: Container(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  Container(
-                    height: double.infinity,
-                    margin: EdgeInsets.only(top: 8),
-                    alignment: Alignment.topLeft,
-                    child: Text(
-                      "¥",
-                      style:
-                          TextStyle(fontSize: 24, color: CommonColors.text_66),
-                    ),
-                  ),
-                  SizedBox(width: 8.0),
-                  Expanded(
-                    child: TextField(
-                      autofocus: true,
-                      keyboardType: TextInputType.number,
-                      style:
-                          TextStyle(color: CommonColors.text_33, fontSize: 48),
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            ),
-          ),
-          new Container(
-            width: 200,
-            child: TextField(
+      body: GestureDetector(
+        onTap: () {
+          FocusScope.of(context).requestFocus(FocusNode());
+        },
+        child: ListView(
+          children: [
+            new TextField(
+              focusNode: fa,
+              controller: rechargeController,
               //    maxLength: 30,//最大长度，设置此项会让TextField右下角有一个输入数量的统计字符串
-              maxLines: 1,
               //最大行数
-              autocorrect: true,
+              maxLines: 1,
               //是否自动更正
+              autocorrect: true,
+              onSubmitted: (str) {
+                print("sub");
+              },// 键盘 提交按钮监听
+              textInputAction: TextInputAction.send,
+              /*是否自动对焦
               autofocus: false,
-              //是否自动对焦
-              obscureText: false,
+              // 秘密隐藏
+              obscureText: false,*/
               //是否是密码
               textAlign: TextAlign.start,
               //文本对齐方式
               style: TextStyle(fontSize: 16, color: Colors.black87),
               //输入文本的样式
-              //| inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],//允许的输入格式
-              inputFormatters: [
-                // FilteringTextInputFormatter.allow(RegExp(r'[0-9]')), // 只允许输入样式
-                FilteringTextInputFormatter.deny(RegExp("[0-9]")),
-                // 不允许输入的
-                LengthLimitingTextInputFormatter(5)
-              ],
               onChanged: (text) {
                 //内容改变的回调
                 print('change $text');
@@ -289,22 +138,186 @@ class TextFieldPage extends StatelessWidget {
               dragStartBehavior: DragStartBehavior.down,
               // this.dragStartBehavior = DragStartBehavior.down,
               scrollPadding: EdgeInsets.all(20),
+              inputFormatters: [
+                // FilteringTextInputFormatter.allow(RegExp(r'[0-9]')), // 只允许输入样式
+                FilteringTextInputFormatter.deny(RegExp("[0-9]")),
+                // 不允许的样式
+                // 不允许输入的
+                LengthLimitingTextInputFormatter(5)
+              ],
               decoration: new InputDecoration(
-                  hintText: "搜索",
+                  enabled: true,
+                  labelText: "输入账户",
+                  // 悬浮提示\
+                  hintText: "phone",
                   hintStyle: new TextStyle(fontSize: 16),
-                  prefixIcon: Icon(Icons.search),
-                  border: InputBorder.none),
+                  // prefixIcon: Icon(Icons.phone_android),// 左侧内图标
+                  icon: Icon(Icons.phone_android),
+                  // 左侧外图标
+                  suffixIcon: GestureDetector(
+                    child: Icon(Icons.navigate_next),
+                    onTap: () {
+                      print("print clcik");
+                    },
+                  ),
+                  errorText: null,
+                  // 设置为null errorBorder 失效
+                  /*   border: new OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                        borderSide: BorderSide(color: Colors.red)
+                    ),*/
+//                  border: new UnderlineInputBorder( //OutlineInputBorder 边框
+//                      borderSide: BorderSide(color: Colors.black87 ),
+//                      borderRadius: BorderRadius.circular(7.0)
+//                  ),
+                  border: new UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black12)),
+                  // 聚焦时
+                  focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.blue)),
+                  disabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black12)),
+                  // 未聚焦时
+                  enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black)),
+                  errorBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.red))),
             ),
-          ),
-          SizedBox(
-            height: 35,
-          ),
-          ElevatedButton(
-              onPressed: () {
-                fa.unfocus();
-              },
-              child: Text("test")),
-        ],
+            SizedBox(
+              height: 20,
+            ),
+            Container(
+              height: 143,
+              margin: EdgeInsets.symmetric(horizontal: 25),
+              padding: EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8.0),
+                  border: Border.all(color: Colors.black12, width: 1)),
+              child: TextField(
+                maxLines: 5,
+                maxLength: 200,
+                decoration: InputDecoration(
+                    contentPadding: EdgeInsets.all(10),
+                    hintText: "输入内容",
+                    counterStyle: TextStyle(color: Colors.blue),
+                    border: InputBorder.none
+                    /* border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0))*/
+                    ),
+              ),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 25),
+              child: TextFormField(
+                keyboardType: TextInputType.visiblePassword,
+                maxLines: 1,
+                autofillHints: <String>[AutofillHints.password],
+                scrollPadding: EdgeInsets.all(25),
+                textAlign: TextAlign.start,
+                decoration: InputDecoration(
+                  filled: true,
+                  isCollapsed: true,
+                  contentPadding:
+                      EdgeInsets.symmetric(horizontal: 29, vertical: 11),
+                  fillColor: CommonColors.color_99,
+                  hintText: "请输入域帐号密码",
+                  hintStyle:
+                      TextStyle(fontSize: 14, color: CommonColors.text_33),
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: BorderSide.none),
+                ),
+              ),
+            ),
+            Container(
+              height: 56.0,
+              decoration: BoxDecoration(
+                border:
+                    Border(bottom: BorderSide(color: Colors.black12, width: 1)),
+              ),
+              child: Container(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    Container(
+                      height: double.infinity,
+                      margin: EdgeInsets.only(top: 8),
+                      alignment: Alignment.topLeft,
+                      child: Text(
+                        "¥",
+                        style: TextStyle(
+                            fontSize: 24, color: CommonColors.text_66),
+                      ),
+                    ),
+                    SizedBox(width: 8.0),
+                    Expanded(
+                      child: TextField(
+                        autofocus: true,
+                        keyboardType: TextInputType.number,
+                        style: TextStyle(
+                            color: CommonColors.text_33, fontSize: 48),
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+            new Container(
+              width: 200,
+              child: TextField(
+                //    maxLength: 30,//最大长度，设置此项会让TextField右下角有一个输入数量的统计字符串
+                maxLines: 1,
+                //最大行数
+                autocorrect: true,
+                //是否自动更正
+                autofocus: false,
+                //是否自动对焦
+                obscureText: false,
+                //是否是密码
+                textAlign: TextAlign.start,
+                //文本对齐方式
+                style: TextStyle(fontSize: 16, color: Colors.black87),
+                //输入文本的样式
+                //| inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],//允许的输入格式
+                inputFormatters: [
+                  // FilteringTextInputFormatter.allow(RegExp(r'[0-9]')), // 只允许输入样式
+                  FilteringTextInputFormatter.deny(RegExp("[0-9]")),
+                  // 不允许输入的
+                  LengthLimitingTextInputFormatter(5)
+                ],
+                onChanged: (text) {
+                  //内容改变的回调
+                  print('change $text');
+                },
+                cursorWidth: 2.0,
+                cursorColor: Colors.black87,
+                //光标颜色,
+                dragStartBehavior: DragStartBehavior.down,
+                // this.dragStartBehavior = DragStartBehavior.down,
+                scrollPadding: EdgeInsets.all(20),
+                decoration: new InputDecoration(
+                    hintText: "搜索",
+                    hintStyle: new TextStyle(fontSize: 16),
+                    prefixIcon: Icon(Icons.search),
+                    border: InputBorder.none),
+              ),
+            ),
+            SizedBox(
+              height: 35,
+            ),
+            ElevatedButton(
+                onPressed: () {
+                  fa.unfocus();
+                },
+                child: Text("test")),
+          ],
+        ),
       ),
     );
   }
