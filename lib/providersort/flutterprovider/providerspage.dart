@@ -60,6 +60,37 @@ class _SecondChildState extends State<SecondChild> {
         title: Text("Second"),
       ),
       body: Center(
+        child: GestureDetector(
+          onTap: () {
+            Navigator.of(context)
+                .push(new MaterialPageRoute(builder: (context) {
+              return new SecondChild3();
+            }));
+
+          },
+          child: Text("data"),
+        ),
+      ),
+    );
+  }
+}
+
+class SecondChild3 extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return _SecondChildState3();
+  }
+}
+
+class _SecondChildState3 extends State<SecondChild3> {
+  @override
+  Widget build(BuildContext context) {
+    var model = Provider.of<ProviderBean>(context);
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Second"),
+      ),
+      body: Center(
         child: Text("data ${model.name}"),
       ),
     );

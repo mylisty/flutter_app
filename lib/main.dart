@@ -68,7 +68,7 @@ void main() {
     GetMaterialApp(
       defaultTransition: Transition.rightToLeftWithFade,
       navigatorKey: Get.key,
-      home: TextFieldPage(),
+      home: MyProviderApp(),
       // home: BasicPage(),
       // home: PopPage(),
       navigatorObservers: [
@@ -131,9 +131,9 @@ class MyProviderApp extends StatelessWidget {
       ],
       child: MaterialApp(
         title: "provier",
-        initialRoute: '/',
+        initialRoute: '/pages',
         routes: {
-          '/': (context) => ProviderTestPage(),
+          '/': (context) => ProvidersPage(),
           '/catalog': (context) => ProviderTestPage2(),
           '/pages': (context) => ProvidersPage(),
         },
