@@ -14,6 +14,7 @@ import 'package:flutter_app/pop/pop_page.dart';
 import 'package:flutter_app/progress/progress_page.dart';
 import 'package:flutter_app/providersort/animation.dart';
 import 'package:flutter_app/providersort/flutterprovider/providerspage.dart';
+import 'package:flutter_app/providersort/provider/model/ThirdModel.dart';
 import 'package:flutter_app/providersort/provider/model/model.dart';
 import 'package:flutter_app/providersort/provider/model/secondModel.dart';
 import 'package:flutter_app/providersort/provider/provier_page2.dart';
@@ -118,6 +119,7 @@ class MyProviderApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => ModelTest()),
+        ChangeNotifierProvider(create: (context) => ThirdModel()),
         ChangeNotifierProxyProvider<ModelTest, SecondModel>(
           // ChangeNotifierProxyProvider自动disPose已有实例的话 可以用于合并实例
           // 用ChangeNotifierProxyProvider.value 需要手动销毁实例
@@ -129,14 +131,9 @@ class MyProviderApp extends StatelessWidget {
           },
         )
       ],
-      child: MaterialApp(
+      child:MaterialApp(
         title: "provier",
-        initialRoute: '/pages',
-        routes: {
-          '/': (context) => ProvidersPage(),
-          '/catalog': (context) => ProviderTestPage2(),
-          '/pages': (context) => ProvidersPage(),
-        },
+        home:  ProviderTestPage(),
       ),
     );
   }

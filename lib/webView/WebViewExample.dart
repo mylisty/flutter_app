@@ -31,6 +31,36 @@ The navigation delegate is set to block navigation to the youtube website.
 </ul>
 </body>
 </html>
+''';const String kNavigationExamplePage2= '''
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>上传图片</title>
+</head>
+<body>
+  <div>纯input与type</div>
+  <input type="file">
+
+  <div>指明需要图片</div>
+  <input type="file" accept='image/*'>
+
+  <div>指明需要多张图片</div>
+  <input type="file" multiple accept='image/*'>
+
+  <div>指明调用摄像头获取图片</div>
+  <input type="file" capture='camera' accept='image/*'>
+
+  <div>指明调用摄像头并多张图片</div>
+  <!-- multiple 无效 -->
+  <input type="file" multiple capture='camera' accept='image/*'>
+ <script>
+
+ </script>
+</body>
+</html>
 ''';
 
 class WebViewExample extends StatefulWidget {

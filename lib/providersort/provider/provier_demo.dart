@@ -3,8 +3,10 @@ import 'package:common_utils/common_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/providersort/provider/provier_page2.dart';
+import 'package:flutter_app/providersort/provider/provier_page3.dart';
 import 'package:provider/provider.dart';
 
+import 'model/ThirdModel.dart';
 import 'model/item.dart';
 import 'model/model.dart';
 import 'model/secondModel.dart';
@@ -74,7 +76,7 @@ class _ProviderState extends State<ProviderTestPage> {
                   onPressed: () {
                     Navigator.of(context)
                         .push(new MaterialPageRoute(builder: (context) {
-                      return new ProviderTestPage2();
+                      return new ProviderTestPage3();
                     }));
                     // Navigator.pushNamed(context, '/pages');
                   },
