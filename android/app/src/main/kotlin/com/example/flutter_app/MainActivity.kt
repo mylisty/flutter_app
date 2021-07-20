@@ -12,8 +12,8 @@ import io.flutter.plugin.common.EventChannel
 import android.icu.lang.UCharacter.GraphemeClusterBreak.T
 
 
-
-
+// https://juejin.cn/post/6976443779762880549  RecyclerView
+// https://juejin.cn/post/6844904137713270797 RecyclerView 豆瓣详情页面 bottomDialog 样式
 
 class MainActivity: FlutterActivity() {
 

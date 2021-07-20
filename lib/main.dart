@@ -60,6 +60,7 @@ import 'providersort/provider/provier_demo.dart';
 // 底部弹窗 跟随键盘动
 // const 是编译时常量，用 const 修饰的常量，必须在声明时初始化，并且是可以确定的值。
 // 而 final 则是运行时常量，用 final 修饰的常量，必须在声明时初始化，或者在构造函数中初始化，但它的值可以动态计算
+// proviersort 包含动画
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(
@@ -69,7 +70,7 @@ void main() {
     GetMaterialApp(
       defaultTransition: Transition.rightToLeftWithFade,
       navigatorKey: Get.key,
-      home: MyProviderApp(),
+      home: MainPage(),
       // home: BasicPage(),
       // home: PopPage(),
       navigatorObservers: [

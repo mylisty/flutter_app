@@ -66,7 +66,6 @@ class _SecondChildState extends State<SecondChild> {
                 .push(new MaterialPageRoute(builder: (context) {
               return new SecondChild3();
             }));
-
           },
           child: Text("data"),
         ),
