@@ -22,6 +22,7 @@ import 'package:flutter_app/res_colours.dart';
 import 'package:flutter_app/res_styles.dart';
 import 'package:flutter_app/textField/textField_page.dart';
 import 'package:flutter_app/third/flutterPicker/fluter_picker.dart';
+import 'package:flutter_app/watermark/workmark_page.dart';
 import 'package:flutter_picker/flutter_picker.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 
@@ -81,6 +82,10 @@ void main() {
             name: "/ButtonPage",
             transition: Transition.fadeIn,
             page: () => ButtonPage("button")),
+        GetPage(
+            name: "/water",
+            transition: Transition.fadeIn,
+            page: () => WatermarkPage()),
       ],
       localizationsDelegates: [
         PickerLocalizationsDelegate.delegate,

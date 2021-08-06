@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 /// @ProjectName: flutter_app
 /// @Description:
@@ -18,7 +19,17 @@ class WatermarkPage extends StatefulWidget {
 
 class _WatermarkPage extends State<WatermarkPage> {
   @override
+  void initState() {
+       var arguments = Get.arguments;
+    print("aaaa111 ${arguments.toString()}"); // get信息接收
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    String tmp =
+        ModalRoute.of(context).settings.arguments.toString(); //  原生信息接收
+    print("aaaa $tmp");
     return Scaffold(
       appBar: AppBar(
         title: Text("sss"),
@@ -28,30 +39,21 @@ class _WatermarkPage extends State<WatermarkPage> {
             child: Column(
               children: [
                 TextField(
-                  onChanged: (text) {
-
-                  },
+                  onChanged: (text) {},
                 ),
                 TextField(
-                  onChanged: (text) {
-
-                  },
+                  onChanged: (text) {},
                 ),
                 TextField(
-                  onChanged: (text) {
-
-                  },
+                  onChanged: (text) {},
                 ),
                 TextField(
-                  onChanged: (text) {
-
-                  },
+                  onChanged: (text) {},
                 ),
-                TextButton(onPressed: () {
-                  setState(() {
-
-                  });
-                }, child: Text("sss"))
+                TextButton(
+                    onPressed: () {
+                    },
+                    child: Text("sss"))
               ],
             ),
           ),

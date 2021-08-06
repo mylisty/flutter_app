@@ -60,7 +60,7 @@ class ButtonPage extends BasePage {
                   //       side: BorderSide.none,
                   //       borderRadius: BorderRadius.all(Radius.circular(20))),
                   // ),
-                /*  shape: MaterialStateProperty.all(CircleBorder(
+                  /*  shape: MaterialStateProperty.all(CircleBorder(
                       side: BorderSide(
                     //设置 界面效果
                     color: Colors.green,
@@ -102,7 +102,25 @@ class ButtonPage extends BasePage {
                         ),
                 ),*/
                 onPressed: () {
-                  Get.to(WatermarkPage());
+                /*  Get.toNamed("/water",arguments: {"a":12},).then((value) => {
+                    print("aaaa back ${value.toString()}"),
+                  });*/
+
+                 /* Navigator.of(context).pushNamed("/water",
+                      arguments: {"aaaa": "1123"}).then((value) {
+                    print("aaaaa ${value.toString()}");
+                  });*/
+                  // 删除一个路由。
+                  // Get.removeRoute()
+
+//反复返回，直到表达式返回真。
+//                   Get.until()
+
+// 转到下一条路由，并删除所有之前的路由，直到表达式返回true。
+//                   Get.offUntil()
+
+// 转到下一个命名的路由，并删除所有之前的路由，直到表达式返回true。
+//                   Get.offNamedUntil()*/
                 },
                 child: Text("textButton"),
               ),
@@ -213,8 +231,7 @@ class ButtonPage extends BasePage {
                   // 正常时阴影隐藏
                   highlightElevation: 0,
                   // 点击时阴影隐藏
-                  onPressed: () {
-                  },
+                  onPressed: () {},
                   child: Text(
                     '登 录',
                     style: TextStyle(color: Colors.white, fontSize: 20),
@@ -243,9 +260,8 @@ class ButtonPage extends BasePage {
                     borderRadius: BorderRadius.circular(25)),
                 child: ElevatedButton(
                   style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(
-                        Colors.transparent
-                    ),
+                    backgroundColor:
+                        MaterialStateProperty.all(Colors.transparent),
                     elevation: MaterialStateProperty.all(0),
                     shadowColor: MaterialStateProperty.all(
                       Color(0xff3BE6AD),
@@ -257,8 +273,7 @@ class ButtonPage extends BasePage {
                     ),
                   ),
                   // 点击时阴影隐藏
-                  onPressed: () {
-                  },
+                  onPressed: () {},
                   child: Text(
                     '登 录',
                     style: TextStyle(color: Colors.white, fontSize: 20),
