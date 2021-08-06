@@ -21,51 +21,73 @@ class _WatermarkPage extends State<WatermarkPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("data"),
+        title: Text("sss"),
       ),
-      body: _WatermarkView(Center(
-        child: Text(
-          "center",
-          style: TextStyle(fontSize: 14, color: Colors.amberAccent),
-        ),
-      )),
+      body: _WatermarkView(
+          Container(
+            child: Column(
+              children: [
+                TextField(
+                  onChanged: (text) {
+
+                  },
+                ),
+                TextField(
+                  onChanged: (text) {
+
+                  },
+                ),
+                TextField(
+                  onChanged: (text) {
+
+                  },
+                ),
+                TextField(
+                  onChanged: (text) {
+
+                  },
+                ),
+                TextButton(onPressed: () {
+                  setState(() {
+
+                  });
+                }, child: Text("sss"))
+              ],
+            ),
+          ),
+          "aaa"),
     );
   }
 }
 
 class _WatermarkView extends StatelessWidget {
-  Widget widget;
+  final Widget widget;
+  final String employee;
 
-  _WatermarkView(this.widget);
+  _WatermarkView(this.widget, this.employee);
 
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width; //宽度
     double height = MediaQuery.of(context).size.height;
-
     return Stack(
       children: [
         GridView.builder(
           physics: const NeverScrollableScrollPhysics(),
           itemBuilder: (BuildContext context, int index) {
             //高度
-            return InkWell(
-              onTap: () {
-                print("aaaa");
-              },
-              child: Container(
-                alignment: Alignment.topCenter,
-                width: width / 3,
-                height: height / 6,
-                child: new Transform(
-                  alignment: Alignment.topRight, //相对于坐标系原点的对齐方式
-                  transform: new Matrix4.skewY(-0.45), //沿Y轴倾斜0.3弧度
-                  child: Text('睡懒觉 8888'),
-                ),
+            return Container(
+              alignment: Alignment.topCenter,
+              width: width / 3,
+              height: height / 6,
+              child: new Transform(
+                alignment: Alignment.topRight, //相对于坐标系原点的对齐方式
+                transform: new Matrix4.skewY(-0.45), //沿Y轴倾斜0.3弧度
+                child: Text('$employee'),
               ),
             );
           },
-          itemCount: 18,
+          itemCount: 33,
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               //横轴元素个数
               crossAxisCount: 3,

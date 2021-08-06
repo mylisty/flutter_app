@@ -20,7 +20,7 @@ this.controller,    //编辑框的控制器，跟文本框的交互一般都通�
 this.focusNode,  //用于管理焦点
 this.decoration = const InputDecoration(),   //输入框的装饰器，用来修改外观
 TextInputType keyboardType,   //设置输入类型，不同的输入类型键盘不一样
-this.textInputAction,   //用于控制键盘动作（一般位于右下角，默认是完成）
+this.textInputAction,   //用于控制键盘动作（一般位于右下角，默认是完成）// 可设置成下一项 TextInputAction.next,
 this.textCapitalization = TextCapitalization.none,
 this.style,    //输入的文本样式
 this.textAlign = TextAlign.start,   //输入的文本位置
@@ -93,7 +93,8 @@ class TextFieldPage extends StatelessWidget {
   String platformVersion = 'Unknown';
   var demoPlugin = const MethodChannel('demo.plugin');
   TextEditingController rechargeController = TextEditingController();
-   bool s = true;
+  bool s = true;
+
   @override
   Widget build(BuildContext context) {
     var fa = new FocusNode();
@@ -110,12 +111,19 @@ class TextFieldPage extends StatelessWidget {
         },
         child: ListView(
           children: [
-            Checkbox( onChanged: (b) {
-                 s = !s;
-            }, value: s,splashRadius: 44,mouseCursor: MouseCursor.defer,),
-            Checkbox(value: s, onChanged: (b) {
-              s = !s;
-            }),
+            Checkbox(
+              onChanged: (b) {
+                s = !s;
+              },
+              value: s,
+              splashRadius: 44,
+              mouseCursor: MouseCursor.defer,
+            ),
+            Checkbox(
+                value: s,
+                onChanged: (b) {
+                  s = !s;
+                }),
             new TextField(
               focusNode: fa,
               controller: rechargeController,
@@ -162,8 +170,8 @@ class TextFieldPage extends StatelessWidget {
                   hintText: "phone",
                   hintStyle: new TextStyle(fontSize: 16),
                   // prefixIcon: Icon(Icons.phone_android),// 左侧内图标
-                  icon: Icon(Icons.phone_android),
                   // 左侧外图标
+                  icon: Icon(Icons.phone_android),
                   suffixIcon: GestureDetector(
                     child: Icon(Icons.navigate_next),
                     onTap: () {

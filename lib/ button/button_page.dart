@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/base/base_page.dart';
+import 'package:flutter_app/watermark/workmark_page.dart';
+import 'package:get/get.dart';
 
 /// @ProjectName: flutter_app
 /// @Description:
@@ -99,7 +101,9 @@ class ButtonPage extends BasePage {
                             )
                         ),
                 ),*/
-                onPressed: () {},
+                onPressed: () {
+                  Get.to(WatermarkPage());
+                },
                 child: Text("textButton"),
               ),
               OutlinedButton(
