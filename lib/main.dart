@@ -51,12 +51,14 @@ import 'http_base_util.dart';
 import 'material/material_page.dart';
 import 'providersort/provider/provier_demo.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+
 // flutter demo https://github.com/nisrulz/flutter-examples
 // demo https://github.com/OpenFlutter/Flutter-Notebook
 // https://www.jianshu.com/p/7cff367dbdde 快捷键
 // Myapp105  CustomScrollView  https://www.jianshu.com/p/2ba93e7bb8ea 参考CustomScrollView
 // Myapp106  srcrol View index
 //StickyDemo  TestPage  HomeFragmentPage2 // 吸顶效果  // https://www.jianshu.com/p/fdfe6d808705 参考资料
+// *****比较好   https://juejin.cn/post/6997202342655311879#heading-30 // 吸顶效果
 // MyApp108 头部隐藏和显示效果
 // 底部弹窗 跟随键盘动
 // const 是编译时常量，用 const 修饰的常量，必须在声明时初始化，并且是可以确定的值。
@@ -71,7 +73,7 @@ void main() {
     GetMaterialApp(
       defaultTransition: Transition.rightToLeftWithFade,
       navigatorKey: Get.key,
-      home: ButtonPage("ss"),
+      home: TabbarBgColorTest(),
       // home: BasicPage(),
       // home: PopPage(),
       navigatorObservers: [
@@ -99,7 +101,7 @@ void main() {
         const Locale('ko', 'KO'),
         const Locale('it', 'IT'),
         const Locale('ar', 'AR'),
-        const Locale('tr', 'TR')
+        const Locale('tr', 'TR'),
       ],
     ),
 
@@ -108,8 +110,6 @@ void main() {
     home: new TabbarBgColorTest(),*/
   );
 }
-
-
 
 class MiddleWare extends NavigatorObserver {
   @override
@@ -151,9 +151,9 @@ class MyProviderApp extends StatelessWidget {
           },
         )
       ],
-      child:MaterialApp(
+      child: MaterialApp(
         title: "provier",
-        home:  ProviderTestPage(),
+        home: ProviderTestPage(),
       ),
     );
   }
@@ -797,7 +797,7 @@ class _TestPageState extends State<TestPage> {
           body: new NestedScrollView(
             headerSliverBuilder: (context, bool) {
               return [
-                SliverAppBar(
+                /*SliverAppBar(
                   expandedHeight: 200.0,
                   floating: true,
                   pinned: true,
@@ -808,7 +808,7 @@ class _TestPageState extends State<TestPage> {
                         url,
                         fit: BoxFit.cover,
                       )),
-                ),
+                ),*/
                 new SliverPersistentHeader(
                   delegate: new SliverTabBarDelegate(
                     /**
@@ -852,10 +852,14 @@ class _TestPageState extends State<TestPage> {
             },
             body: TabBarView(
               children: tabTitle
-                  .map((s) => ListView.builder(
+                  .map((s) => Container(
+                            color: Colors.greenAccent,
+                            height: 23,
+                          ) /*ListView.builder(
                         itemBuilder: (context, int) => Text("123"),
                         itemCount: 100,
-                      ))
+                      )*/
+                      )
                   .toList(),
             ),
           ),
@@ -1007,6 +1011,7 @@ class _CustomScrollViewPage extends State<MyApp105> {
             Container(
               height: 500,
               color: Colors.red,
+
               child: Text("data"),
             ),
             Container(
@@ -1401,7 +1406,7 @@ class _TabbarBgColorTesttate extends State<TabbarBgColorTest>
   TabController _tabController;
   PageController _pageController = PageController();
   List<Widget> pageList = [
-    MyApp4(),
+    TestPage(),
     Myapp106(),
     MyApp2(),
     MyApp3(),
@@ -1505,7 +1510,7 @@ class _TabbarBgColorTesttate extends State<TabbarBgColorTest>
             BottomNavigationBarItem(
 //              backgroundColor: Colors.green,
               icon: Icon(Icons.message),
-              title: Text("消息"),
+              title: Text("销售"),
             ),
             BottomNavigationBarItem(
 //              backgroundColor: Colors.amber,
@@ -3515,8 +3520,6 @@ class MyApp25 extends StatelessWidget {
   }
 }
 
-
-
 class Myapp106 extends StatelessWidget {
   // This widget is the root of your application.
   @override
@@ -4227,8 +4230,10 @@ class MyApp14 extends StatelessWidget {
                   /*   border:
                       Border.all(color: Colors.red, width: 2, style: BorderStyle.solid),
                       borderRadius: BorderRadius.all(Radius.circular(10)),*/
-                     boxShadow: [BoxShadow(color: Colors.blue, offset: Offset(5, 5))],
-                 /* BoxShadow(
+                  boxShadow: [
+                    BoxShadow(color: Colors.blue, offset: Offset(5, 5))
+                  ],
+                  /* BoxShadow(
                       color: Colors.red.withOpacity(0.2),
                       offset: Offset(-6.0, 6.0), //阴影x轴偏移量
                       blurRadius: 10, //阴影模糊程度
