@@ -73,7 +73,7 @@ void main() {
     GetMaterialApp(
       defaultTransition: Transition.rightToLeftWithFade,
       navigatorKey: Get.key,
-      home: TabbarBgColorTest(),
+      home: TextFieldPage(),
       // home: BasicPage(),
       // home: PopPage(),
       navigatorObservers: [
