@@ -49,6 +49,9 @@ dependencies:
   permission_handler: ^8.0.0+2
   image_picker: ^0.6.5+3
   video_player: ^2.1.10
+  #图表
+  fl_chart: ^0.40.0
+  table_calendar: ^3.0.2
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -42,6 +42,8 @@ import 'dart:async';
 import ' button/button_page.dart';
 import 'Test.dart';
 import 'canvas/canvas_page.dart';
+import 'date/complex_example.dart';
+import 'date/events_example.dart';
 import 'dialog.dart';
 import 'dart:math' as math;
 
@@ -73,7 +75,8 @@ void main() {
     GetMaterialApp(
       defaultTransition: Transition.rightToLeftWithFade,
       navigatorKey: Get.key,
-      home: TextFieldPage(),
+      home: TableComplexExample(),
+      // home: TextFieldPage(),
       // home: BasicPage(),
       // home: PopPage(),
       navigatorObservers: [

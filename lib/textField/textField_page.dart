@@ -87,11 +87,8 @@ this.alignLabelWithHint,
 })*/
 // ignore: must_be_immutable
 class TextFieldPage extends StatelessWidget {
-  final list = new List.generate(
-      30, (i) => new SecondScreen(title: '商品id$i', dec: '商品详情$i'));
   var result = 'Navigator';
   String platformVersion = 'Unknown';
-  var demoPlugin = const MethodChannel('demo.plugin');
   TextEditingController rechargeController = TextEditingController();
   bool s = true;
 
