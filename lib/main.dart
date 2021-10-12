@@ -75,7 +75,8 @@ void main() {
     GetMaterialApp(
       defaultTransition: Transition.rightToLeftWithFade,
       navigatorKey: Get.key,
-      home: TableComplexExample(),
+      home: MyApp29(),
+      // home: TableComplexExample(),
       // home: TextFieldPage(),
       // home: BasicPage(),
       // home: PopPage(),
@@ -1040,7 +1041,7 @@ class _CustomScrollViewPage extends State<MyApp105> {
       )*/
         Scaffold(
       body: CustomScrollView(
-        physics: const ClampingScrollPhysics(),
+        physics: const BouncingScrollPhysics(),
         //BouncingScrollPhysics 弹性效果   ClampingScrollPhysics  夹击
         reverse: false,
         // 反转页面
@@ -2826,14 +2827,22 @@ class TextFieldState extends State<MyApp29>
                   ),
                 ),
                 RichText(
-                  text: TextSpan(children: [
-                    TextSpan(
-                        text: "aa",
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = () {
-                            LogUtil.e("aaaaaaaaa ");
-                          }),
-                  ]),
+                  text: TextSpan(
+                      style: TextStyle(
+                          decoration: TextDecoration.none),
+                      children: <InlineSpan>[
+                        TextSpan(
+                            text: 'ssss',
+                            style:
+                                TextStyle(color: Colors.red, fontSize: 25)),
+                        TextSpan(
+                            text: '，',
+                            style: TextStyle(color: Colors.blueAccent)),
+                        TextSpan(
+                            text: '一个有态度的程序员',
+                            style: TextStyle(
+                                color: Colors.blueAccent, fontSize: 12)),
+                      ]),
                 ),
                 OutlineButton(
                     textTheme: ButtonTextTheme.normal,
