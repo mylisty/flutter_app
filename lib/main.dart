@@ -44,6 +44,7 @@ import 'Test.dart';
 import 'canvas/canvas_page.dart';
 import 'date/complex_example.dart';
 import 'date/events_example.dart';
+import 'date/range_example.dart';
 import 'dialog.dart';
 import 'dart:math' as math;
 
@@ -66,6 +67,8 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 // const 是编译时常量，用 const 修饰的常量，必须在声明时初始化，并且是可以确定的值。
 // 而 final 则是运行时常量，用 final 修饰的常量，必须在声明时初始化，或者在构造函数中初始化，但它的值可以动态计算
 // proviersort 包含动画
+
+// https://www.jianshu.com/p/9adf350829c2  自带图标
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(
@@ -75,7 +78,8 @@ void main() {
     GetMaterialApp(
       defaultTransition: Transition.rightToLeftWithFade,
       navigatorKey: Get.key,
-      home: MyApp29(),
+      home: TextFieldPage(),
+      // home: TableRangeExample(),
       // home: TableComplexExample(),
       // home: TextFieldPage(),
       // home: BasicPage(),
@@ -2828,13 +2832,11 @@ class TextFieldState extends State<MyApp29>
                 ),
                 RichText(
                   text: TextSpan(
-                      style: TextStyle(
-                          decoration: TextDecoration.none),
+                      style: TextStyle(decoration: TextDecoration.none),
                       children: <InlineSpan>[
                         TextSpan(
                             text: 'ssss',
-                            style:
-                                TextStyle(color: Colors.red, fontSize: 25)),
+                            style: TextStyle(color: Colors.red, fontSize: 25)),
                         TextSpan(
                             text: '，',
                             style: TextStyle(color: Colors.blueAccent)),
@@ -4791,8 +4793,8 @@ class _MyHomePageState extends State<HomePage> {
       body: new Center(
         child: new Container(
           color: Theme.of(context).accentColor,
-          child:
-              new Text("$_counter", style: Theme.of(context).textTheme.title),
+          child: new Text("$_counter",
+              style: Theme.of(context).textTheme.subtitle1),
         ),
       ),
       floatingActionButton: new Theme(

@@ -219,13 +219,13 @@ class TextFieldPage extends StatelessWidget {
                           hintText: "输入内容",
                           counterStyle: TextStyle(color: Colors.blue),
                           border: InputBorder.none
-                        /* border: OutlineInputBorder(
+                          /* border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8.0))*/
-                      ),
+                          ),
                     ),
                   ),
                   SizedBox(
-                    height: 20,
+                    height: 200,
                   ),
                   Container(
                     margin: EdgeInsets.symmetric(horizontal: 25),
@@ -239,11 +239,11 @@ class TextFieldPage extends StatelessWidget {
                         filled: true,
                         isCollapsed: true,
                         contentPadding:
-                        EdgeInsets.symmetric(horizontal: 29, vertical: 11),
+                            EdgeInsets.symmetric(horizontal: 29, vertical: 11),
                         fillColor: CommonColors.color_99,
                         hintText: "请输入域帐号密码",
-                        hintStyle:
-                        TextStyle(fontSize: 14, color: CommonColors.text_33),
+                        hintStyle: TextStyle(
+                            fontSize: 14, color: CommonColors.text_33),
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
                             borderSide: BorderSide.none),
@@ -253,8 +253,8 @@ class TextFieldPage extends StatelessWidget {
                   Container(
                     height: 56.0,
                     decoration: BoxDecoration(
-                      border:
-                      Border(bottom: BorderSide(color: Colors.black12, width: 1)),
+                      border: Border(
+                          bottom: BorderSide(color: Colors.black12, width: 1)),
                     ),
                     child: Container(
                       child: Row(
@@ -326,9 +326,6 @@ class TextFieldPage extends StatelessWidget {
                           border: InputBorder.none),
                     ),
                   ),
-                  SizedBox(
-                    height: 35,
-                  ),
                   ElevatedButton(
                       onPressed: () {
                         fa.unfocus();
@@ -336,7 +333,7 @@ class TextFieldPage extends StatelessWidget {
                       child: Text("test")),
                 ],
               ),
-              margin: EdgeInsets.only(bottom: 60),
+              margin: EdgeInsets.only(bottom: 60), //重点在这里 可以将底部的顶出来
             ),
             Align(
               alignment: Alignment.bottomCenter,
@@ -356,9 +353,9 @@ class TextFieldPage extends StatelessWidget {
                       hintText: "输入内容",
                       counterStyle: TextStyle(color: Colors.blue),
                       border: InputBorder.none
-                    /* border: OutlineInputBorder(
+                      /* border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8.0))*/
-                  ),
+                      ),
                 ),
               ),
             )
@@ -392,3 +389,5 @@ class SecondScreen extends StatelessWidget {
     );
   }
 }
+
+
