@@ -39,8 +39,8 @@ import 'package:scroll_to_index/scroll_to_index.dart';
 
 import 'package:webview_flutter/webview_flutter.dart';
 import 'dart:async';
-import ' button/button_page.dart';
 import 'Test.dart';
+import 'button/button_page.dart';
 import 'canvas/canvas_page.dart';
 import 'date/complex_example.dart';
 import 'date/events_example.dart';
@@ -49,6 +49,7 @@ import 'dialog.dart';
 import 'dart:math' as math;
 
 import 'drawer/drawer_page.dart';
+import 'dropdownButton/drop_down_button_page.dart';
 import 'getThird/get_page.dart';
 import 'http_base_util.dart';
 import 'material/material_page.dart';
@@ -78,7 +79,7 @@ void main() {
     GetMaterialApp(
       defaultTransition: Transition.rightToLeftWithFade,
       navigatorKey: Get.key,
-      home: TextFieldPage(),
+      home: MyApp104(),
       // home: TableRangeExample(),
       // home: TableComplexExample(),
       // home: TextFieldPage(),
@@ -1585,6 +1586,8 @@ class MenuHomePage extends StatefulWidget {
 class MenuHomePageState extends State<MenuHomePage> {
   //首次运行中间文字显示点击效果
   String _bodyText = '点击效果';
+  GlobalKey _stackKey = GlobalKey();
+  GlobalKey _stackKey2 = GlobalKey();
 
   @override
   void initState() {
@@ -1593,90 +1596,30 @@ class MenuHomePageState extends State<MenuHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    /* final RenderBox button = context.findRenderObject();
-    final RenderBox overlay = Overlay.of(context).context.findRenderObject();
-    final RelativeRect position = RelativeRect.fromRect(
-      Rect.fromPoints(
-        button.localToGlobal(Offset(0,0), ancestor: overlay),
-        button.localToGlobal(button.size.bottomRight(Offset.zero),
-            ancestor: overlay),
-      ),
-      Offset.zero & overlay.size,
-    );*/
     return new Scaffold(
       appBar: new AppBar(
-        title: new Text('弹出菜单演示'),
-        actions: <Widget>[
-          new PopupMenuButton<String>(
-              //这是点击弹出菜单的操作，点击对应菜单后，改变屏幕中间文本状态，将点击的菜单值赋予屏幕中间文本
-              onSelected: (String value) {
-                setState(() {
-                  _bodyText = value;
-                });
-              },
-              offset: Offset(-60.0, 10.0),
-              //这是弹出菜单的建立，包含了两个子项，分别是增加和删除以及他们对应的值
-              itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-                    PopupMenuItem(
-                      child: new Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: <Widget>[
-                          new Text('增加'),
-                          new Icon(Icons.add_circle)
-                        ],
-                      ),
-                      value: '这是增加',
-                    ),
-                    PopupMenuItem(
-                      child: new Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: <Widget>[
-                          new Text('增加'),
-                          new Icon(Icons.remove_circle)
-                        ],
-                      ),
-                      value: '这是删除',
-                    )
-                  ]),
-        ],
-      ),
-      //这是屏幕主体包含一个中央空间，里面是一个文本内容以及字体大小
-      body: Container(
-        child: Stack(
-          children: [
-            TextButton(
-                onPressed: () {
-                  /*  showWindow(
-                      position: position,
-                      context: context,
-                      duration: 300,
-                      onWindowShow: () {},
-                      onWindowDismiss: () {},
-                      windowBuilder: (BuildContext context,
-                          Animation<double> animation,
-                          Animation<double> secondaryAnimation) {
-                        return FadeTransition(
-                          opacity: animation,
-                          child: SizeTransition(
-                            sizeFactor: animation,
-                            child: Container(
-                              color: Colors.greenAccent,
-                              height: 40,
-                              width: 40,
-                            ),
-                          ),
-                        );
-                      });*/
-                },
-                child: Text("data")),
-            Positioned(
-              top: 0,
-              bottom: 40,
-              child: PopupWindowButton(
-                  offset: Offset(0, 40),
-                  buttonBuilder: (BuildContext context) {
-                    return Text("ddffff");
-                  },
+          centerTitle: true,
+          title: ElevatedButton(
+            onPressed: () {
+              final RenderBox button =
+                  _stackKey.currentContext.findRenderObject();
+              final RenderBox overlay = Overlay.of(_stackKey.currentContext)
+                  .context
+                  .findRenderObject();
+              final RelativeRect position = RelativeRect.fromRect(
+                Rect.fromPoints(
+                  button.localToGlobal(Offset(0, 0), ancestor: overlay),
+                  button.localToGlobal(button.size.bottomRight(Offset.zero),
+                      ancestor: overlay),
+                ),
+                Offset.zero & overlay.size,
+              );
+              showWindow(
+                  position: position,
+                  context: context,
+                  duration: 300,
+                  onWindowShow: () {},
+                  onWindowDismiss: () {},
                   windowBuilder: (BuildContext context,
                       Animation<double> animation,
                       Animation<double> secondaryAnimation) {
@@ -1684,21 +1627,88 @@ class MenuHomePageState extends State<MenuHomePage> {
                       opacity: animation,
                       child: SizeTransition(
                         sizeFactor: animation,
-                        child: Container(
-                          color: Colors.greenAccent,
-                          height: 40,
-                          width: 40,
+                        child: Material(
+                          child: Container(
+                            color: Colors.red,
+                            height: 100,
+                            child: GestureDetector(
+                              child: Text("data"),
+                              onTap: () {
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                            width: MediaQuery.of(context).size.width,
+                          ),
                         ),
                       ),
                     );
-                  },
-                  onWindowShow: () {
-                    print('PopupWindowButton window show');
-                  },
-                  onWindowDismiss: () {
-                    print('PopupWindowButton window dismiss');
-                  }),
+                  });
+            },
+            child: Text("data"),
+          )),
+      //这是屏幕主体包含一个中央空间，里面是一个文本内容以及字体大小
+      body: Container(
+        child: Stack(
+          children: [
+            Container(
+              key: _stackKey,
+              child: Text(""),
             ),
+           ListView(
+             children: [
+               Container(
+                 child: Text("1111"),
+                 height: 200,
+                 color: Colors.blueAccent,
+               ),
+               Container(
+                 child: Text("1111"),
+                 height: 200,
+               ),
+               Container(
+                 child: Text("1111"),
+                 height: 200,
+               ),
+               Container(
+                 child: Text("1111"),
+                 height: 200,
+               ),
+               Container(
+                 child: Text("1111"),
+                 height: 200,
+               ),
+               Container(
+                 child: Text("1111"),
+                 height: 200,
+               ),
+             ],
+           )
+           /* PopupWindowButton(
+                offset: Offset(0, 40),
+                buttonBuilder: (BuildContext context) {
+                  return Text("ddffff");
+                },
+                windowBuilder: (BuildContext context,
+                    Animation<double> animation,
+                    Animation<double> secondaryAnimation) {
+                  return FadeTransition(
+                    opacity: animation,
+                    child: SizeTransition(
+                      sizeFactor: animation,
+                      child: Container(
+                        color: Colors.greenAccent,
+                        height: 40,
+                        width: MediaQuery.of(context).size.width,
+                      ),
+                    ),
+                  );
+                },
+                onWindowShow: () {
+                  print('PopupWindowButton window show');
+                },
+                onWindowDismiss: () {
+                  print('PopupWindowButton window dismiss');
+                }),*/
           ],
         ),
       ) /* new Center(
