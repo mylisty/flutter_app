@@ -91,10 +91,12 @@ class TextFieldPage extends StatelessWidget {
   String platformVersion = 'Unknown';
   TextEditingController rechargeController = TextEditingController();
   bool s = true;
-
+  var fa = new FocusNode();
+  var fa1 = new FocusNode();
+  var fa2 = new FocusNode();
   @override
   Widget build(BuildContext context) {
-    var fa = new FocusNode();
+
     // https://book.flutterchina.club/chapter3/input_and_form.html#_3-7-2-%E8%A1%A8%E5%8D%95form
     // checkBox flutter_sujian_select 1.0.1
     return new Scaffold(
@@ -230,6 +232,7 @@ class TextFieldPage extends StatelessWidget {
                   Container(
                     margin: EdgeInsets.symmetric(horizontal: 25),
                     child: TextFormField(
+                      focusNode: fa2,
                       keyboardType: TextInputType.visiblePassword,
                       maxLines: 1,
                       autofillHints: <String>[AutofillHints.password],
@@ -328,7 +331,7 @@ class TextFieldPage extends StatelessWidget {
                   ),
                   ElevatedButton(
                       onPressed: () {
-                        fa.unfocus();
+                        fa2.requestFocus();
                       },
                       child: Text("test")),
                 ],

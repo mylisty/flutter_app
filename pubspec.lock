@@ -165,6 +165,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.0.2"
+  flutter_pickers:
+    dependency: "direct main"
+    description:
+      name: flutter_pickers
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "2.1.8"
   flutter_plugin_android_lifecycle:
     dependency: transitive
     description:
@@ -203,13 +210,6 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "4.1.4"
-  gzx_dropdown_menu:
-    dependency: "direct main"
-    description:
-      name: gzx_dropdown_menu
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "3.1.0"
   html:
     dependency: transitive
     description:
@@ -343,6 +343,20 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.0.0"
+  qr:
+    dependency: transitive
+    description:
+      name: qr
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "2.1.0"
+  qr_flutter:
+    dependency: "direct main"
+    description:
+      name: qr_flutter
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "4.0.0"
   rational:
     dependency: transitive
     description:

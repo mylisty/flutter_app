@@ -24,6 +24,10 @@ import 'package:flutter_app/textField/textField_page.dart';
 import 'package:flutter_app/third/flutterPicker/fluter_picker.dart';
 import 'package:flutter_app/watermark/workmark_page.dart';
 import 'package:flutter_picker/flutter_picker.dart';
+import 'package:flutter_pickers/pickers.dart';
+import 'package:flutter_pickers/time_picker/model/date_mode.dart';
+import 'package:flutter_pickers/time_picker/model/pduration.dart';
+import 'package:flutter_pickers/time_picker/model/suffix.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 
 import 'package:fluttertoast/fluttertoast.dart';
@@ -35,6 +39,7 @@ import 'dart:async';
 import 'package:flutter/services.dart';
 import 'package:popup_window/popup_window.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 
 import 'package:webview_flutter/webview_flutter.dart';
@@ -52,6 +57,7 @@ import 'drawer/drawer_page.dart';
 import 'dropdownButton/drop_down_button_page.dart';
 import 'getThird/get_page.dart';
 import 'http_base_util.dart';
+import 'list/list_page.dart';
 import 'material/material_page.dart';
 import 'providersort/provider/provier_demo.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -79,7 +85,8 @@ void main() {
     GetMaterialApp(
       defaultTransition: Transition.rightToLeftWithFade,
       navigatorKey: Get.key,
-      home: MyApp104(),
+      home: HomeFragmentPage2(),
+      // home: MyApp104(),
       // home: TableRangeExample(),
       // home: TableComplexExample(),
       // home: TextFieldPage(),
@@ -270,7 +277,24 @@ class _BasicPageState extends State<BasicPage> {
             style: TextStyle(fontSize: 20.0, color: Colors.white)),
         color: Colors.blue[300],
         onPressed: () {
-          showModalBottomSheet(
+          Pickers.showDatePicker(
+            context,
+            // 模式，详见下方
+            mode: DateMode.YMDHM,
+            // 后缀 默认Suffix.normal()，为空的话Suffix()
+            // suffix: Suffix(hours: ' 小时', minutes: ' 分钟', seconds: ' 秒'),
+            // 样式  详见下方样式
+            // pickerStyle: pickerStyle,
+            // 默认选中
+            selectDate: PDuration(year: 2021,month:12,day:10,hour: 18, minute: 36, second: 36),
+            minDate: PDuration(year: 2021,month:12,day:10,hour: 10),
+            maxDate: PDuration(year: 2023,month:12,day:10,hour: 12, minute: 40, second: 36),
+            onConfirm: (p) {
+              print('longer >>> 返回数据：$p');
+            },
+            // onChanged: (p) => print(p),
+          );
+          /*showModalBottomSheet(
               context: context,
               builder: (BuildContext context) {
                 // 5126。86 2176.03
@@ -282,7 +306,8 @@ class _BasicPageState extends State<BasicPage> {
                     padding: EdgeInsets.all(7),
                   ),
                 );
-              });
+              });*/
+
         },
       ),
       height: 50,
@@ -428,250 +453,7 @@ class _TabNavigatorState extends State<MyApp108> {
   }
 }
 
-class HomeFragmentPage2 extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() {
-    return _HomeFragmentPageState2();
-  }
-}
 
-class _HomeFragmentPageState2 extends State {
-  @override
-  Widget build(BuildContext context) {
-    return new Scaffold(
-        body: CustomScrollView(
-      slivers: <Widget>[
-        new SliverList(
-          delegate:
-              new SliverChildBuilderDelegate((BuildContext context, int index) {
-            return new Container(
-              margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-              child: new Column(
-                children: <Widget>[
-//              banner
-                  new Container(
-                      height: 300,
-                      child: new Image.network(
-                        "https://upload.jianshu.io/users/upload_avatars/3884536/d847a50f1da0.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/240/h/240",
-                        fit: BoxFit.cover,
-                      )),
-//               功能栏
-                  new Container(
-                    height: 100,
-                    color: Colors.greenAccent,
-                    child: new Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Expanded(
-                          child: new GestureDetector(
-                            child: new Column(
-                              children: <Widget>[
-                                new Icon(
-                                  Icons.add_shopping_cart,
-                                  size: 45,
-                                ),
-                                new Text(
-                                  "交易查询",
-                                  style: new TextStyle(
-                                      fontSize: 12, color: Colors.black38),
-                                )
-                              ],
-                              mainAxisAlignment: MainAxisAlignment.center,
-                            ),
-                            onTap: () {
-                              Fluttertoast.showToast(
-                                msg: "点击了交易查询",
-                              );
-                            },
-                          ),
-                          flex: 1,
-                        ),
-                        Expanded(
-                          child: new GestureDetector(
-                            child: new Column(
-                              children: <Widget>[
-                                new Icon(
-                                  Icons.add_shopping_cart,
-                                  size: 45,
-                                ),
-                                new Text(
-                                  "我的仓单",
-                                  style: new TextStyle(
-                                      fontSize: 12, color: Colors.black38),
-                                )
-                              ],
-                              mainAxisAlignment: MainAxisAlignment.center,
-                            ),
-                            onTap: () {
-                              Fluttertoast.showToast(
-                                msg: "点击了我的仓单",
-                              );
-                            },
-                          ),
-                          flex: 1,
-                        ),
-                        Expanded(
-                          child: new GestureDetector(
-                            child: new Column(
-                              children: <Widget>[
-                                new Icon(
-                                  Icons.add_shopping_cart,
-                                  size: 45,
-                                ),
-                                new Text(
-                                  "资金管理",
-                                  style: new TextStyle(
-                                      fontSize: 12, color: Colors.black38),
-                                )
-                              ],
-                              mainAxisAlignment: MainAxisAlignment.center,
-                            ),
-                            onTap: () {
-                              Fluttertoast.showToast(
-                                msg: "点击了资金管理",
-                              );
-                            },
-                          ),
-                          flex: 1,
-                        ),
-                        Expanded(
-                          child: new GestureDetector(
-                            child: new Column(
-                              children: <Widget>[
-                                new Icon(
-                                  Icons.add_shopping_cart,
-                                  size: 45,
-                                ),
-                                new Text(
-                                  "用户中心",
-                                  style: new TextStyle(
-                                      fontSize: 12, color: Colors.black38),
-                                )
-                              ],
-                              mainAxisAlignment: MainAxisAlignment.center,
-                            ),
-                            onTap: () {
-                              Fluttertoast.showToast(
-                                msg: "点击了用户中心",
-                              );
-                            },
-                          ),
-                          flex: 1,
-                        ),
-                      ],
-                    ),
-                  ),
-                  // 交易信息
-                  new Container(
-                    height: 130,
-                    child: new Center(
-                      child: new ListView.builder(
-                          padding: EdgeInsets.all(10.0),
-                          itemCount: 4,
-                          scrollDirection: Axis.horizontal,
-                          itemBuilder: (BuildContext context, int index) {
-                            return new InkWell(
-                              child: new Container(
-                                child: new Card(
-                                  elevation: 15.0,
-                                  shape: const RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(14.0))),
-                                  child: new Container(
-                                    padding: EdgeInsets.all(8.0),
-                                    child: new Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: <Widget>[
-                                        new Text("小麦"),
-                                        new Text("安徽省合肥市"),
-                                        new Text("2170"),
-                                        new Text("0.9%")
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              onTap: () => _listItemOnTap(index),
-                            );
-                          }),
-                    ),
-                  ),
-                  new Container(
-                    width: double.infinity,
-                    height: 10,
-                    color: Colors.black12,
-                  ),
-                  new Container(
-                    padding: EdgeInsets.fromLTRB(15, 10, 0, 10),
-                    child: new Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        new Container(
-                          width: 3,
-                          height: 16,
-//                      color: Colors.red,
-                          decoration: new BoxDecoration(
-                              border:
-                                  new Border.all(color: Colors.red, width: 0.5),
-                              color: Colors.red,
-                              borderRadius: new BorderRadius.circular((20.0))),
-                        ),
-                        new Container(
-                          padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
-                          child: new Text(
-                            "行业快讯",
-                            style: new TextStyle(
-                                fontSize: 17.0, color: new Color(0xFF333333)),
-                            textAlign: TextAlign.center,
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            );
-          }, childCount: 1),
-        ),
-        new SliverList(
-            delegate: new SliverChildBuilderDelegate(
-                (BuildContext context, int index) {
-          return new InkWell(
-            child: new Container(
-              child: new Card(
-                elevation: 15.0,
-                shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(14.0))),
-                child: new Container(
-                  padding: EdgeInsets.all(8.0),
-                  child: new Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      new Text("小麦"),
-                      new Text("安徽省合肥市"),
-                      new Text("2170"),
-                      new Text("0.9%")
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            onTap: () => _listItemOnTap(index),
-          );
-        }, childCount: 10))
-      ],
-    ));
-  }
-
-  _listItemOnTap(int index) {
-    Fluttertoast.showToast(msg: "当前点击的是list里的第$index");
-  }
-}
 
 class MyApp107 extends StatefulWidget {
   @override
@@ -1046,6 +828,7 @@ class _CustomScrollViewPage extends State<MyApp105> {
       )*/
         Scaffold(
       body: CustomScrollView(
+
         physics: const BouncingScrollPhysics(),
         //BouncingScrollPhysics 弹性效果   ClampingScrollPhysics  夹击
         reverse: false,
@@ -1656,10 +1439,12 @@ class MenuHomePageState extends State<MenuHomePage> {
             ),
            ListView(
              children: [
-               Container(
-                 child: Text("1111"),
-                 height: 200,
-                 color: Colors.blueAccent,
+               QrImage(
+                 foregroundColor: Colors.lightBlueAccent,
+                 data: 'This is a simple QR code',
+                 version: 10,
+                 size: 320,
+                 gapless: false,
                ),
                Container(
                  child: Text("1111"),

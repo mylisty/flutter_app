@@ -57,7 +57,7 @@ class _ProgressStaepage extends State<ProgressPage> {
                     value: process / 100.0,
                     backgroundColor: Color(0xffFFE3E3),
                     valueColor:
-                    AlwaysStoppedAnimation<Color>(Color(0xffFF4964)),
+                        AlwaysStoppedAnimation<Color>(Color(0xffFF4964)),
                   ),
                 ),
               ),
@@ -76,7 +76,7 @@ class _ProgressStaepage extends State<ProgressPage> {
                       value: process / 100.0,
                       backgroundColor: Color(0xff72C6BB),
                       valueColor:
-                      AlwaysStoppedAnimation<Color>(Color(0xff20DAC2)),
+                          AlwaysStoppedAnimation<Color>(Color(0xff20DAC2)),
                     ),
                   ),
                 ),
@@ -84,18 +84,22 @@ class _ProgressStaepage extends State<ProgressPage> {
                   height: 36,
                   width: 215,
                   child: TextButton(
-                  onPressed: () {},
-                  style: ButtonStyle(
-                    foregroundColor: MaterialStateProperty.all(Colors.white),
-                    shape: MaterialStateProperty.all(
-                      const RoundedRectangleBorder(
-                          side: BorderSide.none,
-                          borderRadius: BorderRadius.all(Radius.circular(18))),
+                    onPressed: () {},
+                    style: ButtonStyle(
+                      foregroundColor: MaterialStateProperty.all(Colors.white),
+                      shape: MaterialStateProperty.all(
+                        const RoundedRectangleBorder(
+                            side: BorderSide.none,
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(18))),
+                      ),
+                    ),
+                    child: Text(
+                      "下载",
+                      style: TextStyle(color: Colors.white, fontSize: 15.0),
                     ),
                   ),
-                  child: Text("下载",
-                    style: TextStyle(color: Colors.white, fontSize: 15.0),),
-                ),)
+                )
               ],
             ),
             MyButton(),

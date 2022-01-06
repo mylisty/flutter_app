@@ -34,4 +34,6 @@ class MainActivity: FlutterActivity() {
     })
     GeneratedPluginRegistrant.registerWith(this)
   }
+
+
 }
