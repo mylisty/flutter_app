@@ -96,7 +96,7 @@ class LoadingDialog extends Dialog {
               )*/
             ),
             Positioned(
-              left: 140,
+              left: 10,
               bottom: 222,
               child: GestureDetector(
                 onTap: () {

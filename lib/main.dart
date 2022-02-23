@@ -10,6 +10,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/PopRoute.dart';
+import 'package:flutter_app/pop/base_pop.dart';
+import 'package:flutter_app/pop/pop_child.dart';
 import 'package:flutter_app/pop/pop_page.dart';
 import 'package:flutter_app/progress/progress_page.dart';
 import 'package:flutter_app/providersort/animation.dart';
@@ -20,6 +22,7 @@ import 'package:flutter_app/providersort/provider/model/secondModel.dart';
 import 'package:flutter_app/providersort/provider/provier_page2.dart';
 import 'package:flutter_app/res_colours.dart';
 import 'package:flutter_app/res_styles.dart';
+import 'package:flutter_app/tabbar/SugarTabIndicator.dart';
 import 'package:flutter_app/textField/textField_page.dart';
 import 'package:flutter_app/third/flutterPicker/fluter_picker.dart';
 import 'package:flutter_app/watermark/workmark_page.dart';
@@ -75,7 +78,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 // 而 final 则是运行时常量，用 final 修饰的常量，必须在声明时初始化，或者在构造函数中初始化，但它的值可以动态计算
 // proviersort 包含动画
 
-// https://www.jianshu.com/p/9adf350829c2  自带图标
+// https://www.jianshu.com/p/9adf350829c2  自带图标 https://www.jianshu.com/p/6e2509f91aa6
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(
@@ -85,7 +88,7 @@ void main() {
     GetMaterialApp(
       defaultTransition: Transition.rightToLeftWithFade,
       navigatorKey: Get.key,
-      home: HomeFragmentPage2(),
+      home: MyApp3(),
       // home: MyApp104(),
       // home: TableRangeExample(),
       // home: TableComplexExample(),
@@ -286,9 +289,21 @@ class _BasicPageState extends State<BasicPage> {
             // 样式  详见下方样式
             // pickerStyle: pickerStyle,
             // 默认选中
-            selectDate: PDuration(year: 2021,month:12,day:10,hour: 18, minute: 36, second: 36),
-            minDate: PDuration(year: 2021,month:12,day:10,hour: 10),
-            maxDate: PDuration(year: 2023,month:12,day:10,hour: 12, minute: 40, second: 36),
+            selectDate: PDuration(
+                year: 2021,
+                month: 12,
+                day: 10,
+                hour: 18,
+                minute: 36,
+                second: 36),
+            minDate: PDuration(year: 2021, month: 12, day: 10, hour: 10),
+            maxDate: PDuration(
+                year: 2023,
+                month: 12,
+                day: 10,
+                hour: 12,
+                minute: 40,
+                second: 36),
             onConfirm: (p) {
               print('longer >>> 返回数据：$p');
             },
@@ -307,7 +322,6 @@ class _BasicPageState extends State<BasicPage> {
                   ),
                 );
               });*/
-
         },
       ),
       height: 50,
@@ -453,8 +467,6 @@ class _TabNavigatorState extends State<MyApp108> {
   }
 }
 
-
-
 class MyApp107 extends StatefulWidget {
   @override
   _TestPageState2 createState() => _TestPageState2();
@@ -575,9 +587,9 @@ class TestPage extends StatefulWidget {
 
 class _TestPageState extends State<TestPage> {
   var tabTitle = [
-    '页面1',
+    '1',
     '页面2',
-    '页面3',
+    '页面3阿萨德发顺丰',
   ];
 
   @override
@@ -626,14 +638,20 @@ class _TestPageState extends State<TestPage> {
                      */
                     new TabBar(
                       tabs: tabTitle.map((f) => Tab(text: f)).toList(),
-                      indicatorColor: Colors.blue,
+                      // indicatorColor: Colors.blue,
+                      indicator: SugarTabIndicator(gradientColor: [
+                        Color(0xFF3492FB),
+                        Color(0xFFC4DBFD)
+                      ]),
                       unselectedLabelColor: Color(0xFF666666),
-                      labelColor: Colors.white,
-                      indicator: const BoxDecoration(
+                      labelColor: Colors.blue,
+                      indicatorSize: TabBarIndicatorSize.tab,
+                      indicatorWeight: 2,
+                      /*indicator: const BoxDecoration(
                         color: Colors.red,
                         borderRadius: const BorderRadius.all(
                             const Radius.circular(50)), //弧度
-                      ),
+                      ),*/
                     ),
                     color: Colors.white,
                   ),
@@ -828,7 +846,6 @@ class _CustomScrollViewPage extends State<MyApp105> {
       )*/
         Scaffold(
       body: CustomScrollView(
-
         physics: const BouncingScrollPhysics(),
         //BouncingScrollPhysics 弹性效果   ClampingScrollPhysics  夹击
         reverse: false,
@@ -1136,11 +1153,7 @@ class OverlayDialog {
                       'assets/images/by_tyre_point.png',
                       width: 203,
                       height: 202,
-                    ), /*new Image.asset(
-                'assets/images/by_tyre_point.png',
-                width: 203,
-                height: 202,
-              )*/
+                    ),
                   ),
                   Positioned(
                     left: 140,
@@ -1406,23 +1419,63 @@ class MenuHomePageState extends State<MenuHomePage> {
                   windowBuilder: (BuildContext context,
                       Animation<double> animation,
                       Animation<double> secondaryAnimation) {
-                    return FadeTransition(
-                      opacity: animation,
-                      child: SizeTransition(
-                        sizeFactor: animation,
-                        child: Material(
-                          child: Container(
-                            color: Colors.red,
-                            height: 100,
-                            child: GestureDetector(
-                              child: Text("data"),
-                              onTap: () {
-                                Navigator.of(context).pop();
-                              },
+                    return Container(
+                      child: Stack(
+                        children: [
+                          GestureDetector(
+                            child: Container(
+                              width: MediaQuery.of(context).size.width,
+                              height: MediaQuery.of(context).size.height,
+                              color: Color.fromRGBO(0, 0, 0, 0.5),
                             ),
-                            width: MediaQuery.of(context).size.width,
+                            onTap: () {
+                              Navigator.of(context).pop();
+                            },
                           ),
-                        ),
+                          FadeTransition(
+                            opacity: animation,
+                            child: SizeTransition(
+                              sizeFactor: animation,
+                              child: Material(
+                                child: Container(
+                                  height: 420,
+                                  child: GestureDetector(
+                                    child: MediaQuery.removePadding(
+                                      removeTop: true,
+                                      context: context,
+                                      child: ListView(
+                                        children: [
+                                          Container(
+                                            color: Colors.white,
+                                            child: Text("1111"),
+                                            height: 200,
+                                          ),
+                                          Container(
+                                            child: Text("1111"),
+                                            height: 200,
+                                            color: Colors.red,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    onTap: () {
+                                      // Navigator.of(context).pop();
+                                    },
+                                  ),
+                                  width: MediaQuery.of(context).size.width,
+                                  decoration: BoxDecoration(
+                                    color: Colors.tealAccent,
+                                    borderRadius: const BorderRadius.only(
+                                        bottomRight: const Radius.circular(20),
+                                        bottomLeft:
+                                            const Radius.circular(20)), //弧度
+                                  ),
+                                ),
+                                color: Colors.transparent,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     );
                   });
@@ -1437,38 +1490,91 @@ class MenuHomePageState extends State<MenuHomePage> {
               key: _stackKey,
               child: Text(""),
             ),
-           ListView(
-             children: [
-               QrImage(
-                 foregroundColor: Colors.lightBlueAccent,
-                 data: 'This is a simple QR code',
-                 version: 10,
-                 size: 320,
-                 gapless: false,
-               ),
-               Container(
-                 child: Text("1111"),
-                 height: 200,
-               ),
-               Container(
-                 child: Text("1111"),
-                 height: 200,
-               ),
-               Container(
-                 child: Text("1111"),
-                 height: 200,
-               ),
-               Container(
-                 child: Text("1111"),
-                 height: 200,
-               ),
-               Container(
-                 child: Text("1111"),
-                 height: 200,
-               ),
-             ],
-           )
-           /* PopupWindowButton(
+            ListView(
+              children: [
+                QrImage(
+                  foregroundColor: Colors.lightBlueAccent,
+                  data: 'This is a simple QR code',
+                  version: 10,
+                  size: 320,
+                  gapless: false,
+                ),
+                GestureDetector(
+                  onTap: () {
+                    // 第一种通过 PopChildView 第二种通过 StatefulBuilder来实现
+                    showBaseWindow(
+                      context,
+                      _stackKey,
+                      showBg: true,
+                      child:
+                          PopChildView() /*StatefulBuilder(
+                        builder: (context, state) {
+                          return SingleChildScrollView(
+                            child: Container(
+                              height: 420,
+                              child: GestureDetector(
+                                child: MediaQuery.removePadding(
+                                  removeTop: true,
+                                  context: context,
+                                  child: ListView(
+                                    children: [
+                                      Container(
+                                        color: Colors.white,
+                                        child: Text("$_bodyText"),
+                                        height: 200,
+                                      ),
+                                      Container(
+                                        child: Text("1111"),
+                                        height: 200,
+                                        color: Colors.red,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                onTap: () {
+                                  _bodyText = "afassfafad";
+                                  state(() {});
+                                  // Navigator.of(context).pop();
+                                },
+                              ),
+                              width: MediaQuery.of(context).size.width,
+                              decoration: BoxDecoration(
+                                color: Colors.tealAccent,
+                                borderRadius: const BorderRadius.only(
+                                    bottomRight: const Radius.circular(20),
+                                    bottomLeft: const Radius.circular(20)), //弧度
+                              ),
+                            ),
+                          );
+                        },
+                      )*/
+                      ,
+                    );
+                  },
+                  child: Container(
+                    child: Text("1111"),
+                    height: 200,
+                  ),
+                ),
+                Container(
+                  child: Text("1111"),
+                  height: 200,
+                ),
+                Container(
+                  child: Text("1111"),
+                  height: 200,
+                ),
+                Container(
+                  child: Text("1111"),
+                  height: 200,
+                ),
+                Container(
+                  child: Text("1111"),
+                  height: 200,
+                ),
+              ],
+            )
+            /* PopupWindowButton(
                 offset: Offset(0, 40),
                 buttonBuilder: (BuildContext context) {
                   return Text("ddffff");
@@ -4491,26 +4597,17 @@ class MyApp3 extends StatelessWidget {
               onTap: () {
                 print("aaaa");
               },
-              child: Container(
-                width: 100,
-                height: 100,
-                decoration: BoxDecoration(
-                  color: Colors.orange,
-                  border: new Border.all(
-                    color: Colors.lightBlue,
-                    width: 2,
+              child: Column(
+                children: [
+                  Text(
+                    'Roboto Mono sample',
+                    style: TextStyle(fontFamily: 'Schyler'),
                   ),
-                  borderRadius:
-                      const BorderRadius.all(const Radius.circular(8)), //弧度
-                ),
-                child: Text(
-                  'FLUTTER',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 23,
-                    color: Colors.black,
-                  ),
-                ),
+                  Text(
+                    'Roboto Mono sample',
+                    style: TextStyle(fontFamily: 'RobotoMono'),
+                  )
+                ],
               ),
             ),
           ),
