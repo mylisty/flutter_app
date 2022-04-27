@@ -88,8 +88,8 @@ void main() {
     GetMaterialApp(
       defaultTransition: Transition.rightToLeftWithFade,
       navigatorKey: Get.key,
-      home: MyApp3(),
-      // home: MyApp104(),
+      // home: TextFieldPage(),
+      home: MenuHomePage(),
       // home: TableRangeExample(),
       // home: TableComplexExample(),
       // home: TextFieldPage(),
@@ -1384,253 +1384,270 @@ class MenuHomePageState extends State<MenuHomePage> {
   String _bodyText = '点击效果';
   GlobalKey _stackKey = GlobalKey();
   GlobalKey _stackKey2 = GlobalKey();
-
+  int count = 0;
   @override
   void initState() {
+     // test();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-      appBar: new AppBar(
-          centerTitle: true,
-          title: ElevatedButton(
-            onPressed: () {
-              final RenderBox button =
-                  _stackKey.currentContext.findRenderObject();
-              final RenderBox overlay = Overlay.of(_stackKey.currentContext)
-                  .context
-                  .findRenderObject();
-              final RelativeRect position = RelativeRect.fromRect(
-                Rect.fromPoints(
-                  button.localToGlobal(Offset(0, 0), ancestor: overlay),
-                  button.localToGlobal(button.size.bottomRight(Offset.zero),
-                      ancestor: overlay),
-                ),
-                Offset.zero & overlay.size,
-              );
-              showWindow(
-                  position: position,
-                  context: context,
-                  duration: 300,
-                  onWindowShow: () {},
-                  onWindowDismiss: () {},
-                  windowBuilder: (BuildContext context,
-                      Animation<double> animation,
-                      Animation<double> secondaryAnimation) {
-                    return Container(
-                      child: Stack(
-                        children: [
-                          GestureDetector(
-                            child: Container(
-                              width: MediaQuery.of(context).size.width,
-                              height: MediaQuery.of(context).size.height,
-                              color: Color.fromRGBO(0, 0, 0, 0.5),
+
+    return MaterialApp(
+      title: '弹出菜单演示',
+      home: new Scaffold(
+
+        appBar: new AppBar(
+            centerTitle: true,
+            title: ElevatedButton(
+              onPressed: () {
+                final RenderBox button =
+                    _stackKey.currentContext.findRenderObject();
+                final RenderBox overlay = Overlay.of(_stackKey.currentContext)
+                    .context
+                    .findRenderObject();
+                final RelativeRect position = RelativeRect.fromRect(
+                  Rect.fromPoints(
+                    button.localToGlobal(Offset(0, 0), ancestor: overlay),
+                    button.localToGlobal(button.size.bottomRight(Offset.zero),
+                        ancestor: overlay),
+                  ),
+                  Offset.zero & overlay.size,
+                );
+                showWindow(
+                    position: position,
+                    context: context,
+                    duration: 300,
+                    onWindowShow: () {},
+                    onWindowDismiss: () {},
+                    windowBuilder: (BuildContext context,
+                        Animation<double> animation,
+                        Animation<double> secondaryAnimation) {
+                      return Container(
+                        child: Stack(
+                          children: [
+                            GestureDetector(
+                              child: Container(
+                                width: MediaQuery.of(context).size.width,
+                                height: MediaQuery.of(context).size.height,
+                                color: Color.fromRGBO(0, 0, 0, 0.5),
+                              ),
+                              onTap: () {
+                                Navigator.of(context).pop();
+                              },
                             ),
-                            onTap: () {
-                              Navigator.of(context).pop();
-                            },
-                          ),
-                          FadeTransition(
-                            opacity: animation,
-                            child: SizeTransition(
-                              sizeFactor: animation,
-                              child: Material(
-                                child: Container(
-                                  height: 420,
-                                  child: GestureDetector(
-                                    child: MediaQuery.removePadding(
-                                      removeTop: true,
-                                      context: context,
-                                      child: ListView(
-                                        children: [
-                                          Container(
-                                            color: Colors.white,
-                                            child: Text("1111"),
-                                            height: 200,
-                                          ),
-                                          Container(
-                                            child: Text("1111"),
-                                            height: 200,
-                                            color: Colors.red,
-                                          ),
-                                        ],
+                            FadeTransition(
+                              opacity: animation,
+                              child: SizeTransition(
+                                sizeFactor: animation,
+                                child: Material(
+                                  child: Container(
+                                    height: 420,
+                                    child: GestureDetector(
+                                      child: MediaQuery.removePadding(
+                                        removeTop: true,
+                                        context: context,
+                                        child: ListView(
+                                          children: [
+                                            Container(
+                                              color: Colors.white,
+                                              child: Text("1111"),
+                                              height: 200,
+                                            ),
+                                            Container(
+                                              child: Text("1111"),
+                                              height: 200,
+                                              color: Colors.red,
+                                            ),
+                                          ],
+                                        ),
                                       ),
+                                      onTap: () {
+                                        // Navigator.of(context).pop();
+                                      },
                                     ),
-                                    onTap: () {
-                                      // Navigator.of(context).pop();
-                                    },
+                                    width: MediaQuery.of(context).size.width,
+                                    decoration: BoxDecoration(
+                                      color: Colors.tealAccent,
+                                      borderRadius: const BorderRadius.only(
+                                          bottomRight: const Radius.circular(20),
+                                          bottomLeft:
+                                              const Radius.circular(20)), //弧度
+                                    ),
                                   ),
-                                  width: MediaQuery.of(context).size.width,
-                                  decoration: BoxDecoration(
-                                    color: Colors.tealAccent,
-                                    borderRadius: const BorderRadius.only(
-                                        bottomRight: const Radius.circular(20),
-                                        bottomLeft:
-                                            const Radius.circular(20)), //弧度
-                                  ),
+                                  color: Colors.transparent,
                                 ),
-                                color: Colors.transparent,
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                    );
-                  });
-            },
-            child: Text("data"),
-          )),
-      //这是屏幕主体包含一个中央空间，里面是一个文本内容以及字体大小
-      body: Container(
-        child: Stack(
-          children: [
-            Container(
-              key: _stackKey,
-              child: Text(""),
-            ),
-            ListView(
-              children: [
-                QrImage(
-                  foregroundColor: Colors.lightBlueAccent,
-                  data: 'This is a simple QR code',
-                  version: 10,
-                  size: 320,
-                  gapless: false,
-                ),
-                GestureDetector(
-                  onTap: () {
-                    // 第一种通过 PopChildView 第二种通过 StatefulBuilder来实现
-                    showBaseWindow(
-                      context,
-                      _stackKey,
-                      showBg: true,
-                      child:
-                          PopChildView() /*StatefulBuilder(
-                        builder: (context, state) {
-                          return SingleChildScrollView(
-                            child: Container(
-                              height: 420,
-                              child: GestureDetector(
-                                child: MediaQuery.removePadding(
-                                  removeTop: true,
-                                  context: context,
-                                  child: ListView(
-                                    children: [
-                                      Container(
-                                        color: Colors.white,
-                                        child: Text("$_bodyText"),
-                                        height: 200,
-                                      ),
-                                      Container(
-                                        child: Text("1111"),
-                                        height: 200,
-                                        color: Colors.red,
-                                      ),
-                                    ],
+                          ],
+                        ),
+                      );
+                    });
+              },
+              child: Text("data$count"),
+            )),
+        //这是屏幕主体包含一个中央空间，里面是一个文本内容以及字体大小
+        body: Container(
+          child: Stack(
+            children: [
+              Container(
+                key: _stackKey,
+                child: Text("$_bodyText"),
+              ),
+              ListView(
+                children: [
+                  InkWell(
+                    child: QrImage(
+                      foregroundColor: Colors.lightBlueAccent,
+                      data: 'This is a simple QR code',
+                      version: 10,
+                      size: 320,
+                      gapless: false,
+                    ),
+                    onTap: () {
+                        Get.toNamed("/water",arguments: {"a":12},).then((value) => {
+                        print("aaaa back ${value.toString()}"),
+                      });
+                    },
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      // 第一种通过 PopChildView 第二种通过 StatefulBuilder来实现
+                      showBaseWindow(
+                        context,
+                        _stackKey,
+                        showBg: true,
+                        child:
+                            PopChildView() /*StatefulBuilder(
+                          builder: (context, state) {
+                            return SingleChildScrollView(
+                              child: Container(
+                                height: 420,
+                                child: GestureDetector(
+                                  child: MediaQuery.removePadding(
+                                    removeTop: true,
+                                    context: context,
+                                    child: ListView(
+                                      children: [
+                                        Container(
+                                          color: Colors.white,
+                                          child: Text("$_bodyText"),
+                                          height: 200,
+                                        ),
+                                        Container(
+                                          child: Text("1111"),
+                                          height: 200,
+                                          color: Colors.red,
+                                        ),
+                                      ],
+                                    ),
                                   ),
+                                  onTap: () {
+                                    _bodyText = "afassfafad";
+                                    state(() {});
+                                    // Navigator.of(context).pop();
+                                  },
                                 ),
-                                onTap: () {
-                                  _bodyText = "afassfafad";
-                                  state(() {});
-                                  // Navigator.of(context).pop();
-                                },
+                                width: MediaQuery.of(context).size.width,
+                                decoration: BoxDecoration(
+                                  color: Colors.tealAccent,
+                                  borderRadius: const BorderRadius.only(
+                                      bottomRight: const Radius.circular(20),
+                                      bottomLeft: const Radius.circular(20)), //弧度
+                                ),
                               ),
-                              width: MediaQuery.of(context).size.width,
-                              decoration: BoxDecoration(
-                                color: Colors.tealAccent,
-                                borderRadius: const BorderRadius.only(
-                                    bottomRight: const Radius.circular(20),
-                                    bottomLeft: const Radius.circular(20)), //弧度
-                              ),
-                            ),
-                          );
-                        },
-                      )*/
-                      ,
-                    );
-                  },
-                  child: Container(
+                            );
+                          },
+                        )*/
+                        ,
+                      );
+                    },
+                    child: Container(
+                      child: Text("1111"),
+                      height: 200,
+                    ),
+                  ),
+                  Container(
                     child: Text("1111"),
                     height: 200,
                   ),
-                ),
-                Container(
-                  child: Text("1111"),
-                  height: 200,
-                ),
-                Container(
-                  child: Text("1111"),
-                  height: 200,
-                ),
-                Container(
-                  child: Text("1111"),
-                  height: 200,
-                ),
-                Container(
-                  child: Text("1111"),
-                  height: 200,
-                ),
-              ],
-            )
-            /* PopupWindowButton(
-                offset: Offset(0, 40),
-                buttonBuilder: (BuildContext context) {
-                  return Text("ddffff");
-                },
-                windowBuilder: (BuildContext context,
-                    Animation<double> animation,
-                    Animation<double> secondaryAnimation) {
-                  return FadeTransition(
-                    opacity: animation,
-                    child: SizeTransition(
-                      sizeFactor: animation,
-                      child: Container(
-                        color: Colors.greenAccent,
-                        height: 40,
-                        width: MediaQuery.of(context).size.width,
-                      ),
-                    ),
-                  );
-                },
-                onWindowShow: () {
-                  print('PopupWindowButton window show');
-                },
-                onWindowDismiss: () {
-                  print('PopupWindowButton window dismiss');
-                }),*/
-          ],
-        ),
-      ) /* new Center(
-        child: PopupWindowButton(
-            offset: Offset(0, 40),
-            buttonBuilder: (BuildContext context) {
-              return Text("ddffff");
-            },
-            windowBuilder: (BuildContext context, Animation<double> animation,
-                Animation<double> secondaryAnimation) {
-              return FadeTransition(
-                opacity: animation,
-                child: SizeTransition(
-                  sizeFactor: animation,
-                  child: Container(
-                    color: Colors.greenAccent,
-                    height: 40,
-                    width: 40,
+                  Container(
+                    child: Text("1111"),
+                    height: 200,
                   ),
-                ),
-              );
-            },
-            onWindowShow: () {
-              print('PopupWindowButton window show');
-            },
-            onWindowDismiss: () {
-              print('PopupWindowButton window dismiss');
-            }),
-      )*/
-      ,
+                  Container(
+                    child: Text("1111"),
+                    height: 200,
+                  ),
+                  Container(
+                    child: Text("1111"),
+                    height: 200,
+                  ),
+                ],
+              )
+              /* PopupWindowButton(
+                  offset: Offset(0, 40),
+                  buttonBuilder: (BuildContext context) {
+                    return Text("ddffff");
+                  },
+                  windowBuilder: (BuildContext context,
+                      Animation<double> animation,
+                      Animation<double> secondaryAnimation) {
+                    return FadeTransition(
+                      opacity: animation,
+                      child: SizeTransition(
+                        sizeFactor: animation,
+                        child: Container(
+                          color: Colors.greenAccent,
+                          height: 40,
+                          width: MediaQuery.of(context).size.width,
+                        ),
+                      ),
+                    );
+                  },
+                  onWindowShow: () {
+                    print('PopupWindowButton window show');
+                  },
+                  onWindowDismiss: () {
+                    print('PopupWindowButton window dismiss');
+                  }),*/
+            ],
+          ),
+        ) /* new Center(
+          child: PopupWindowButton(
+              offset: Offset(0, 40),
+              buttonBuilder: (BuildContext context) {
+                return Text("ddffff");
+              },
+              windowBuilder: (BuildContext context, Animation<double> animation,
+                  Animation<double> secondaryAnimation) {
+                return FadeTransition(
+                  opacity: animation,
+                  child: SizeTransition(
+                    sizeFactor: animation,
+                    child: Container(
+                      color: Colors.greenAccent,
+                      height: 40,
+                      width: 40,
+                    ),
+                  ),
+                );
+              },
+              onWindowShow: () {
+                print('PopupWindowButton window show');
+              },
+              onWindowDismiss: () {
+                print('PopupWindowButton window dismiss');
+              }),
+        )*/
+        ,
+      ),
     );
+  }
+
+  void test()  {
+    _bodyText = "aldjflasj阿放假啊了解对方";
   }
 }
 
@@ -3679,12 +3696,13 @@ class MyApp23 extends State<ListViewController> {
             RaisedButton(
               onPressed: () async {
                 // 页面不可见的部分就跳转不了
-                RenderBox box = keys[1].currentContext.findRenderObject();
+                /* RenderBox box = keys[1].currentContext.findRenderObject();
                 Offset offset = box.localToGlobal(Offset.zero);
 
                 LogUtil.e(" offset sss  ${offset.dy}");
                 LogUtil.e(" offset distance  ${offset.distance}");
-                LogUtil.e(" offset distanceSquared  ${offset.distanceSquared}");
+                LogUtil.e(" offset distanceSquared  ${offset.distanceSquared}");*/
+                controller.jumpTo(controller.position.maxScrollExtent);
               },
               child: Text("data"),
             ),

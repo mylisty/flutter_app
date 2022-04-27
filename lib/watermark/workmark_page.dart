@@ -30,6 +30,7 @@ class _WatermarkPage extends State<WatermarkPage> {
     String tmp =
         ModalRoute.of(context).settings.arguments.toString(); //  原生信息接收
     print("aaaa $tmp");
+    print("aaa #aaaaaaaaaaaaa");
     return Scaffold(
       appBar: AppBar(
         title: Text("sss"),

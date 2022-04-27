@@ -94,8 +94,10 @@ class TextFieldPage extends StatelessWidget {
   var fa = new FocusNode();
   var fa1 = new FocusNode();
   var fa2 = new FocusNode();
+
   @override
   Widget build(BuildContext context) {
+
 
     // https://book.flutterchina.club/chapter3/input_and_form.html#_3-7-2-%E8%A1%A8%E5%8D%95form
     // checkBox flutter_sujian_select 1.0.1
