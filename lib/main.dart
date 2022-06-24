@@ -89,12 +89,13 @@ void main() {
       defaultTransition: Transition.rightToLeftWithFade,
       navigatorKey: Get.key,
       // home: TextFieldPage(),
-      home: MenuHomePage(),
+      // home: MainPage(),
       // home: TableRangeExample(),
       // home: TableComplexExample(),
       // home: TextFieldPage(),
       // home: BasicPage(),
       // home: PopPage(),
+      home: GetDemoPage(),
       navigatorObservers: [
         new MiddleWare(), // 可接听路由情况
       ],

@@ -38,14 +38,14 @@ class GetDemoPage extends StatelessWidget {
 
             // setState(() {});
             // 关闭页面
-            Get.back(result: {"aaa":"back22"}); // Navigator.pop(context)
+            // Get.back(result: {"aaa":"back22"}); // Navigator.pop(context)
             // 进入下一个页面，但没有返回上一个页面的选项（用于闪屏页，登录页面等）
             // Get.off(page);
             // 进入下一个页面并取消之前的所有路由（在购物车、投票和测试中很有用）。
             // Get.offAll(NextScreen());
-            // Get.toNamed(
-            //   "/Other",
-            // );
+            Get.toNamed(
+              "/water",
+            );
             // Get.customTransition
             // Get.toNamed("/Other");
             // Get.to(Other(),transition: Transition.rightToLeft);
