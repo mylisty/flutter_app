@@ -37,7 +37,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
-import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'package:flutter/services.dart';
 import 'package:popup_window/popup_window.dart';
@@ -45,8 +44,8 @@ import 'package:provider/provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 
-import 'package:webview_flutter/webview_flutter.dart';
 import 'dart:async';
+import 'SlidingUpPanelExample/sliding_up_panel.dart';
 import 'Test.dart';
 import 'button/button_page.dart';
 import 'canvas/canvas_page.dart';
@@ -95,7 +94,8 @@ void main() {
       // home: TextFieldPage(),
       // home: BasicPage(),
       // home: PopPage(),
-      home: GetDemoPage(),
+      // home: GetDemoPage(),
+      home: SlidingUpPanelExample(),
       navigatorObservers: [
         new MiddleWare(), // 可接听路由情况
       ],
@@ -1214,7 +1214,6 @@ class _TabbarBgColorTesttate extends State<TabbarBgColorTest>
   List<Widget> pageList = [
     TestPage(),
     Myapp106(),
-    MyApp2(),
     MyApp3(),
   ];
 
@@ -1386,19 +1385,18 @@ class MenuHomePageState extends State<MenuHomePage> {
   GlobalKey _stackKey = GlobalKey();
   GlobalKey _stackKey2 = GlobalKey();
   int count = 0;
+
   @override
   void initState() {
-     // test();
+    // test();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-
     return MaterialApp(
       title: '弹出菜单演示',
       home: new Scaffold(
-
         appBar: new AppBar(
             centerTitle: true,
             title: ElevatedButton(
@@ -1472,7 +1470,8 @@ class MenuHomePageState extends State<MenuHomePage> {
                                     decoration: BoxDecoration(
                                       color: Colors.tealAccent,
                                       borderRadius: const BorderRadius.only(
-                                          bottomRight: const Radius.circular(20),
+                                          bottomRight:
+                                              const Radius.circular(20),
                                           bottomLeft:
                                               const Radius.circular(20)), //弧度
                                     ),
@@ -1507,9 +1506,12 @@ class MenuHomePageState extends State<MenuHomePage> {
                       gapless: false,
                     ),
                     onTap: () {
-                        Get.toNamed("/water",arguments: {"a":12},).then((value) => {
-                        print("aaaa back ${value.toString()}"),
-                      });
+                      Get.toNamed(
+                        "/water",
+                        arguments: {"a": 12},
+                      ).then((value) => {
+                            print("aaaa back ${value.toString()}"),
+                          });
                     },
                   ),
                   GestureDetector(
@@ -1647,7 +1649,7 @@ class MenuHomePageState extends State<MenuHomePage> {
     );
   }
 
-  void test()  {
+  void test() {
     _bodyText = "aldjflasj阿放假啊了解对方";
   }
 }
@@ -2497,35 +2499,6 @@ class _MyAppState extends State<MyApp33> {
     );
   }
 }*/
-
-class MyApp32 extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() {
-    return new LinearGradientState2();
-  }
-}
-
-class LinearGradientState2 extends State<MyApp32> {
-  Future<Null> _onRefresh() async {
-    await Future.delayed(Duration(seconds: 3), () {
-      setState(() {});
-    });
-  }
-
-  //这是个key吧，机制问题
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: "",
-      home: new Scaffold(
-        body: new WebView(
-          initialUrl: "https://sh.zhilun.com/defect",
-          javascriptMode: JavascriptMode.unrestricted,
-        ),
-      ),
-    );
-  }
-}
 
 class MyApp31 extends StatelessWidget {
   final List<String> item;
@@ -4631,29 +4604,6 @@ class MyApp3 extends StatelessWidget {
             ),
           ),
         ),
-      ),
-    );
-  }
-}
-
-class MyApp2 extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return new MaterialApp(
-      title: 'aaa',
-      home: new Scaffold(
-        floatingActionButton: new Theme(
-            data: Theme.of(context),
-            child: new FloatingActionButton(
-              onPressed: () async {
-                //launch("https://baidu.com");
-                http.get("http://httpbin.org/").then((response) {
-                  print("response${response.statusCode}");
-                  print(response.body);
-                });
-              },
-              child: new Icon(Icons.computer),
-            )),
       ),
     );
   }
