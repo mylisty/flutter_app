@@ -45,6 +45,8 @@ class ButtonPage extends BasePage {
                   TextButton(
                     clipBehavior: Clip.hardEdge,
                     style: ButtonStyle(
+                      //边框
+                      side: MaterialStateProperty.all(BorderSide(width: 1,color: Color(0xffffffff))),//边框
                       padding: MaterialStateProperty.all(EdgeInsets.all(30)),
                       // 点击的颜色
                       overlayColor: MaterialStateProperty.all(Color(0xff31C27C)),

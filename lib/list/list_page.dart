@@ -78,7 +78,14 @@ class HomeFragmentPage2 extends StatefulWidget {
 class _HomeFragmentPageState2 extends State
     with SingleTickerProviderStateMixin {
   TabController tabController;
-
+  int groupValue;
+  static const List<String> selections = <String>[
+    'Hercules Mulligan',
+    'Eliza Hamilton',
+    'Philip Schuyler',
+    'Maria Reynolds',
+    'Samuel Seabury',
+  ];
   @override
   void initState() {
     this.tabController = TabController(length: 2, vsync: this);
@@ -101,6 +108,25 @@ class _HomeFragmentPageState2 extends State
                   margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
                   child: new Column(
                     children: <Widget>[
+                      Container(
+                          child: ListView.builder(
+                            physics: NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemBuilder: (BuildContext context, int index) {
+                              return RadioListTile<int>(
+                                value: index,
+                                groupValue: groupValue,
+                                toggleable: true,
+                                title: Text(selections[index]),
+                                onChanged: (int value) {
+                                  setState(() {
+                                    groupValue = value;
+                                  });
+                                },
+                              );
+                            },
+                            itemCount: selections.length,
+                          )),
 //              banner
                       new Container(
                           height: 300,
