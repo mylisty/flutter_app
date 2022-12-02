@@ -11,10 +11,10 @@ description: A new Flutter application.
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.0.0+1
+version: 1.1.0+2
 
 environment:
-  sdk: ">=2.2.0 <3.0.0"
+  sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
   flutter:
@@ -29,10 +29,10 @@ dependencies:
   common_utils: ^1.2.1
   transparent_image: ^1.0.0
   #  网络链接状态
-  connectivity: ^0.3.2
-  fluttertoast: 3.1.2
+  connectivity_plus: ^2.0.2
+  fluttertoast: ^8.1.1
   #  flutter_webview_plugin: ^0.3.10
-  flutter_inappwebview: ^2.1.0+1
+  flutter_inappwebview: ^5.4.0+3
   flutter_picker: ^2.0.2
   popup_window: ^1.1.2
   bloc: ^4.0.0
@@ -44,8 +44,8 @@ dependencies:
   provider: ^4.3.3
   get: ^4.1.4
   pull_to_refresh: ^2.0.0
-  permission_handler: ^8.0.0+2
-  image_picker: ^0.8.5+3
+#  permission_handler: ^8.3.0
+  image_picker: ^0.8.5
   video_player: ^2.1.10
   #图表
   fl_chart: ^0.40.0
@@ -56,7 +56,9 @@ dependencies:
   #上滑拉出
   sliding_up_panel: ^2.0.0+1
   #  加载网络图片
-  cached_network_image: ^2.5.1
+  cached_network_image: ^3.2.0
+  #图表
+  syncfusion_flutter_charts: ^18.2.55
 dev_dependencies:
   flutter_test:
     sdk: flutter

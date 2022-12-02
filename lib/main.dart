@@ -49,6 +49,7 @@ import 'SlidingUpPanelExample/sliding_up_panel.dart';
 import 'Test.dart';
 import 'button/button_page.dart';
 import 'canvas/canvas_page.dart';
+import 'chart/chart_page2.dart';
 import 'date/complex_example.dart';
 import 'date/events_example.dart';
 import 'date/range_example.dart';
@@ -95,7 +96,8 @@ void main() {
       // home: BasicPage(),
       // home: PopPage(),
       // home: GetDemoPage(),
-      home: SlidingUpPanelExample(),
+      home: MyChartHomePage2(),
+      // home: SlidingUpPanelExample(),
       navigatorObservers: [
         new MiddleWare(), // 可接听路由情况
       ],
@@ -601,8 +603,8 @@ class _TestPageState extends State<TestPage> {
           body: new NestedScrollView(
             headerSliverBuilder: (context, bool) {
               return [
-                /*SliverAppBar(
-                  expandedHeight: 200.0,
+                SliverAppBar(
+                  expandedHeight: 56.0,
                   floating: true,
                   pinned: true,
                   flexibleSpace: FlexibleSpaceBar(
@@ -612,7 +614,7 @@ class _TestPageState extends State<TestPage> {
                         url,
                         fit: BoxFit.cover,
                       )),
-                ),*/
+                ),
                 new SliverPersistentHeader(
                   delegate: new SliverTabBarDelegate(
                     /**
