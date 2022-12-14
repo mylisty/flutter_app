@@ -50,6 +50,7 @@ import 'Test.dart';
 import 'button/button_page.dart';
 import 'canvas/canvas_page.dart';
 import 'chart/chart_page2.dart';
+import 'chart/line_chart_sample2.dart';
 import 'date/complex_example.dart';
 import 'date/events_example.dart';
 import 'date/range_example.dart';
@@ -58,7 +59,6 @@ import 'dart:math' as math;
 
 import 'drawer/drawer_page.dart';
 import 'dropdownButton/drop_down_button_page.dart';
-import 'getThird/get_page.dart';
 import 'http_base_util.dart';
 import 'list/list_page.dart';
 import 'material/material_page.dart';

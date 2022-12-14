@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:syncfusion_flutter_charts/sparkcharts.dart';
 
+import 'line_chart_sample2.dart';
 
 class MyChartHomePage2 extends StatefulWidget {
   // ignore: prefer_const_constructors_in_immutables
@@ -21,12 +23,30 @@ class _MyChartHomePage2State extends State<MyChartHomePage2> {
   ];
 
   @override
+  void initState() {
+    // TODO: implement initState
+    // for (var i = 0; i < 1000; i++) {
+    //   data.add(
+    //     _SalesData('Mar', (i + 1).toDouble()),
+    //   );
+    // }
+
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           title: const Text('Syncfusion Flutter chart'),
         ),
         body: Column(children: [
+          ElevatedButton(
+            onPressed: () {
+              Get.to(LineChartSample2(),transition: Transition.rightToLeft);
+            },
+            child: Text("next"),
+          ),
           //Initialize the chart widget
           SfCartesianChart(
               primaryXAxis: CategoryAxis(),
@@ -50,17 +70,26 @@ class _MyChartHomePage2State extends State<MyChartHomePage2> {
               padding: const EdgeInsets.all(8.0),
               //Initialize the spark charts widget
               child: SfSparkLineChart.custom(
+                negativePointColor: Colors.lightBlueAccent,
+                // plotBand: SparkChartPlotBand(start: 1, end: 3,color: Colors.deepOrangeAccent),
                 //Enable the trackball
                 trackball: SparkChartTrackball(
+                    borderColor: Colors.pinkAccent,
+                    color: Colors.white60,
+                    backgroundColor: Colors.tealAccent,
                     activationMode: SparkChartActivationMode.tap),
                 //Enable marker
                 marker: SparkChartMarker(
+                    borderColor: Colors.blue,
+                    color: Colors.purpleAccent,
                     displayMode: SparkChartMarkerDisplayMode.all),
                 //Enable data label
                 labelDisplayMode: SparkChartLabelDisplayMode.all,
                 xValueMapper: (int index) => data[index].year,
                 yValueMapper: (int index) => data[index].sales,
-                dataCount: 5,
+                color: Colors.orangeAccent,
+                axisLineColor: Colors.lime,
+                dataCount: data.length,
               ),
             ),
           )

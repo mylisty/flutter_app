@@ -48,7 +48,7 @@ dependencies:
   image_picker: ^0.8.5
   video_player: ^2.1.10
   #图表
-  fl_chart: ^0.40.0
+  fl_chart: ^0.55.2
   table_calendar: ^3.0.2
   flutter_pickers: ^2.1.8
   #二维码

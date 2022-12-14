@@ -210,7 +210,7 @@ packages:
       name: fl_chart
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.40.0"
+    version: "0.55.2"
   flutter:
     dependency: "direct main"
     description: flutter
