@@ -1,5 +1,7 @@
+import 'package:common_utils/common_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/base/base_page.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import '../main.dart';
@@ -12,15 +14,20 @@ import 'base_sliber_persistent.dart';
 /// @UpdateUser: 更新者
 /// @UpdateDate: 2022/1/6 2:50 下午
 ///  @UpdateRemark: 更新说明
+class ListPage extends BasePage {
+  ListPage(String title, String subTitle) : super(title, subTitle);
 
-class ListPage extends StatefulWidget {
+  @override
+  Widget build(BuildContext context) => ListPageBody();
+}
+class ListPageBody extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return _ListPageState();
+    return _ListPageBodyState();
   }
 }
 
-class _ListPageState extends State<ListPage> {
+class _ListPageBodyState extends State<ListPageBody> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,10 +71,40 @@ class _ListPageState extends State<ListPage> {
               ),
             );
           }),
+       /* new GridView.count(
+
+        //一行多少个
+      crossAxisCount: 4,
+      //滚动方向
+      scrollDirection: Axis.vertical,
+      // 左右间隔
+      crossAxisSpacing: 10.0,
+      // 上下间隔
+      mainAxisSpacing: 10.0,
+      //宽高比
+      childAspectRatio: 1 / 1,
+          children: <Widget>[
+            Text('ajj'),
+            Text('ajj'),
+            Text('ajj'),
+            Text('ajj'),
+            Text('ajj'),
+            Text('ajj'),
+            Text('ajj'),
+            Text('ajj'),
+            Text('ajj'),
+            Text('ajj'),
+          ],
+        )*/
     );
   }
 }
+class ListPage2 extends BasePage {
+  ListPage2(String title, String subTitle) : super(title, subTitle);
 
+  @override
+  Widget build(BuildContext context) => HomeFragmentPage2();
+}
 class HomeFragmentPage2 extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -436,5 +473,196 @@ class _HomeFragmentPageState2 extends State
 
   _listItemOnTap(int index) {
     Fluttertoast.showToast(msg: "当前点击的是list里的第$index");
+  }
+}
+
+
+
+class ListViewController extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return new MyApp23();
+  }
+}
+
+// ignore: slash_for_doc_comments
+/**
+ * 继承SliverChildBuilderDelegate  可以对列表的监听
+ */
+class _SaltedValueKey extends ValueKey<Key> {
+  const _SaltedValueKey(Key key)
+      : assert(key != null),
+        super(key);
+}
+
+class MyChildrenDelegate extends SliverChildBuilderDelegate {
+  MyChildrenDelegate(
+      Widget Function(BuildContext, int) builder, {
+        int childCount,
+        bool addAutomaticKeepAlive = true,
+        bool addRepaintBoundaries = true,
+      }) : super(builder,
+      childCount: childCount,
+      addAutomaticKeepAlives: addAutomaticKeepAlive,
+      addRepaintBoundaries: addRepaintBoundaries);
+
+  // Return a Widget for the given Exception
+  Widget _createErrorWidget(dynamic exception, StackTrace stackTrace) {
+    final FlutterErrorDetails details = FlutterErrorDetails(
+      exception: exception,
+      stack: stackTrace,
+      library: 'widgets library',
+      context: ErrorDescription('building'),
+    );
+    FlutterError.reportError(details);
+    return ErrorWidget.builder(details);
+  }
+
+  @override
+  Widget build(BuildContext context, int index) {
+    assert(builder != null);
+    if (index < 0 || (childCount != null && index >= childCount)) return null;
+    Widget child;
+    try {
+      child = builder(context, index);
+    } catch (exception, stackTrace) {
+      child = _createErrorWidget(exception, stackTrace);
+    }
+    if (child == null) return null;
+    final Key key = child.key != null ? _SaltedValueKey(child.key) : null;
+    if (addRepaintBoundaries) child = RepaintBoundary(child: child);
+    if (addSemanticIndexes) {
+      final int semanticIndex = semanticIndexCallback(child, index);
+      if (semanticIndex != null)
+        child = IndexedSemantics(
+            index: semanticIndex + semanticIndexOffset, child: child);
+    }
+    if (addAutomaticKeepAlives) child = AutomaticKeepAlive(child: child);
+    return KeyedSubtree(child: child, key: key);
+  }
+
+  ///监听 在可见的列表中 显示的第一个位置和最后一个位置
+  @override
+  void didFinishLayout(int firstIndex, int lastIndex) {
+    // TODO: implement didFinishLayout
+    super.didFinishLayout(firstIndex, lastIndex);
+  }
+
+  @override
+  double estimateMaxScrollOffset(int firstIndex, int lastIndex,
+      double leadingScrollOffset, double trailingScrollOffset) {
+    print(
+        'firstIndex sss : $firstIndex, lastIndex ssss : $lastIndex, leadingScrollOffset ssss : $leadingScrollOffset,'
+            'trailingScrollOffset ssss : $trailingScrollOffset  ');
+    return super.estimateMaxScrollOffset(
+        firstIndex, lastIndex, leadingScrollOffset, trailingScrollOffset);
+  }
+}
+
+class MyApp23 extends State<ListViewController> {
+//  ScrollController controller;
+  var list = new List<String>.generate(100, (i) => "item $i");
+  List<GlobalKey> keys = <GlobalKey>[];
+  ScrollController controller;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    for (int i = 0; i < list.length; i++) {
+      keys.add(GlobalKey(debugLabel: i.toString()));
+    }
+
+    controller = new ScrollController();
+    controller.addListener(() {
+      var position = controller.position;
+      var offset = controller.initialScrollOffset;
+      var maxScrollExtent2 = controller.position.maxScrollExtent;
+      var minScrollExtent = controller.position.minScrollExtent;
+      LogUtil.e("aaaaaaaaaaaaa position  " + position.toString());
+      LogUtil.e("aaaaaaaaaaaaa     controller.offset ${controller.offset}");
+      LogUtil.e("aaaaaaaaaaaaa offset" + offset.toString());
+      LogUtil.e("aaaaaaaaaaaaa maxScrollExtent2" + maxScrollExtent2.toString());
+      LogUtil.e("aaaaaaaaaaaaa minScrollExtent" + minScrollExtent.toString());
+//      controller.childrenDelegate;
+    });
+
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return new MaterialApp(
+      title: "Transform",
+      home: new Scaffold(
+        appBar: AppBar(
+          title: Text('Transform'),
+        ),
+        body: Column(
+          children: <Widget>[
+            RaisedButton(
+              onPressed: () async {
+                // 页面不可见的部分就跳转不了
+                /* RenderBox box = keys[1].currentContext.findRenderObject();
+                Offset offset = box.localToGlobal(Offset.zero);
+
+                LogUtil.e(" offset sss  ${offset.dy}");
+                LogUtil.e(" offset distance  ${offset.distance}");
+                LogUtil.e(" offset distanceSquared  ${offset.distanceSquared}");*/
+                controller.jumpTo(controller.position.maxScrollExtent);
+              },
+              child: Text("data"),
+            ),
+            Expanded(
+              child: buildListView(),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget buildListView() {
+    /* var listView = Container(
+      child: new ListView.custom(
+        controller: controller,
+        cacheExtent: 1.0, // 只有设置了1.0 才能够准确的标记position 位置
+        childrenDelegate: MyChildrenDelegate(
+          (BuildContext context, int index) {
+            return new Dismissible(
+                key: new Key(list[index]),
+                onDismissed: (direction) {
+                  //被移除回掉
+                  list.removeAt(index);
+                  var item = list[index];
+                  Scaffold.of(context)
+                      .showSnackBar(new SnackBar(content: new Text("$item")));
+                },
+                child: new ListTile(
+                  key:keys[index],
+                  title: new Text(list[index]),
+                ));
+          },
+          childCount: list.length,
+        ),
+      ),
+    );*/
+    int a = -1;
+    var listView = Container(
+      child: ListView(
+        controller: controller,
+        children: list.map<Widget>((data) {
+          a++;
+          LogUtil.e("aaaaaaaaaaaaaaa $a");
+          return Padding(
+            padding: EdgeInsets.all(8),
+            child: new ListTile(
+              key: keys[a],
+              title: new Text(list[a]),
+            ),
+          );
+        }).toList(),
+      ),
+    );
+    return listView;
   }
 }

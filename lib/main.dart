@@ -47,19 +47,12 @@ import 'package:scroll_to_index/scroll_to_index.dart';
 import 'dart:async';
 import 'SlidingUpPanelExample/sliding_up_panel.dart';
 import 'Test.dart';
+import 'base/base_page.dart';
+import 'base/demo_group.dart';
 import 'button/button_page.dart';
-import 'canvas/canvas_page.dart';
-import 'chart/chart_page2.dart';
-import 'chart/line_chart_sample2.dart';
-import 'date/complex_example.dart';
-import 'date/events_example.dart';
-import 'date/range_example.dart';
 import 'dialog.dart';
 import 'dart:math' as math;
 
-import 'drawer/drawer_page.dart';
-import 'dropdownButton/drop_down_button_page.dart';
-import 'http_base_util.dart';
 import 'list/list_page.dart';
 import 'material/material_page.dart';
 import 'providersort/provider/provier_demo.dart';
@@ -79,6 +72,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 // proviersort 包含动画
 
 // https://www.jianshu.com/p/9adf350829c2  自带图标 https://www.jianshu.com/p/6e2509f91aa6
+
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(
@@ -96,7 +90,7 @@ void main() {
       // home: BasicPage(),
       // home: PopPage(),
       // home: GetDemoPage(),
-      home: MyChartHomePage2(),
+      home: Demo(),
       // home: SlidingUpPanelExample(),
       navigatorObservers: [
         new MiddleWare(), // 可接听路由情况
@@ -105,7 +99,7 @@ void main() {
         GetPage(
             name: "/ButtonPage",
             transition: Transition.fadeIn,
-            page: () => ButtonPage("button")),
+            page: () => ButtonPage("ss", "aa")),
         GetPage(
             name: "/water",
             transition: Transition.fadeIn,
@@ -131,6 +125,67 @@ void main() {
     title: '',
     home: new TabbarBgColorTest(),*/
   );
+}
+
+class Demo extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return DemoWidget();
+  }
+}
+
+class DemoWidget extends State<Demo> {
+  @override
+  Widget build(BuildContext context) {
+    List<BasePage> _overlayPages = [
+      ButtonPage("button", "按钮基础,带位置引导dialog"),
+      TextFieldPage("textField", "输入框"),
+      ProgressPage("progress", "进度条"),
+      MyApp30("listView", "列表"),
+      ListPage2("listView2", "列表带悬浮"),
+      TextPage("text", "字体"),
+      MyApp11("Expanded", "容器图片展示Expanded"),
+      MyApp13("Align", "位置控制"),
+      MyApp16("ConstrainedBox", "限制框"),
+      MyApp19("Transform", "旋转"),
+      MyApp18("Table", "表格"),
+      MyApp20("Baseline", "Baseline"),
+      MyApp21("Wrap", "自动换行"),
+      MyApp26("clip等", "圆角"),
+      ViewPageState("viewPage", ""),
+      MyApp30("Drawer", ""),
+      MyApp101("DropdownButton", "下拉框"),
+      MyApp103("MyApp103", "滚轮"),
+    ];
+    List<BasePage> _overlayPages2 = [
+      MyApp22("详情布局", "详情布局"),
+      Myapp106("listView跳到指定item", "还需优化"),
+      MyApp29("常用button，text等使用", ""),
+    ];
+    return Scaffold(
+      appBar: AppBar(title: const Text('示例')),
+      body: Container(
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        child: SingleChildScrollView(
+          child: Container(
+            child: Column(
+              children: [
+                DemoGroupWidget(
+                  groupLabel: "基础组件",
+                  itemPages: _overlayPages,
+                ),
+                DemoGroupWidget(
+                  groupLabel: "常见布局",
+                  itemPages: _overlayPages2,
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 }
 
 class MiddleWare extends NavigatorObserver {
@@ -1215,8 +1270,8 @@ class _TabbarBgColorTesttate extends State<TabbarBgColorTest>
   PageController _pageController = PageController();
   List<Widget> pageList = [
     TestPage(),
-    Myapp106(),
-    MyApp3(),
+    Myapp106("", ""),
+    MyApp3("", ""),
   ];
 
   // PageController _pageController;
@@ -1656,7 +1711,15 @@ class MenuHomePageState extends State<MenuHomePage> {
   }
 }
 
-class MyApp103 extends StatefulWidget {
+
+
+class MyApp103 extends BasePage {
+  MyApp103(String title, String subTitle) : super(title, subTitle);
+
+  @override
+  Widget build(BuildContext context) => MyApp103Body();
+}
+class MyApp103Body extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
     return new _testLiandongState3();
@@ -1778,7 +1841,7 @@ class Toast2 {
 }
 
 // ignore: camel_case_types
-class _testLiandongState3 extends State<MyApp103> {
+class _testLiandongState3 extends State<MyApp103Body> {
   // ignore: non_constant_identifier_names
   List<TestBean> list = new List();
   final List<FixedExtentScrollController> scrollController = [];
@@ -2009,148 +2072,7 @@ class _testLiandongState3 extends State<MyApp103> {
         ));
   }
 
-  void _modalBottomSheetMenu() {
-    showModalBottomSheet(
-        context: context,
-        builder: (builder) {
-          return Container(
-            child: Column(
-              children: <Widget>[
-                Container(
-                  height: 48,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    border:
-                        Border(bottom: BorderSide(width: 1, color: Colors.red)),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      GestureDetector(
-                        child: Container(
-                          child: Text(
-                            "取消",
-                            style: TextStyle(fontSize: 14, color: Colors.red),
-                          ),
-                          margin: EdgeInsets.only(left: 16),
-                        ),
-                        onTap: () {
-                          Navigator.pop(context);
-                        },
-                      ),
-                      Text(
-                        "服务项目",
-                        style: TextStyle(fontSize: 14, color: Colors.red),
-                      ),
-                      GestureDetector(
-                        child: Container(
-                          child: Text(
-                            "确认",
-                            style: TextStyle(fontSize: 14, color: Colors.red),
-                          ),
-                          margin: EdgeInsets.only(right: 16),
-                        ),
-                        onTap: () {
-                          Navigator.pop(context);
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
-                  height: 241,
-                  child: Row(
-                    children: <Widget>[
-                      Expanded(
-                        flex: 1,
-                        child: CupertinoPicker.builder(
-//                         scrollController: scrollController[0],
-                          magnification: 1.0,
-                          childCount: list.length,
-                          itemBuilder: (context, index) {
-                            return Container(
-                              alignment: Alignment.center,
-                              child: Text(
-                                list[index].label,
-                                style:
-                                    TextStyle(fontSize: 16, color: Colors.red),
-                              ),
-                            );
-                          },
-                          onSelectedItemChanged: (int value) {
-                            position = value;
-                            setState(() {});
-                          },
-                          itemExtent: 47,
-                        ),
-                      ),
-                      Expanded(
-                        flex: 1,
-                        child: CupertinoPicker.builder(
-//                          scrollController: scrollController[1],
-                          magnification: 1.0,
-                          childCount: list[position].children.length,
-                          itemBuilder: (context, index) {
-                            return Container(
-                              alignment: Alignment.center,
-                              child: Text(list[position].children[index].label),
-                            );
-                          },
-                          onSelectedItemChanged: (int value) {
-                            LogUtil.e("aaaaaaaaa " + "aaa" + value.toString());
-                          },
-                          itemExtent: 47,
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          );
-        });
-  }
 
-  Widget buildListFirst(bool firstIn) {
-    return CupertinoPicker.builder(
-//      scrollController: scrollController[0],
-      magnification: 1.0,
-      childCount: list.length,
-      itemBuilder: (context, index) {
-        return Container(
-          alignment: Alignment.center,
-          child: Text(
-            list[index].label,
-            style: TextStyle(fontSize: 16, color: Colors.red),
-          ),
-        );
-      },
-      onSelectedItemChanged: (int value) {
-        setState(() {
-          position = value;
-        });
-      },
-      itemExtent: 47,
-    );
-  }
-
-  Widget buildListSecond(bool firstIn) {
-    return CupertinoPicker.builder(
-//      scrollController: scrollController[1],
-      magnification: 1.0,
-      childCount: list[position].children.length,
-      itemBuilder: (context, index) {
-        return Container(
-          alignment: Alignment.center,
-          child: Text(list[position].children[index].label),
-        );
-      },
-      onSelectedItemChanged: (int value) {
-        LogUtil.e("aaaaaaaaa " + "aaa" + value.toString());
-      },
-      itemExtent: 47,
-    );
-  }
 }
 
 class _StateView extends StatefulWidget {
@@ -2173,59 +2095,14 @@ class _StateViewState extends State<_StateView> {
   }
 }
 
-class MyApp102 extends StatefulWidget {
+
+class MyApp101 extends BasePage {
+  MyApp101(String title, String subTitle) : super(title, subTitle);
+
   @override
-  State<StatefulWidget> createState() {
-    return new _testLiandongState2();
-  }
+  Widget build(BuildContext context) => MyApp101Body();
 }
-
-// ignore: camel_case_types
-class _testLiandongState2 extends State<MyApp102> {
-  // ignore: non_constant_identifier_names
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return new MaterialApp(
-        title: "pageView",
-        home: new Scaffold(
-          appBar: AppBar(
-            title: Text('pageView Image'),
-          ),
-          body: Stack(
-            children: <Widget>[
-              Container(
-                width: 64,
-                height: 64,
-                color: Colors.red,
-              ),
-              Positioned(
-                  bottom: 0,
-                  left: 0,
-                  child: Offstage(
-                    offstage: false,
-                    child: Container(
-                      width: 64,
-                      height: 18,
-                      color: Colors.amber,
-                      alignment: Alignment.center,
-                      child: Text(
-                        "网红轮胎店",
-                        style: TextStyle(fontSize: 11, color: Colors.white),
-                      ),
-                    ),
-                  )),
-            ],
-          ),
-        ));
-  }
-}
-
-class MyApp101 extends StatefulWidget {
+class MyApp101Body extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
     return new _testLiandongState();
@@ -2233,7 +2110,7 @@ class MyApp101 extends StatefulWidget {
 }
 
 // ignore: camel_case_types
-class _testLiandongState extends State<MyApp101> {
+class _testLiandongState extends State<MyApp101Body> {
   // ignore: non_constant_identifier_names
   List _CourseNameList = ["bbb", "sdfsdf", "ldjfsjdf"];
   String isCourseValue = "bbb";
@@ -2352,242 +2229,6 @@ this.checkerboardOffscreenLayers = false, // 打开渲染到屏幕外位图的�
 this.showSemanticsDebugger = false, // 打开显示框架报告的可访问性信息的覆盖
 this.debugShowCheckedModeBanner = true, // 在选中模式下打开一个小的“DEBUG”横幅，表示应用程序处于选中模式
 })*/
-/*class MyApp33 extends StatefulWidget {
-  @override
-  _MyAppState createState() => new _MyAppState();
-}
-class _MyAppState extends State<MyApp33> {
-
-  String url = "";
-  double progress = 0;
-//  var _streamSubscription;
-  @override
-  void initState() {
-    super.initState();
-//    _streamSubscription = Fluttertoast.eventPlugin.receiveBroadcastStream()
-//        .listen(_onData, onError: _onError, onDone: _onDone, cancelOnError: true);
-
-  }
-
-  void _onData(Object event) {
-    // 接收数据
-    LogUtil.e("aaaaaaaaaaa       "+ event.toString());
-    setState(() {
-
-    });
-  }
-
-  void _onError(Object error) {
-    // 发生错误时被回调
-    setState((){
-
-    });
-  }
-
-  void _onDone() {
-    //结束时调用
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  */ /*  if(_streamSubscription != null) {
-      _streamSubscription.cancel();
-    }*/ /*
-  }
-  void _request(String phone) async{
-    try {
-      Response response = await Dio().post("http://motanni.com:7000/api/auth/sms_code/",data:{'mobile':phone});
-      print('response:${response.statusCode}');
-      print(response.data.toString());
-    } catch (e) {
-      print(e);
-    }
-  }
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('InAppWebView Example'),
-        ),
-        body: Container(
-            child: Column(children: <Widget>[
-              Container(
-                padding: EdgeInsets.all(20.0),
-                child: Text(
-                    "CURRENT URL\n${(url.length > 50) ? url.substring(0, 50) + "..." : url}"),
-              ),
-              Container(
-                  padding: EdgeInsets.all(10.0),
-                  child: progress < 1.0
-                      ? LinearProgressIndicator(value: progress)
-                      : Container()),
-              Expanded(
-                child: Container(
-                  margin: const EdgeInsets.all(10.0),
-                  decoration:
-                  BoxDecoration(border: Border.all(color: Colors.blueAccent)),
-                  child: InAppWebView(
-                    initialUrl:   "https://wx.jfx.qdfaw.com/qqWeChatOfficialRelease2/web/car-buyCars-zl/buyCars.html?token=&token_type=&userId=&updateTokenTime=&user_mobile=&refresh_token=&userAgent=Android&appVersionCode=126&latitude=30.31044&longitude=120.250965",
-                    initialHeaders: {},
-                    initialOptions: InAppWebViewWidgetOptions(
-                        inAppWebViewOptions: InAppWebViewOptions(
-                          debuggingEnabled: true,
-                        )
-                    ),
-                    onWebViewCreated: (InAppWebViewController controller) {
-                      webView = controller;
-                    },
-                    onLoadStart: (InAppWebViewController controller, String url) {
-                      setState(() {
-                        this.url = url;
-                      });
-                    },
-                    onLoadStop: (InAppWebViewController controller, String url) async {
-                      setState(() {
-                        this.url = url;
-                      });
-                    },
-                    onProgressChanged: (InAppWebViewController controller, int progress) {
-                      setState(() {
-                        this.progress = progress / 100;
-                      });
-                    },
-                  ),
-                ),
-
-
-              ),
-              ButtonBar(
-                alignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  RaisedButton(
-                    child: Icon(Icons.arrow_back),
-                    onPressed: () async {
-                      Fluttertoast.showToast(msg: "lsjflsjdfjdsjf");
-                      _request("19967341993");
-                    */ /*  Response response;
-                      Dio dio = new Dio();
-                      response = await dio.post("http://motanni.com:7000/api/auth/sms_code/", data: {"mobile":
-                      "19967341993"
-                      });
-                      print(response.data.toString());*/ /*
-                      */ /*if (webView != null) {
-                        webView.goBack();
-                      }*/ /*
-                    },
-                  ),
-                  RaisedButton(
-                    child: Icon(Icons.arrow_forward),
-                    onPressed: () {
-                      if (webView != null) {
-                        webView.goForward();
-                      }
-                    },
-                  ),
-                  RaisedButton(
-                    child: Icon(Icons.refresh),
-                    onPressed: () {
-                      if (webView != null) {
-                        webView.reload();
-                      }
-                    },
-                  ),
-                ],
-              ),
-            ])),
-      ),
-    );
-  }
-}*/
-
-class MyApp31 extends StatelessWidget {
-  final List<String> item;
-
-  MyApp31({Key key, @required this.item}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return new MaterialApp(
-        title: "列表",
-        home: new Scaffold(
-          appBar: AppBar(
-            title: Text('居中布局示例'),
-          ),
-          /**
-              Wrap({
-              Key key,
-              this.direction = Axis.horizontal,//主轴（mainAxis）的方向，默认为水平。
-              this.alignment = WrapAlignment.start,//主轴方向上的对齐方式，默认为start。
-              this.spacing = 0.0,//主轴方向上的间距。
-              this.runAlignment = WrapAlignment.start,//run的对齐方式。run可以理解为新的行或者列，如果是水平方向布局的话，run可以理解为新的一行。
-              this.runSpacing = 0.0,//run的间距。
-              this.crossAxisAlignment = WrapCrossAlignment.start,//交叉轴（crossAxis）方向上的对齐方式。
-              this.textDirection,//文本方向。
-              this.verticalDirection = VerticalDirection.down,//定义了children摆放顺序，默认是down，见Flex相关属性介绍。
-              List<Widget> children = const <Widget>[],//
-              })
-           */
-          body: Wrap(children: <Widget>[
-//              for (String item in tags) TagItem(item)
-          ]) /*Column(
-              // start ，沿着主轴方向(垂直方向)顶部对齐；
-              //end，沿着主轴方向(垂直方向)底部对齐；
-              //center，沿着主轴方向(垂直方向)居中对齐；
-              //spaceBetween ，沿着主轴方向(垂直方向)平分剩余空间；
-              //spaceAround，把剩余空间平分成n份，n是子widget的数量，然后把其中一份空间分成2份，放在第一个child的前面，和最后一个child的后面；
-              //6.spaceEvenly，把剩余空间平分n+1份，然后平分所有的空间，请注意和spaceAround的区别；
-              //
-              //作者：liu_520
-              //链接：https://www.jianshu.com/p/1d003ab6c278
-            */ /*  mainAxisAlignment: MainAxisAlignment.center,*/ /*
-              //
-              mainAxisAlignment:  MainAxisAlignment.center,
-
-              //start ，垂直主轴方向(水平方向)左侧对齐；
-              //end，垂直主轴方向(水平方向)右侧对齐；
-              //center，垂直主轴方向(水平方向)居中对齐；
-              //stretch ，垂直主轴方向(水平方向)拉伸子child；
-              //baseline，这个要和textBaseline一起使用，；
-              //
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                  Text("aljdflsjf"),
-                  Text("aljdflsjf"),
-                Row(
-                  children: <Widget>[
-                    Text("aaaa")
-                  ],
-                )
-              ],
-            )*/
-          ,
-        ));
-  }
-}
-
-class TagItem extends StatelessWidget {
-  final String text;
-
-  TagItem(this.text);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 40,
-      margin: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-      decoration: BoxDecoration(
-          border:
-              Border.all(color: Colors.blueAccent.withAlpha(60), width: 1.0),
-          borderRadius: BorderRadius.all(Radius.circular(5))),
-      child: Container(
-        margin: EdgeInsets.all(8),
-        child: Text(text),
-      ),
-    );
-  }
-}
 
 const List<String> tags = [
   "肯德基",
@@ -2604,14 +2245,21 @@ const List<String> tags = [
   "多多多"
 ];
 
-class MyApp30 extends StatefulWidget {
+class MyApp30 extends BasePage {
+  MyApp30(String title, String subTitle) : super(title, subTitle);
+
+  @override
+  Widget build(BuildContext context) => MyApp30Body();
+}
+
+class MyApp30Body extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
     return new LinearGradientState();
   }
 }
 
-class LinearGradientState extends State<MyApp30> {
+class LinearGradientState extends State<MyApp30Body> {
   Future<Null> _onRefresh() async {
     await Future.delayed(Duration(seconds: 3), () {
       setState(() {});
@@ -2666,14 +2314,21 @@ class LinearGradientState extends State<MyApp30> {
   }
 }
 
-class MyApp29 extends StatefulWidget {
+class MyApp29 extends BasePage {
+  MyApp29(String title, String subTitle) : super(title, subTitle);
+
+  @override
+  Widget build(BuildContext context) => MyApp29Body();
+}
+
+class MyApp29Body extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
     return new TextFieldState();
   }
 }
 
-class TextFieldState extends State<MyApp29>
+class TextFieldState extends State<MyApp29Body>
     with SingleTickerProviderStateMixin {
   var controller;
   AnimationController animationController;
@@ -2952,58 +2607,9 @@ class TextFieldState extends State<MyApp29>
   }
 }
 
-class MyApp28 extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() {
-    // TODO: implement createState
-    return new DialogState();
-  }
-}
+class ViewPageState extends BasePage {
+  ViewPageState(String title, String subTitle) : super(title, subTitle);
 
-class DialogState extends State<MyApp28> {
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    Future.delayed(Duration.zero, () {
-//      showPictureBg(context);
-      Loading.show(context);
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return new Scaffold(
-      appBar: new AppBar(
-        title: new Text("dialog"),
-      ),
-      body: Container(
-        child: Stack(
-          children: <Widget>[
-            Positioned(
-              bottom: 0,
-              left: 100,
-              child: Text("圣诞节"),
-            ),
-          ],
-        ), /*Positioned(,
-          bottom: 0,
-          left: 100,
-          child: Text("圣诞节"),
-        )*/
-      ),
-    );
-  }
-}
-
-class MyApp27 extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() {
-    return new ViewPageState();
-  }
-}
-
-class ViewPageState extends State<MyApp27> {
   _onPageChnge(index) {
     print("aaaaaaaaaaaaaaa " + index.toString());
   }
@@ -3045,39 +2651,21 @@ class ViewPageState extends State<MyApp27> {
             )));
   }
 }
-/*
 
-class ViewPagerDemo extends StatelessWidget {
-  final List<String> arr = [
-    'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1554462012322&di=987630d5759673ef2b8b3b48f8112f78&imgtype=0&src=http%3A%2F%2Fwww.jituwang.com%2Fuploads%2Fallimg%2F121005%2F219049-1210051Q43054.jpg',
-    'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=100023636,3868399025&fm=26&gp=0.jpg',
-    'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1554462109653&di=fc9a56f0410fbc71aa78a87994d77681&imgtype=0&src=http%3A%2F%2Fimg.boqiicdn.com%2FData%2FBK%2FA%2F1408%2F7%2Fimg88561407405003.jpg',
-    'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1554462109652&di=81eab7bc76410abc2ffdb7ba0bd63049&imgtype=0&src=http%3A%2F%2Fimg.pconline.com.cn%2Fimages%2Fupload%2Fupc%2Ftx%2Fphotoblog%2F1303%2F03%2Fc9%2F18591026_18591026_1362320235218.jpg',
-    'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1554462109652&di=40a8a6f283e19dbd52f7c454b13c8e2b&imgtype=0&src=http%3A%2F%2Fimg.pconline.com.cn%2Fimages%2Fupload%2Fupc%2Ftx%2Fphotoblog%2F1303%2F03%2Fc9%2F18591026_18591026_1362320204968.jpg',
-    'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1554462208642&di=9c36cc656acfa0009863cefd1e09ae80&imgtype=0&src=http%3A%2F%2Fa4.att.hudong.com%2F74%2F46%2F300000764046131105469835325.jpg'
-  ];
-*/
+typedef void OnTapViewPagerItem(String data);
 
-/*  List<Widget> _createViewPager() {
-    List<Widget> list = [];
-    list.add(ViewPager(arr, (imgUrl){}));
-    return list;
-  }
+class ViewPage extends BasePage {
+  ViewPage(String title, String subTitle) : super(title, subTitle);
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: _createViewPager(),
-    );
-  }*/
-/*
+  Widget build(BuildContext context) => ViewPagerBody([], null);
 }
-typedef void OnTapViewPagerItem(String data);
-class ViewPager extends StatefulWidget {
+
+class ViewPagerBody extends StatefulWidget {
   final List<String> viewPagerData;
   final OnTapViewPagerItem onTap;
 
-  ViewPager(this.viewPagerData, this.onTap, {Key key}) : super(key: key);
+  ViewPagerBody(this.viewPagerData, this.onTap, {Key key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -3085,22 +2673,23 @@ class ViewPager extends StatefulWidget {
   }
 }
 
-class _HomePagerState extends State<ViewPager> {
+class _HomePagerState extends State<ViewPagerBody> {
   int virtualIndex = 0;
   int realIndex = 1;
 
   PageController controller;
   Timer timer;
-  PageController  _transController ;
+  PageController _transController;
+
   var _currentPageValue = 0.0;
 
-  PageController _entryController ;
+  PageController _entryController;
+
   var _entryPageValue = 0.0;
 
   @override
   void initState() {
     super.initState();
-
     controller = new PageController(initialPage: realIndex);
     _transController = new PageController();
     _entryController = new PageController();
@@ -3205,7 +2794,7 @@ class _HomePagerState extends State<ViewPager> {
           child: PageView.custom(
             controller: _entryController,
             childrenDelegate:
-            SliverChildBuilderDelegate((BuildContext context, int index) {
+                SliverChildBuilderDelegate((BuildContext context, int index) {
               if (index == _entryPageValue.floor()) {
                 //出去的item
                 return Transform(
@@ -3287,7 +2876,7 @@ class _HomePagerState extends State<ViewPager> {
         height: 6,
         margin: EdgeInsets.symmetric(horizontal: 1.5, vertical: 10),
         decoration: BoxDecoration(
-          //装饰组件，对装饰容器进行装饰用，添加颜色、图片、边框、圆角、阴影、渐变、背景混合、形状
+            //装饰组件，对装饰容器进行装饰用，添加颜色、图片、边框、圆角、阴影、渐变、背景混合、形状
             shape: BoxShape.circle,
             color: i == virtualIndex ? Colors.white : Colors.grey),
       ));
@@ -3314,10 +2903,8 @@ class _HomePagerState extends State<ViewPager> {
   }
 }
 
-*/
-
-class MyApp26 extends StatelessWidget {
-  MyApp26({Key key}) : super(key: key);
+class MyApp26 extends BasePage {
+  MyApp26(String title, String subTitle) : super(title, subTitle);
 
   @override
   Widget build(BuildContext context) {
@@ -3345,14 +2932,6 @@ class MyApp26 extends StatelessWidget {
                 onTap: () {
                   //  show(context);
                 },
-              ),
-              Container(
-                height: 30,
-                color: Colors.red,
-              ),
-              Container(
-                height: 30,
-                color: Colors.red,
               ),
               new CircleAvatar(
                 backgroundColor: Colors.red,
@@ -3398,37 +2977,14 @@ class MyApp26 extends StatelessWidget {
   }
 }
 
-class MyApp25 extends StatelessWidget {
+class Myapp106 extends BasePage {
+  Myapp106(String title, String subTitle) : super(title, subTitle);
+
   @override
-  Widget build(BuildContext context) {
-    return new MaterialApp(
-        title: "Table",
-        home: new Scaffold(
-            appBar: AppBar(
-              title: Text('Table'),
-            ),
-            body: new Center(
-              child: Table(
-                columnWidths: const <int, TableColumnWidth>{
-                  0: FixedColumnWidth(100.0),
-                  1: FixedColumnWidth(57.0),
-                  2: FixedColumnWidth(90.0),
-                },
-                border: TableBorder.all(
-                    color: Colors.black, width: 2.0, style: BorderStyle.solid),
-                children: const <TableRow>[
-                  TableRow(children: <Widget>[
-                    Text('q'),
-                    Text('1'),
-                    Text('3'),
-                  ])
-                ],
-              ),
-            )));
-  }
+  Widget build(BuildContext context) => Myapp106Body();
 }
 
-class Myapp106 extends StatelessWidget {
+class Myapp106Body extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -3548,196 +3104,9 @@ class _MyHomePage106State extends State<MyHomePage106>
   bool get wantKeepAlive => true;
 }
 
-class ListViewController extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() {
-    return new MyApp23();
-  }
-}
+class MyApp22 extends BasePage {
+  MyApp22(String title, String subTitle) : super(title, subTitle);
 
-// ignore: slash_for_doc_comments
-/**
- * 继承SliverChildBuilderDelegate  可以对列表的监听
- */
-class _SaltedValueKey extends ValueKey<Key> {
-  const _SaltedValueKey(Key key)
-      : assert(key != null),
-        super(key);
-}
-
-class MyChildrenDelegate extends SliverChildBuilderDelegate {
-  MyChildrenDelegate(
-    Widget Function(BuildContext, int) builder, {
-    int childCount,
-    bool addAutomaticKeepAlive = true,
-    bool addRepaintBoundaries = true,
-  }) : super(builder,
-            childCount: childCount,
-            addAutomaticKeepAlives: addAutomaticKeepAlive,
-            addRepaintBoundaries: addRepaintBoundaries);
-
-  // Return a Widget for the given Exception
-  Widget _createErrorWidget(dynamic exception, StackTrace stackTrace) {
-    final FlutterErrorDetails details = FlutterErrorDetails(
-      exception: exception,
-      stack: stackTrace,
-      library: 'widgets library',
-      context: ErrorDescription('building'),
-    );
-    FlutterError.reportError(details);
-    return ErrorWidget.builder(details);
-  }
-
-  @override
-  Widget build(BuildContext context, int index) {
-    assert(builder != null);
-    if (index < 0 || (childCount != null && index >= childCount)) return null;
-    Widget child;
-    try {
-      child = builder(context, index);
-    } catch (exception, stackTrace) {
-      child = _createErrorWidget(exception, stackTrace);
-    }
-    if (child == null) return null;
-    final Key key = child.key != null ? _SaltedValueKey(child.key) : null;
-    if (addRepaintBoundaries) child = RepaintBoundary(child: child);
-    if (addSemanticIndexes) {
-      final int semanticIndex = semanticIndexCallback(child, index);
-      if (semanticIndex != null)
-        child = IndexedSemantics(
-            index: semanticIndex + semanticIndexOffset, child: child);
-    }
-    if (addAutomaticKeepAlives) child = AutomaticKeepAlive(child: child);
-    return KeyedSubtree(child: child, key: key);
-  }
-
-  ///监听 在可见的列表中 显示的第一个位置和最后一个位置
-  @override
-  void didFinishLayout(int firstIndex, int lastIndex) {
-    // TODO: implement didFinishLayout
-    super.didFinishLayout(firstIndex, lastIndex);
-  }
-
-  @override
-  double estimateMaxScrollOffset(int firstIndex, int lastIndex,
-      double leadingScrollOffset, double trailingScrollOffset) {
-    print(
-        'firstIndex sss : $firstIndex, lastIndex ssss : $lastIndex, leadingScrollOffset ssss : $leadingScrollOffset,'
-        'trailingScrollOffset ssss : $trailingScrollOffset  ');
-    return super.estimateMaxScrollOffset(
-        firstIndex, lastIndex, leadingScrollOffset, trailingScrollOffset);
-  }
-}
-
-class MyApp23 extends State<ListViewController> {
-//  ScrollController controller;
-  var list = new List<String>.generate(100, (i) => "item $i");
-  List<GlobalKey> keys = <GlobalKey>[];
-  ScrollController controller;
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    for (int i = 0; i < list.length; i++) {
-      keys.add(GlobalKey(debugLabel: i.toString()));
-    }
-
-    controller = new ScrollController();
-    controller.addListener(() {
-      var position = controller.position;
-      var offset = controller.initialScrollOffset;
-      var maxScrollExtent2 = controller.position.maxScrollExtent;
-      var minScrollExtent = controller.position.minScrollExtent;
-      LogUtil.e("aaaaaaaaaaaaa position  " + position.toString());
-      LogUtil.e("aaaaaaaaaaaaa     controller.offset ${controller.offset}");
-      LogUtil.e("aaaaaaaaaaaaa offset" + offset.toString());
-      LogUtil.e("aaaaaaaaaaaaa maxScrollExtent2" + maxScrollExtent2.toString());
-      LogUtil.e("aaaaaaaaaaaaa minScrollExtent" + minScrollExtent.toString());
-//      controller.childrenDelegate;
-    });
-
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return new MaterialApp(
-      title: "Transform",
-      home: new Scaffold(
-        appBar: AppBar(
-          title: Text('Transform'),
-        ),
-        body: Column(
-          children: <Widget>[
-            RaisedButton(
-              onPressed: () async {
-                // 页面不可见的部分就跳转不了
-                /* RenderBox box = keys[1].currentContext.findRenderObject();
-                Offset offset = box.localToGlobal(Offset.zero);
-
-                LogUtil.e(" offset sss  ${offset.dy}");
-                LogUtil.e(" offset distance  ${offset.distance}");
-                LogUtil.e(" offset distanceSquared  ${offset.distanceSquared}");*/
-                controller.jumpTo(controller.position.maxScrollExtent);
-              },
-              child: Text("data"),
-            ),
-            Expanded(
-              child: buildListView(),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget buildListView() {
-    /* var listView = Container(
-      child: new ListView.custom(
-        controller: controller,
-        cacheExtent: 1.0, // 只有设置了1.0 才能够准确的标记position 位置
-        childrenDelegate: MyChildrenDelegate(
-          (BuildContext context, int index) {
-            return new Dismissible(
-                key: new Key(list[index]),
-                onDismissed: (direction) {
-                  //被移除回掉
-                  list.removeAt(index);
-                  var item = list[index];
-                  Scaffold.of(context)
-                      .showSnackBar(new SnackBar(content: new Text("$item")));
-                },
-                child: new ListTile(
-                  key:keys[index],
-                  title: new Text(list[index]),
-                ));
-          },
-          childCount: list.length,
-        ),
-      ),
-    );*/
-    int a = -1;
-    var listView = Container(
-      child: ListView(
-        controller: controller,
-        children: list.map<Widget>((data) {
-          a++;
-          LogUtil.e("aaaaaaaaaaaaaaa $a");
-          return Padding(
-            padding: EdgeInsets.all(8),
-            child: new ListTile(
-              key: keys[a],
-              title: new Text(list[a]),
-            ),
-          );
-        }).toList(),
-      ),
-    );
-    return listView;
-  }
-}
-
-class MyApp22 extends StatelessWidget {
   GestureDetector buildButton(IconData icon, String label) {
     return GestureDetector(
       child: Column(
@@ -3833,7 +3202,9 @@ class MyApp22 extends StatelessWidget {
   }
 }
 
-class MyApp21 extends StatelessWidget {
+class MyApp21 extends BasePage {
+  MyApp21(String title, String subTitle) : super(title, subTitle);
+
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
@@ -3891,10 +3262,56 @@ class MyApp21 extends StatelessWidget {
                     }))
               ],
             )));
+    /**
+        Wrap({
+        Key key,
+        this.direction = Axis.horizontal,//主轴（mainAxis）的方向，默认为水平。
+        this.alignment = WrapAlignment.start,//主轴方向上的对齐方式，默认为start。
+        this.spacing = 0.0,//主轴方向上的间距。
+        this.runAlignment = WrapAlignment.start,//run的对齐方式。run可以理解为新的行或者列，如果是水平方向布局的话，run可以理解为新的一行。
+        this.runSpacing = 0.0,//run的间距。
+        this.crossAxisAlignment = WrapCrossAlignment.start,//交叉轴（crossAxis）方向上的对齐方式。
+        this.textDirection,//文本方向。
+        this.verticalDirection = VerticalDirection.down,//定义了children摆放顺序，默认是down，见Flex相关属性介绍。
+        List<Widget> children = const <Widget>[],//
+        })
+     */ /*Column(
+              // start ，沿着主轴方向(垂直方向)顶部对齐；
+              //end，沿着主轴方向(垂直方向)底部对齐；
+              //center，沿着主轴方向(垂直方向)居中对齐；
+              //spaceBetween ，沿着主轴方向(垂直方向)平分剩余空间；
+              //spaceAround，把剩余空间平分成n份，n是子widget的数量，然后把其中一份空间分成2份，放在第一个child的前面，和最后一个child的后面；
+              //6.spaceEvenly，把剩余空间平分n+1份，然后平分所有的空间，请注意和spaceAround的区别；
+              //
+              //作者：liu_520
+              //链接：https://www.jianshu.com/p/1d003ab6c278
+            */ /*  mainAxisAlignment: MainAxisAlignment.center,*/ /*
+              //
+              mainAxisAlignment:  MainAxisAlignment.center,
+
+              //start ，垂直主轴方向(水平方向)左侧对齐；
+              //end，垂直主轴方向(水平方向)右侧对齐；
+              //center，垂直主轴方向(水平方向)居中对齐；
+              //stretch ，垂直主轴方向(水平方向)拉伸子child；
+              //baseline，这个要和textBaseline一起使用，；
+              //
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                  Text("aljdflsjf"),
+                  Text("aljdflsjf"),
+                Row(
+                  children: <Widget>[
+                    Text("aaaa")
+                  ],
+                )
+              ],
+            )*/
   }
 }
 
-class MyApp20 extends StatelessWidget {
+class MyApp20 extends BasePage {
+  MyApp20(String title, String subTitle) : super(title, subTitle);
+
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
@@ -3904,13 +3321,12 @@ class MyApp20 extends StatelessWidget {
               title: Text('Baseline'),
             ),
             body: new Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween, // 与css3 just,
               children: <Widget>[
                 new Baseline(
                   baseline: 45,
                   baselineType: TextBaseline.alphabetic,
                   child: Text(
-                    'AbGSLJFJLSdjlsj',
+                    'AbGaSdjls放辣椒',
                     style: new TextStyle(fontSize: 23, color: Colors.black),
                   ),
                 ),
@@ -3927,7 +3343,9 @@ class MyApp20 extends StatelessWidget {
   }
 }
 
-class MyApp19 extends StatelessWidget {
+class MyApp19 extends BasePage {
+  MyApp19(String title, String subTitle) : super(title, subTitle);
+
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
@@ -3953,7 +3371,9 @@ class MyApp19 extends StatelessWidget {
   }
 }
 
-class MyApp18 extends StatelessWidget {
+class MyApp18 extends BasePage {
+  MyApp18(String title, String subTitle) : super(title, subTitle);
+
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
@@ -3983,76 +3403,9 @@ class MyApp18 extends StatelessWidget {
   }
 }
 
-class MyApp17 extends StatelessWidget {
-  List<String> list = ["a", "c", "c", "s"];
+class MyApp16 extends BasePage {
+  MyApp16(String title, String subTitle) : super(title, subTitle);
 
-  @override
-  Widget build(BuildContext context) {
-    return new MaterialApp(
-        title: "AspectRatio",
-        home: new Scaffold(
-            appBar: AppBar(
-              title: Text('AspectRatio'),
-            ),
-            body: new Container(
-                child: gridViewDefaultCount(
-                    list) /*new AspectRatio(
-                aspectRatio: 2, //宽高比例
-                child: new Container(
-                  color: Colors.greenAccent,
-                  child:gridViewDefaultCount(list) */ /*new GridView.extent(
-                    maxCrossAxisExtent: 150,
-                    children: <Widget>[
-                      Text('ajj'),
-                      Text('ajj'),
-                      Text('ajj'),
-                      Text('ajj'),
-                      Text('ajj'),
-                      Text('ajj'),
-                      Text('ajj'),
-                      Text('ajj'),
-                      Text('ajj'),
-                      Text('ajj'),
-                    ],
-                  )*/ /*,
-                ),
-              ),*/
-                )));
-  }
-
-  Widget gridViewDefaultCount(List<String> list) {
-    return GridView.count(
-      padding: EdgeInsets.all(5.0),
-      //一行多少个
-      crossAxisCount: 4,
-      //滚动方向
-      scrollDirection: Axis.vertical,
-      // 左右间隔
-      crossAxisSpacing: 10.0,
-      // 上下间隔
-      mainAxisSpacing: 10.0,
-      //宽高比
-      childAspectRatio: 1 / 1,
-
-      children: initListWidget(list),
-    );
-  }
-
-  List<Widget> initListWidget(List<String> list) {
-    List<Widget> lists = [];
-    for (var item in list) {
-      lists.add(new Container(
-        height: 20.0,
-        width: 20.0,
-        color: Colors.yellow,
-        child: new Center(child: Text('a')),
-      ));
-    }
-    return lists;
-  }
-}
-
-class MyApp16 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
@@ -4063,125 +3416,13 @@ class MyApp16 extends StatelessWidget {
             ),
             body: new ConstrainedBox(
               constraints: const BoxConstraints(minHeight: 200),
-              child: Text('a'),
+              child: Text('aaaaaaa'),
             )));
   }
 }
 
-class MyApp15 extends StatelessWidget {
-  final List<String> item;
-
-  MyApp15({Key key, @required this.item}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return new MaterialApp(
-        title: "stack/positioned",
-        home: new Scaffold(
-            appBar: AppBar(
-              title: Text('stack/positioned'),
-            ),
-            body: new Center(
-              child: new Stack(
-                children: <Widget>[
-                  new Image.network(
-                    'https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1573178989&di=5467e073272b5a414945e3365016db56&src=http://hbimg.b0.upaiyun.com/b8a2f3cb90ebfdcc8f432e55137d8008d8e0b53c656d-LYlEC1_fw658',
-                    fit: BoxFit.fill,
-                  ),
-                  new Positioned(
-                    top: 1.0,
-                    left: 1.0,
-                    child: Text(
-                      'flutter',
-                      style: new TextStyle(
-                        color: Colors.black,
-                        fontSize: 23,
-                      ),
-                    ),
-                  ),
-                  new Offstage(
-                      offstage: false,
-                      child: new Container(
-                        child: Text(
-                          'visiable',
-                          style: new TextStyle(
-                            color: Colors.black,
-                            fontSize: 67,
-                          ),
-                        ),
-                      ))
-                ],
-              ),
-            )));
-  }
-}
-
-class MyApp14 extends StatelessWidget {
-  final List<String> item;
-
-  MyApp14({Key key, @required this.item}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return new MaterialApp(
-        title: "FittedBox",
-        home: new Scaffold(
-            appBar: AppBar(
-              title: Text('缩放布局'),
-            ),
-            body: Center(
-                child: Container(
-              width: 50,
-              height: 50,
-              padding: EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                  color: Color(0x330000FF),
-                  /*   border:
-                      Border.all(color: Colors.red, width: 2, style: BorderStyle.solid),
-                      borderRadius: BorderRadius.all(Radius.circular(10)),*/
-                  boxShadow: [
-                    BoxShadow(color: Colors.blue, offset: Offset(5, 5))
-                  ],
-                  /* BoxShadow(
-                      color: Colors.red.withOpacity(0.2),
-                      offset: Offset(-6.0, 6.0), //阴影x轴偏移量
-                      blurRadius: 10, //阴影模糊程度
-                      spreadRadius: 5 //阴影扩散程度
-                  )*/
-//                      gradient: LinearGradient(colors: [Colors.blue, Colors.yellow]),
-//                      backgroundBlendMode: BlendMode.srcATop,
-                  shape: BoxShape.circle),
-//                  foregroundDecoration: FlutterLogoDecoration(),
-//                  transform: Matrix4.rotationZ(1),
-              child: new Text(
-                "100",
-//                    textDirection: TextDirection.rtl,
-                style: TextStyle(),
-              ),
-//                  alignment: Alignment(0, 0),
-              alignment: AlignmentDirectional.center,
-            )) /* new Padding(
-              padding: EdgeInsets.all(10),
-              child: new FittedBox(
-                fit: BoxFit.fill,
-                alignment: Alignment.topLeft,
-                child: Text(
-                  '缩放布局',
-                  style: new TextStyle(
-                    //style 无用
-                    color: Colors.black,
-                  ),
-                ),
-              ),
-            )*/
-            ));
-  }
-}
-
-class MyApp13 extends StatelessWidget {
-  final List<String> item;
-
-  MyApp13({Key key, @required this.item}) : super(key: key);
+class MyApp13 extends BasePage {
+  MyApp13(String title, String subTitle) : super(title, subTitle);
 
   @override
   Widget build(BuildContext context) {
@@ -4203,34 +3444,39 @@ class MyApp13 extends StatelessWidget {
                   child:
                       new Image.asset('assets/images/ant_installment_icon.png'),
                 ),
+                new Image.network(
+                  'https://upload.jianshu.io/users/upload_avatars/3884536/d847a50f1da0.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/240/h/240',
+                  fit: BoxFit.fill,
+                ),
+                new Positioned(
+                  top: 1.0,
+                  left: 1.0,
+                  child: Text(
+                    'flutter',
+                    style: new TextStyle(
+                      color: Colors.black,
+                      fontSize: 23,
+                    ),
+                  ),
+                ),
+                new Offstage(
+                    offstage: false,
+                    child: new Container(
+                      child: Text(
+                        'visiable',
+                        style: new TextStyle(
+                          color: Colors.black,
+                          fontSize: 67,
+                        ),
+                      ),
+                    ))
               ],
             )));
   }
 }
 
-class MyApp12 extends StatelessWidget {
-  final List<String> item;
-
-  MyApp12({Key key, @required this.item}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return new MaterialApp(
-        title: "列表",
-        home: new Scaffold(
-            appBar: AppBar(
-              title: Text('居中布局示例'),
-            ),
-            body: new Center(
-              child: Text('center'),
-            )));
-  }
-}
-
-class MyApp11 extends StatelessWidget {
-  final List<String> item;
-
-  MyApp11({Key key, @required this.item}) : super(key: key);
+class MyApp11 extends BasePage {
+  MyApp11(String title, String subTitle) : super(title, subTitle);
 
   @override
   Widget build(BuildContext context) {
@@ -4284,237 +3530,9 @@ class MyApp11 extends StatelessWidget {
   }
 }
 
-class MyApp10 extends StatefulWidget {
-  final List<String> item;
+class TextPage extends BasePage {
+  TextPage(String title, String subTitle) : super(title, subTitle);
 
-  MyApp10({Key key, @required this.item}) : super(key: key);
-
-  @override
-  State<StatefulWidget> createState() {
-    return new _LoginPageState();
-  }
-}
-
-class _LoginPageState extends State<MyApp10> {
-  // 全局key用来获取form表单组件
-  String userName;
-  String passWord;
-  GlobalKey<FormState> loginkey = new GlobalKey<FormState>();
-
-  static bool isLoginPassword(String input) {
-    RegExp mobile = new RegExp(r"(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$");
-    return mobile.hasMatch(input);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return new MaterialApp(
-      title: 'From 表单示例',
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('表单'),
-          leading: Icon(Icons.print),
-        ),
-        body: new Column(
-          children: <Widget>[
-            new Container(
-              padding: const EdgeInsets.only(left: 20.0),
-              // padding 用法  EdgeInsets.all上下左右20
-              child: new Form(
-                key: loginkey,
-                child: new Column(
-                  children: <Widget>[
-                    new TextFormField(
-                      decoration: new InputDecoration(labelText: "请输入用户名"),
-                      onSaved: (value) {
-                        userName = value;
-                      },
-                      onFieldSubmitted: (value) {},
-                    ),
-                    new TextFormField(
-                      decoration: new InputDecoration(labelText: '请输入密码'),
-                      obscureText: true,
-                      validator: (value) {
-                        return isLoginPassword(value) ? "6~16位数字和字符组合" : null;
-                        // return value.length < 6 ? "密码不够六位" : null;
-                      },
-                      onSaved: (value) {
-                        passWord = value;
-                      },
-                    )
-                  ],
-                ),
-              ),
-            ),
-            new SizedBox(
-              width: 340,
-              height: 42,
-              child: RaisedButton(
-                onPressed: () {
-                  // 读取from状态
-                  var loginForm = loginkey.currentState;
-                  if (loginForm.validate()) {
-                    loginForm.save();
-                    print('username ' + userName + "password" + passWord);
-                  }
-                },
-                child: Text(
-                  "登录",
-                  style: TextStyle(fontSize: 23),
-                ),
-              ),
-            )
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class MyApp9 extends StatelessWidget {
-  final List<String> item;
-
-  MyApp9({Key key, @required this.item}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return new MaterialApp(
-        title: "列表",
-        home: new Scaffold(
-            appBar: AppBar(
-              title: Text('列表组件2'),
-            ),
-            body: new GridView.count(
-              crossAxisCount: 3,
-              scrollDirection: Axis.horizontal,
-              children: <Widget>[
-                Text('ajj'),
-                Text('ajj'),
-                Text('ajj'),
-                Text('ajj'),
-                Text('ajj'),
-                Text('ajj'),
-                Text('ajj'),
-                Text('ajj'),
-                Text('ajj'),
-                Text('ajj'),
-              ],
-            )));
-  }
-}
-
-class MyApp8 extends StatelessWidget {
-  final List<String> item;
-
-  MyApp8({Key key, @required this.item}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return new MaterialApp(
-        title: "列表",
-        home: new Scaffold(
-            appBar: AppBar(
-              title: Text('列表组件2'),
-            ),
-            body: new ListView.builder(
-                itemCount: item.length,
-                itemBuilder: (context, index) {
-                  return new ListTile(
-                    leading: new Icon(Icons.message),
-                    title: Text('${item[index]}'),
-                  );
-                })));
-  }
-}
-
-class MyApp7 extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return new MaterialApp(
-        title: "列表",
-        home: new Scaffold(
-            appBar: AppBar(
-              title: Text('列表组件'),
-            ),
-            body: Container(
-                margin: EdgeInsets.symmetric(vertical: 20.0),
-                height: 200,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: <Widget>[
-                    Container(
-                      width: 160,
-                      color: Colors.orange,
-                    ),
-                    Container(
-                      width: 160,
-                      color: Colors.greenAccent,
-                      child: Column(
-                        children: <Widget>[
-                          new Text(
-                            '颜色+ 删除线条 + 25',
-                            style: new TextStyle(
-                                color: const Color(0xffff0000),
-                                decoration: TextDecoration.lineThrough,
-                                decorationColor: const Color(0xffff0000),
-                                fontSize: 25),
-                          ),
-                          new Text('颜色+ 加粗 + 25',
-                              style: new TextStyle(
-                                  color: const Color(0xffff0000),
-                                  fontStyle: FontStyle.italic,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 25))
-                        ],
-                      ),
-                    )
-                  ],
-                ))));
-  }
-}
-
-class MyApp6 extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return new MaterialApp(
-        title: "ICon",
-        home: new Scaffold(
-            appBar: AppBar(
-              title: Text('图标及按钮组件'),
-            ),
-            body: new Column(
-              children: <Widget>[
-                new Icon(
-                  Icons.title,
-                  color: Colors.greenAccent,
-                  size: 30,
-                ),
-                new IconButton(
-                    icon: Icon(
-                      Icons.message,
-                      color: Colors.lightBlue,
-                      size: 56,
-                    ),
-                    tooltip: '按下提示',
-                    onPressed: () {
-                      print('按下操作');
-                    }),
-                new RaisedButton(
-                  onPressed: () {
-                    print('raisebutton');
-                  },
-                  color: Colors.lightBlue,
-                  child: Text(
-                    "raisebutton",
-                    style: new TextStyle(color: Colors.black),
-                  ),
-                )
-              ],
-            )));
-  }
-}
-
-class TextPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
@@ -4541,41 +3559,47 @@ class TextPage extends StatelessWidget {
                       fontStyle: FontStyle.italic,
                       fontWeight: FontWeight.bold,
                       fontSize: 25)),
-              /* Text(
-                 'Greetings, planet!',
-                 style: TextStyle(
-                   fontSize: 40,
-                   foreground: Paint()
-                     ..shader = Gradient.linear(
-                       const Offset(0, 20),
-                       const Offset(150, 20),
-                       <Color>[
-                         Colors.red,
-                         Colors.yellow,
-                       ],
-                     )
-                ),*/
+              Container(
+                width: 50,
+                height: 50,
+                padding: EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                    color: Color(0x330000FF),
+                    /*   border:
+                      Border.all(color: Colors.red, width: 2, style: BorderStyle.solid),
+                      borderRadius: BorderRadius.all(Radius.circular(10)),*/
+                    /*boxShadow: [
+                    BoxShadow(color: Colors.blue, offset: Offset(5, 5))
+                  ],*/
+                    /* BoxShadow(
+                      color: Colors.red.withOpacity(0.2),
+                      offset: Offset(-6.0, 6.0), //阴影x轴偏移量
+                      blurRadius: 10, //阴影模糊程度
+                      spreadRadius: 5 //阴影扩散程度
+                  )*/
+                    gradient:
+                        LinearGradient(colors: [Colors.blue, Colors.yellow]),
+                    backgroundBlendMode: BlendMode.srcATop,
+                    shape: BoxShape.circle),
+//                  foregroundDecoration: FlutterLogoDecoration(),
+//                  transform: Matrix4.rotationZ(1),
+                child: new Text(
+                  "100",
+//                    textDirection: TextDirection.rtl,
+                  style: TextStyle(),
+                ),
+//                  alignment: Alignment(0, 0),
+                alignment: AlignmentDirectional.center,
+              )
             ],
           ),
         ));
   }
 }
 
-class MyApp4 extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return new MaterialApp(
-        title: "ImageDemo",
-        home: Center(
-          child: new Image.network(
-            'https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1573178989&di=5467e073272b5a414945e3365016db56&src=http://hbimg.b0.upaiyun.com/b8a2f3cb90ebfdcc8f432e55137d8008d8e0b53c656d-LYlEC1_fw658',
-            fit: BoxFit.fill,
-          ),
-        ));
-  }
-}
+class MyApp3 extends BasePage {
+  MyApp3(String title, String subTitle) : super(title, subTitle);
 
-class MyApp3 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(

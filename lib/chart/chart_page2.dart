@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/base/base_page.dart';
 import 'package:get/get.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:syncfusion_flutter_charts/sparkcharts.dart';
 
 import 'line_chart_sample2.dart';
 
+class Chart1 extends BasePage {
+  Chart1(String title, String subTitle) : super(title, subTitle);
+
+  @override
+  Widget build(BuildContext context) => MyChartHomePage2();
+}
 class MyChartHomePage2 extends StatefulWidget {
   // ignore: prefer_const_constructors_in_immutables
   MyChartHomePage2({Key key}) : super(key: key);

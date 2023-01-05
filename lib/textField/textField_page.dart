@@ -4,6 +4,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_app/base/base_page.dart';
 
 import '../res_colours.dart';
 
@@ -86,14 +87,24 @@ this.semanticCounterText,
 this.alignLabelWithHint,
 })*/
 // ignore: must_be_immutable
-class TextFieldPage extends StatelessWidget {
+class TextFieldPage extends BasePage {
   var result = 'Navigator';
   String platformVersion = 'Unknown';
   TextEditingController rechargeController = TextEditingController();
-  bool s = true;
   var fa = new FocusNode();
   var fa1 = new FocusNode();
   var fa2 = new FocusNode();
+
+  TextFieldPage(String title, String subTitle) : super(title, subTitle);
+// 全局key用来获取form表单组件
+  String userName;
+  String passWord;
+  GlobalKey<FormState> loginkey = new GlobalKey<FormState>();
+
+  static bool isLoginPassword(String input) {
+    RegExp mobile = new RegExp(r"(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$");
+    return mobile.hasMatch(input);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -115,19 +126,6 @@ class TextFieldPage extends StatelessWidget {
             Container(
               child: ListView(
                 children: [
-                  Checkbox(
-                    onChanged: (b) {
-                      s = !s;
-                    },
-                    value: s,
-                    splashRadius: 44,
-                    mouseCursor: MouseCursor.defer,
-                  ),
-                  Checkbox(
-                      value: s,
-                      onChanged: (b) {
-                        s = !s;
-                      }),
                   new TextField(
                     focusNode: fa,
                     controller: rechargeController,
@@ -336,6 +334,53 @@ class TextFieldPage extends StatelessWidget {
                         fa2.requestFocus();
                       },
                       child: Text("test")),
+                  new Container(
+                    padding: const EdgeInsets.only(left: 20.0),
+                    // padding 用法  EdgeInsets.all上下左右20
+                    child: new Form(
+                      key: loginkey,
+                      child: new Column(
+                        children: <Widget>[
+                          new TextFormField(
+                            decoration: new InputDecoration(labelText: "请输入用户名"),
+                            onSaved: (value) {
+                              userName = value;
+                            },
+                            onFieldSubmitted: (value) {},
+                          ),
+                          new TextFormField(
+                            decoration: new InputDecoration(labelText: '请输入密码'),
+                            obscureText: true,
+                            validator: (value) {
+                              return isLoginPassword(value) ? "6~16位数字和字符组合" : null;
+                              // return value.length < 6 ? "密码不够六位" : null;
+                            },
+                            onSaved: (value) {
+                              passWord = value;
+                            },
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                  new SizedBox(
+                    width: 340,
+                    height: 42,
+                    child: RaisedButton(
+                      onPressed: () {
+                        // 读取from状态
+                        var loginForm = loginkey.currentState;
+                        if (loginForm.validate()) {
+                          loginForm.save();
+                          print('username ' + userName + "password" + passWord);
+                        }
+                      },
+                      child: Text(
+                        "登录",
+                        style: TextStyle(fontSize: 23),
+                      ),
+                    ),
+                  ),
                 ],
               ),
               margin: EdgeInsets.only(bottom: 60), //重点在这里 可以将底部的顶出来

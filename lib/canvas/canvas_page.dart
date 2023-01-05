@@ -170,7 +170,7 @@ class LCTabbarController extends StatefulWidget {
 
 class _LCTabbarControllerState extends State<LCTabbarController> {
   int currentIndex;
-  final pages = [MyApp3(), MyApp3(), MyApp3(), MyApp3()];
+  final pages = [MyApp3("",""), MyApp3("",""), MyApp3("",""), MyApp3("","")];
   List titles = ["首页", "发现", "消息", "我的"];
 
   List normalImgUrls = [

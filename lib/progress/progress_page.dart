@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_app/base/base_page.dart';
 
 /// @ProjectName: flutter_app
 /// @Description:
@@ -9,14 +10,20 @@ import 'package:flutter/widgets.dart';
 /// @UpdateDate: 2021/5/31 3:39 下午
 ///  @UpdateRemark: 更新说明
 
-class ProgressPage extends StatefulWidget {
+class ProgressPage extends BasePage {
+  ProgressPage(String title, String subTitle) : super(title, subTitle);
+
+  @override
+  Widget build(BuildContext context) => ProgressPageBody();
+}
+class ProgressPageBody extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
     return _ProgressStaepage();
   }
 }
 
-class _ProgressStaepage extends State<ProgressPage> {
+class _ProgressStaepage extends State<ProgressPageBody> {
   int process = 20;
   int max = 100;
 
