@@ -50,6 +50,8 @@ import 'Test.dart';
 import 'base/base_page.dart';
 import 'base/demo_group.dart';
 import 'button/button_page.dart';
+import 'chart/chart_page2.dart';
+import 'chart/line_chart_sample2.dart';
 import 'dialog.dart';
 import 'dart:math' as math;
 
@@ -153,14 +155,27 @@ class DemoWidget extends State<Demo> {
       MyApp21("Wrap", "自动换行"),
       MyApp26("clip等", "圆角"),
       ViewPageState("viewPage", ""),
-      MyApp30("Drawer", ""),
-      MyApp101("DropdownButton", "下拉框"),
+      MyApp30("Drawer", "侧拉"),
+      MyApp101("DropdownButton", "下拉框带悬浮按钮"),
       MyApp103("MyApp103", "滚轮"),
+      MyApp104("MenuHome", "popWindow 二维码 水印"),
+      OverlayPage("OverlayPage", "导览图"),
+      MyProviderApp("MyProviderApp", "Provide"),
+      MainPage("animate", "动画"),
+      MyApp108("banner", "banner滚动图"),
     ];
     List<BasePage> _overlayPages2 = [
       MyApp22("详情布局", "详情布局"),
       Myapp106("listView跳到指定item", "还需优化"),
       MyApp29("常用button，text等使用", ""),
+      TabbarBgColor("tabber", "导航栏和TabBar"),
+      BasicPage("日期选取器", ""),
+      MyApp107("list滚动", ""),
+      TestPage("顶部图片加tabber", ""),
+      FlutterPickerPage("pick", ""),
+      PopPage("Pop", ""),
+      Chart1("syncfusion_flutter_charts", ""),
+      Chart2("fl_chart", ""),
     ];
     return Scaffold(
       appBar: AppBar(title: const Text('示例')),
@@ -210,7 +225,9 @@ class MiddleWare extends NavigatorObserver {
 }
 
 /// Provider 使用demo
-class MyProviderApp extends StatelessWidget {
+class MyProviderApp extends BasePage {
+  MyProviderApp(String title, String subTitle) : super(title, subTitle);
+
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -236,12 +253,19 @@ class MyProviderApp extends StatelessWidget {
   }
 }
 
-class MainPage extends StatefulWidget {
+class MainPage extends BasePage {
+  MainPage(String title, String subTitle) : super(title, subTitle);
+
   @override
-  _MainPageState createState() => _MainPageState();
+  Widget build(BuildContext context) => MainPageBody();
 }
 
-class _MainPageState extends State<MainPage> {
+class MainPageBody extends StatefulWidget {
+  @override
+  _MainPageBodyState createState() => _MainPageBodyState();
+}
+
+class _MainPageBodyState extends State<MainPageBody> {
   // 定义 ValueNotifier 对象 _counter
   final ValueNotifier<int> _counter = ValueNotifier<int>(0);
 
@@ -312,12 +336,19 @@ class _MainPageState extends State<MainPage> {
 typedef ValueWidgetBuilder<T> = Widget Function(
     BuildContext context, T value, Widget child);
 
-class BasicPage extends StatefulWidget {
+class BasicPage extends BasePage {
+  BasicPage(String title, String subTitle) : super(title, subTitle);
+
   @override
-  _BasicPageState createState() => _BasicPageState();
+  Widget build(BuildContext context) => BasicPageBody();
 }
 
-class _BasicPageState extends State<BasicPage> {
+class BasicPageBody extends StatefulWidget {
+  @override
+  _BasicPageBodyState createState() => _BasicPageBodyState();
+}
+
+class _BasicPageBodyState extends State<BasicPageBody> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -419,12 +450,19 @@ class _BasicPageState extends State<BasicPage> {
 //滚动最大距离
 const APPBAR_SCROLL_OFFSET = 100;
 
-class MyApp108 extends StatefulWidget {
+class MyApp108 extends BasePage {
+  MyApp108(String title, String subTitle) : super(title, subTitle);
+
+  @override
+  Widget build(BuildContext context) => MyApp108Body();
+}
+
+class MyApp108Body extends StatefulWidget {
   @override
   _TabNavigatorState createState() => _TabNavigatorState();
 }
 
-class _TabNavigatorState extends State<MyApp108> {
+class _TabNavigatorState extends State<MyApp108Body> {
   List _imageUrl = [
     'https://dimg04.c-ctrip.com/images/zg0o180000014yl20DEA4.jpg',
     'https://dimg04.c-ctrip.com/images/zg0f180000014vrut370F.jpg',
@@ -525,12 +563,19 @@ class _TabNavigatorState extends State<MyApp108> {
   }
 }
 
-class MyApp107 extends StatefulWidget {
+class MyApp107 extends BasePage {
+  MyApp107(String title, String subTitle) : super(title, subTitle);
+
+  @override
+  Widget build(BuildContext context) => MyApp107Body();
+}
+
+class MyApp107Body extends StatefulWidget {
   @override
   _TestPageState2 createState() => _TestPageState2();
 }
 
-class _TestPageState2 extends State<MyApp107> {
+class _TestPageState2 extends State<MyApp107Body> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: Stack(
@@ -638,12 +683,19 @@ class _TestPageState2 extends State<MyApp107> {
 const url =
     'http://www.pptbz.com/pptpic/UploadFiles_6909/201203/2012031220134655.jpg';
 
-class TestPage extends StatefulWidget {
+class TestPage extends BasePage {
+  TestPage(String title, String subTitle) : super(title, subTitle);
+
   @override
-  _TestPageState createState() => _TestPageState();
+  Widget build(BuildContext context) => TestPageBody();
 }
 
-class _TestPageState extends State<TestPage> {
+class TestPageBody extends StatefulWidget {
+  @override
+  _TestPageBodyState createState() => _TestPageBodyState();
+}
+
+class _TestPageBodyState extends State<TestPageBody> {
   var tabTitle = [
     '1',
     '页面2',
@@ -1023,105 +1075,27 @@ class _CustomScrollViewPage extends State<MyApp105> {
         ],
       ),
     );
-    /*  CustomScrollView(
-      slivers: <Widget>[
-        const SliverAppBar(
-          pinned: true,
-          expandedHeight: 100.0,
-          flexibleSpace: FlexibleSpaceBar(
-            title: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text("data"),
-            ),
-          ),
-        ),
-        SliverFixedExtentList(
-          itemExtent: 50,
-          delegate:
-              SliverChildBuilderDelegate((BuildContext context, int index) {
-            return Container(
-              alignment: Alignment.center,
-              color: Colors.lightBlue[100 * (index % 9)],
-              child: Text('List Item $index'),
-            );
-          }, childCount: 50),
-        ),
-        SliverGrid(
-          gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-            maxCrossAxisExtent: 200.0,
-            mainAxisSpacing: 10.0,
-            crossAxisSpacing: 10.0,
-            childAspectRatio: 4.0,
-          ),
-          delegate: SliverChildBuilderDelegate(
-            (BuildContext context, int index) {
-              return Container(
-                alignment: Alignment.center,
-                color: Colors.teal[100 * (index % 9)],
-                child: Text('Grid Item $index'),
-              );
-            },
-            childCount: 50,
-          ),
-        ),
-      ],
-    );*/
-    /*new ListView.builder(
-        itemCount: 50,
-        itemBuilder: (context, index) {
-          return new ListTile(
-            leading: new Icon(Icons.message),
-            title: Text('aaaa$index'),
-          );
-        })*/
-    /* DefaultTextStyle(
-        style: Theme.of(context).textTheme.bodyText2,
-        child: LayoutBuilder(
-          builder: (BuildContext context, BoxConstraints viewportConstraints) {
-            return SingleChildScrollView(
-              child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  minHeight: viewportConstraints.maxHeight,
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: <Widget>[
-                    Container(
-                      // A fixed-height child.
-                      color: const Color(0xffeeee00), // Yellow
-                      height: 120.0,
-                      alignment: Alignment.center,
-                      child: const Text('Fixed Height Content'),
-                    ),
-                    Container(
-                      // Another fixed-height child.
-                      color: const Color(0xff008000), // Green
-                      height: 120.0,
-                      alignment: Alignment.center,
-                      child: const Text('Fixed Height Content'),
-                    ),
-                  ],
-                ),
-              ),
-            );
-          },
-        ),
-      );*/
   }
+}
+
+class OverlayPage extends BasePage {
+  OverlayPage(String title, String subTitle) : super(title, subTitle);
+
+  @override
+  Widget build(BuildContext context) => OverlayPageBody();
 }
 
 /*
  引导图标
  */
-class OverlayPage extends StatefulWidget {
+class OverlayPageBody extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return new OverlayPageState();
+    return new OverlayPageBodyState();
   }
 }
 
-class OverlayPageState extends State<OverlayPage> {
+class OverlayPageBodyState extends State<OverlayPageBody> {
   //首次运行中间文字显示点击效果
   String _bodyText = '点击效果';
   GlobalKey anchorKey = GlobalKey();
@@ -1160,7 +1134,13 @@ class OverlayPageState extends State<OverlayPage> {
               onPressed: () {
                 OverlayDialog._cancelToast();
               },
-              child: Text("data"),
+              child: Text("取消"),
+            ),
+            RaisedButton(
+              onPressed: () {
+                OverlayDialog.show(context, message: "测试");
+              },
+              child: Text("弹出"),
             ),
             Container(
               margin: EdgeInsets.only(top: 40),
@@ -1170,7 +1150,7 @@ class OverlayPageState extends State<OverlayPage> {
                 },
                 key: anchorKey,
               ),
-            )
+            ),
           ],
         ),
       ),
@@ -1218,7 +1198,7 @@ class OverlayDialog {
                     bottom: 222,
                     child: GestureDetector(
                       onTap: () {
-                        Loading.hide(context);
+                        _cancelToast();
                       },
                       child: Container(
                         width: 96,
@@ -1254,14 +1234,21 @@ class OverlayDialog {
   }
 }
 
-class TabbarBgColorTest extends StatefulWidget {
+class TabbarBgColor extends BasePage {
+  TabbarBgColor(String title, String subTitle) : super(title, subTitle);
+
+  @override
+  Widget build(BuildContext context) => TabbarBgColorTestBody();
+}
+
+class TabbarBgColorTestBody extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
     return _TabbarBgColorTesttate();
   }
 }
 
-class _TabbarBgColorTesttate extends State<TabbarBgColorTest>
+class _TabbarBgColorTesttate extends State<TabbarBgColorTestBody>
     with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   int _selectedIndex = 0;
   GlobalKey<ScaffoldState> _key = GlobalKey();
@@ -1269,7 +1256,7 @@ class _TabbarBgColorTesttate extends State<TabbarBgColorTest>
   TabController _tabController;
   PageController _pageController = PageController();
   List<Widget> pageList = [
-    TestPage(),
+    TestPageBody(),
     Myapp106("", ""),
     MyApp3("", ""),
   ];
@@ -1290,9 +1277,9 @@ class _TabbarBgColorTesttate extends State<TabbarBgColorTest>
     return Scaffold(
         key: _key,
         appBar: AppBar(
-          title: Text("ScaffoldTest"),
-          //TabBar布置
-          /* bottom: PreferredSize(
+            title: Text("ScaffoldTest"),
+            //TabBar布置
+            bottom: PreferredSize(
               preferredSize: Size.fromHeight(48),
               child: Material(
                 color: Colors.cyan,
@@ -1314,8 +1301,7 @@ class _TabbarBgColorTesttate extends State<TabbarBgColorTest>
                   ),
                 ),
               ),
-            )*/
-        ),
+            )),
         body:
             _currentPage() /*_selectedIndex == 0
             ? TabBarView(
@@ -1416,7 +1402,9 @@ class _TabbarBgColorTesttate extends State<TabbarBgColorTest>
   bool get wantKeepAlive => true;
 }
 
-class MyApp104 extends StatelessWidget {
+class MyApp104 extends BasePage {
+  MyApp104(String title, String subTitle) : super(title, subTitle);
+
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
@@ -1578,71 +1566,13 @@ class MenuHomePageState extends State<MenuHomePage> {
                         context,
                         _stackKey,
                         showBg: true,
-                        child:
-                            PopChildView() /*StatefulBuilder(
-                          builder: (context, state) {
-                            return SingleChildScrollView(
-                              child: Container(
-                                height: 420,
-                                child: GestureDetector(
-                                  child: MediaQuery.removePadding(
-                                    removeTop: true,
-                                    context: context,
-                                    child: ListView(
-                                      children: [
-                                        Container(
-                                          color: Colors.white,
-                                          child: Text("$_bodyText"),
-                                          height: 200,
-                                        ),
-                                        Container(
-                                          child: Text("1111"),
-                                          height: 200,
-                                          color: Colors.red,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  onTap: () {
-                                    _bodyText = "afassfafad";
-                                    state(() {});
-                                    // Navigator.of(context).pop();
-                                  },
-                                ),
-                                width: MediaQuery.of(context).size.width,
-                                decoration: BoxDecoration(
-                                  color: Colors.tealAccent,
-                                  borderRadius: const BorderRadius.only(
-                                      bottomRight: const Radius.circular(20),
-                                      bottomLeft: const Radius.circular(20)), //弧度
-                                ),
-                              ),
-                            );
-                          },
-                        )*/
-                        ,
+                        child: PopChildView(),
                       );
                     },
                     child: Container(
                       child: Text("1111"),
                       height: 200,
                     ),
-                  ),
-                  Container(
-                    child: Text("1111"),
-                    height: 200,
-                  ),
-                  Container(
-                    child: Text("1111"),
-                    height: 200,
-                  ),
-                  Container(
-                    child: Text("1111"),
-                    height: 200,
-                  ),
-                  Container(
-                    child: Text("1111"),
-                    height: 200,
                   ),
                 ],
               )
@@ -1711,14 +1641,13 @@ class MenuHomePageState extends State<MenuHomePage> {
   }
 }
 
-
-
 class MyApp103 extends BasePage {
   MyApp103(String title, String subTitle) : super(title, subTitle);
 
   @override
   Widget build(BuildContext context) => MyApp103Body();
 }
+
 class MyApp103Body extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -2071,8 +2000,6 @@ class _testLiandongState3 extends State<MyApp103Body> {
           ),
         ));
   }
-
-
 }
 
 class _StateView extends StatefulWidget {
@@ -2095,13 +2022,13 @@ class _StateViewState extends State<_StateView> {
   }
 }
 
-
 class MyApp101 extends BasePage {
   MyApp101(String title, String subTitle) : super(title, subTitle);
 
   @override
   Widget build(BuildContext context) => MyApp101Body();
 }
+
 class MyApp101Body extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {

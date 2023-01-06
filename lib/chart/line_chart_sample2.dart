@@ -1,17 +1,23 @@
 
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/base/base_page.dart';
 import 'package:get/get.dart';
 import 'package:get/get_navigation/src/routes/transitions_type.dart';
 
 import 'chart_page2.dart';
+class Chart2 extends BasePage {
+  Chart2(String title, String subTitle) : super(title, subTitle);
 
-class LineChartSample2 extends StatefulWidget {
   @override
-  State<LineChartSample2> createState() => _LineChartSample2State();
+  Widget build(BuildContext context) => LineChartSample2Body();
+}
+class LineChartSample2Body extends StatefulWidget {
+  @override
+  State<LineChartSample2Body> createState() => _LineChartSample2BodyState();
 }
 
-class _LineChartSample2State extends State<LineChartSample2> {
+class _LineChartSample2BodyState extends State<LineChartSample2Body> {
   List<Color> gradientColors = [
     const Color(0xff23b6e6),
     const Color(0xff02d39a),

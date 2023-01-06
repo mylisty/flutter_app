@@ -50,7 +50,7 @@ class _MyChartHomePage2State extends State<MyChartHomePage2> {
         body: Column(children: [
           ElevatedButton(
             onPressed: () {
-              Get.to(LineChartSample2(),transition: Transition.rightToLeft);
+              Get.to(LineChartSample2Body(),transition: Transition.rightToLeft);
             },
             child: Text("next"),
           ),

@@ -8,6 +8,7 @@
 
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/base/base_page.dart';
 import 'dart:convert';
 import 'package:flutter_picker/flutter_picker.dart';
 
@@ -45,13 +46,18 @@ class _MyAppState extends State<FlutterPickerPage> {
   }
 }
 */
+class FlutterPickerPage extends BasePage {
+  FlutterPickerPage(String title, String subTitle) : super(title, subTitle);
 
-class FlutterPickerPage extends StatefulWidget {
+  @override
+  Widget build(BuildContext context) => FlutterPickerPageBody();
+}
+class FlutterPickerPageBody extends StatefulWidget {
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<FlutterPickerPage> {
+class _MyHomePageState extends State<FlutterPickerPageBody> {
   final double listSpec = 4.0;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   String stateText = "";

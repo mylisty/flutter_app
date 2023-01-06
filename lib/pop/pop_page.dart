@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_app/base/base_page.dart';
 import 'package:flutter_app/dialog.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 
@@ -10,15 +11,20 @@ import 'package:flutter_swiper/flutter_swiper.dart';
 /// @UpdateUser: 更新者
 /// @UpdateDate: 2021/6/3 2:07 下午
 ///  @UpdateRemark: 更新说明
+class PopPage extends BasePage {
+  PopPage(String title, String subTitle) : super(title, subTitle);
 
-class PopPage extends StatefulWidget {
+  @override
+  Widget build(BuildContext context) => PopPageBody();
+}
+class PopPageBody extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
     return _PopStaepage();
   }
 }
 
-class _PopStaepage extends State<PopPage> {
+class _PopStaepage extends State<PopPageBody> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
