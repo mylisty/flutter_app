@@ -55,6 +55,7 @@ import 'chart/line_chart_sample2.dart';
 import 'dialog.dart';
 import 'dart:math' as math;
 
+import 'get/get_page.dart';
 import 'list/list_page.dart';
 import 'material/material_page.dart';
 import 'providersort/provider/provier_demo.dart';
@@ -146,6 +147,7 @@ class DemoWidget extends State<Demo> {
       MyApp30("listView", "列表"),
       ListPage2("listView2", "列表带悬浮"),
       TextPage("text", "字体"),
+      MyApp3("text", "字体样式"),
       MyApp11("Expanded", "容器图片展示Expanded"),
       MyApp13("Align", "位置控制"),
       MyApp16("ConstrainedBox", "限制框"),
@@ -176,6 +178,7 @@ class DemoWidget extends State<Demo> {
       PopPage("Pop", ""),
       Chart1("syncfusion_flutter_charts", ""),
       Chart2("fl_chart", ""),
+      GetDemoPage("getx", "路由"),
     ];
     return Scaffold(
       appBar: AppBar(title: const Text('示例')),

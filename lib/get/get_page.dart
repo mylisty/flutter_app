@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/base/base_page.dart';
 import 'package:get/get.dart';
 
 /// @ProjectName: flutter_app
@@ -11,7 +12,15 @@ import 'package:get/get.dart';
 ///  @UpdateRemark: 更新说明
 
 ///   https://github.com/jonataslaw/getx/blob/master/README.zh-cn.md
-class GetDemoPage extends StatelessWidget {
+///
+
+class GetDemoPage extends BasePage {
+  GetDemoPage(String title, String subTitle) : super(title, subTitle);
+
+  @override
+  Widget build(BuildContext context) => GetDemoPageBody();
+}
+class GetDemoPageBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Controller controller = Get.put(Controller());
