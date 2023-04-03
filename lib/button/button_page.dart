@@ -235,14 +235,7 @@ class ButtonPage extends BasePage {
                           ],
                           // 渐变色
                           borderRadius: BorderRadius.circular(25)),
-                      child: RaisedButton(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(25)),
-                        color: Colors.transparent,
-                        // 设为透明色
-                        elevation: 0,
-                        // 正常时阴影隐藏
-                        highlightElevation: 0,
+                      child: ElevatedButton(
                         // 点击时阴影隐藏
                         onPressed: () {},
                         child: Text(

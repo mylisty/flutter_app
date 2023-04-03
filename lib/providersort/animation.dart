@@ -25,7 +25,7 @@ class _AnimationState extends State<AnimationPage> {
     return Scaffold(
       body: ListView(
         children: [
-          new RaisedButton(
+          new ElevatedButton(
             onPressed: () {
               Navigator.push(
                 context,
@@ -34,13 +34,12 @@ class _AnimationState extends State<AnimationPage> {
                 ),
               );
             },
-            color: Colors.lightBlue,
             child: Text(
               "动画1",
               style: new TextStyle(color: Colors.white),
             ),
           ),
-          new RaisedButton(
+          new ElevatedButton(
             onPressed: () {
               Navigator.push(
                 context,
@@ -49,24 +48,22 @@ class _AnimationState extends State<AnimationPage> {
                 ),
               );
             },
-            color: Colors.lightBlue,
             child: Text(
               "隐式动画",
               style: new TextStyle(color: Colors.white),
             ),
           ),
-          new RaisedButton(
+          new ElevatedButton(
             key: key,
             onPressed: () {
               Navigator.of(context).push(_createRoute(key));
             },
-            color: Colors.lightBlue,
             child: Text(
               "page 切换动画",
               style: new TextStyle(color: Colors.white),
             ),
           ),
-          new RaisedButton(
+          new ElevatedButton(
             onPressed: () {
               Navigator.push(
                 context,
@@ -75,7 +72,6 @@ class _AnimationState extends State<AnimationPage> {
                 ),
               );
             },
-            color: Colors.lightBlue,
             child: Text(
               "hero Page change ",
               style: new TextStyle(color: Colors.white),
@@ -332,28 +328,26 @@ class _LogAppState extends State<LogApp> with SingleTickerProviderStateMixin {
     return Scaffold(
       body: ListView(
         children: [
-          new RaisedButton(
+          new ElevatedButton(
             onPressed: () {
 //             controller.forward();
               controller.forward();
             },
-            color: Colors.lightBlue,
             child: Text(
               "开始动画",
               style: new TextStyle(color: Colors.black),
             ),
           ),
-          new RaisedButton(
+          new ElevatedButton(
             onPressed: () {
               count++;
             },
-            color: Colors.lightBlue,
             child: Text(
               "+",
               style: new TextStyle(color: Colors.black),
             ),
           ),
-          new RaisedButton(
+          new ElevatedButton(
             onPressed: () {
               count--;
               if (count == 0) {
@@ -361,7 +355,6 @@ class _LogAppState extends State<LogApp> with SingleTickerProviderStateMixin {
                 controller.forward();
               }
             },
-            color: Colors.lightBlue,
             child: Text(
               "-",
               style: new TextStyle(color: Colors.black),

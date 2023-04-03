@@ -41,7 +41,6 @@ import 'dart:async';
 import 'package:flutter/services.dart';
 import 'package:popup_window/popup_window.dart';
 import 'package:provider/provider.dart';
-import 'package:qr_flutter/qr_flutter.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 
 import 'dart:async';
@@ -288,36 +287,6 @@ class _MainPageBodyState extends State<MainPageBody> {
     return Scaffold(
       body: ListView(
         children: [
-          new RaisedButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => AnimationPage(),
-                ),
-              );
-            },
-            color: Colors.lightBlue,
-            child: Text(
-              "动画",
-              style: new TextStyle(color: Colors.black),
-            ),
-          ),
-          new RaisedButton(
-            onPressed: () {
-              _counter.value++;
-            },
-            color: Colors.lightBlue,
-            child: ValueListenableBuilder(
-              builder: (BuildContext context, value, Widget child) {
-                return Text(
-                  "动画${_counter.value}",
-                  style: new TextStyle(color: Colors.black),
-                );
-              },
-              valueListenable: _counter,
-            ),
-          ),
           Container(
             color: Colors.black,
             child: Transform(
@@ -367,10 +336,9 @@ class _BasicPageBodyState extends State<BasicPageBody> {
 
   Container bottomNewCommentButton() {
     return Container(
-      child: RaisedButton(
+      child: ElevatedButton(
         child: Text("Publish",
             style: TextStyle(fontSize: 20.0, color: Colors.white)),
-        color: Colors.blue[300],
         onPressed: () {
           Pickers.showDatePicker(
             context,
@@ -1133,13 +1101,13 @@ class OverlayPageBodyState extends State<OverlayPageBody> {
       body: new Center(
         child: Column(
           children: <Widget>[
-            RaisedButton(
+            ElevatedButton(
               onPressed: () {
                 OverlayDialog._cancelToast();
               },
               child: Text("取消"),
             ),
-            RaisedButton(
+            ElevatedButton(
               onPressed: () {
                 OverlayDialog.show(context, message: "测试");
               },
@@ -1147,7 +1115,7 @@ class OverlayPageBodyState extends State<OverlayPageBody> {
             ),
             Container(
               margin: EdgeInsets.only(top: 40),
-              child: RaisedButton(
+              child: ElevatedButton(
                 onPressed: () {
                   Loading.show(context, left: dx);
                 },
@@ -1356,22 +1324,22 @@ class _TabbarBgColorTesttate extends State<TabbarBgColorTestBody>
                   ],
                 ),
               ),
-              title: Text("首页"),
+              label: "首页",
             ),
             BottomNavigationBarItem(
 //              backgroundColor: Colors.green,
               icon: Icon(Icons.message),
-              title: Text("销售"),
+              label: "销售",
             ),
             BottomNavigationBarItem(
 //              backgroundColor: Colors.amber,
               icon: Icon(Icons.shopping_cart),
-              title: Text("购物车"),
+              label:" 购物车",
             ),
             BottomNavigationBarItem(
 //              backgroundColor: Colors.red,
               icon: Icon(Icons.person),
-              title: Text("个人中心"),
+              label: "个人中心",
             ),
           ],
           type: BottomNavigationBarType.fixed,
@@ -1546,13 +1514,6 @@ class MenuHomePageState extends State<MenuHomePage> {
               ListView(
                 children: [
                   InkWell(
-                    child: QrImage(
-                      foregroundColor: Colors.lightBlueAccent,
-                      data: 'This is a simple QR code',
-                      version: 10,
-                      size: 320,
-                      gapless: false,
-                    ),
                     onTap: () {
                       Get.toNamed(
                         "/water",
@@ -1913,7 +1874,7 @@ class _testLiandongState3 extends State<MyApp103Body> {
           ),
           body: Column(
             children: <Widget>[
-              RaisedButton(
+              ElevatedButton(
                 onPressed: () {
                   //获取OverlayState
                   OverlayState overlayState = Overlay.of(context);
@@ -2216,7 +2177,7 @@ class LinearGradientState extends State<MyApp30Body> {
             child: Column(
               children: <Widget>[
                 Text("a"),
-                RaisedButton(
+                ElevatedButton(
                   onPressed: () {
                     _scaffoldKey.currentState.openDrawer();
                   },
@@ -2325,37 +2286,7 @@ class TextFieldState extends State<MyApp29Body>
                                 color: Colors.blueAccent, fontSize: 12)),
                       ]),
                 ),
-                OutlineButton(
-                    textTheme: ButtonTextTheme.normal,
-                    onPressed: () {},
-                    /*   focusColor: Colors.lime,
-              hoverColor: Colors.red  ,*/
-                    //   color: Colors.greenAccent,
-                    //   borderSide: BorderSide(color: Colors.lightBlue,style: BorderStyle.solid),
-                    child: Text(
-                      "outline",
-                      style: new TextStyle(fontSize: 10),
-                    ),
-                    disabledBorderColor: Colors.amberAccent,
-                    highlightedBorderColor: Colors.red,
-                    color: Colors.green,
-                    hoverColor: Colors.black87,
-                    // splashColor: Colors.green,//点击后的颜色
-                    /* shape: ShapeBorder.lerp(),*/
-                    // highlightColor: Colors.amberAccent,
-                    shape: new RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0))),
-                FlatButton(
-                  onPressed: () {},
-                  child: new Text("FlatButton"),
-                  color: Colors.green,
-                  clipBehavior: Clip.antiAlias,
-                  shape: new RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20.0),
-                  ),
-                  // highlightColor: Colors.red,
-                  hoverColor: Colors.amberAccent,
-                ),
+
                 Container(
                   width: 160,
                   height: 48,
@@ -2367,14 +2298,11 @@ class TextFieldState extends State<MyApp29Body>
                     ]),
                     borderRadius: BorderRadius.circular(50),
                   ),
-                  child: FlatButton.icon(
+                  child: ElevatedButton.icon(
                     onPressed: () {},
                     clipBehavior: Clip.antiAlias,
-                    shape: new RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(50.0),
-                    ),
+
                     // highlightColor: Colors.red,
-                    hoverColor: Colors.amberAccent,
                     icon: Icon(
                       Icons.phone,
                       color: Colors.white,
@@ -2386,75 +2314,9 @@ class TextFieldState extends State<MyApp29Body>
                     ),
                   ),
                 ),
-                RaisedButton(
-                  onPressed: () {},
-                  child: Text("RaiseButton"),
-                  color: Colors.green,
-                  shape: new StadiumBorder(
-                    side: new BorderSide(
-                      style: BorderStyle.solid,
-                      color: Colors.greenAccent,
-                    ),
-                  ),
-//              highlightColor: Colors.amber,
-                  splashColor: Colors.amber,
-                  //    colorBrightness:Brightness.light ,
-                ),
+
                 Container(
                   child: Text("data"),
-                ),
-                Container(
-                  width: 160,
-                  height: 48,
-                  decoration: new BoxDecoration(
-                    gradient: const LinearGradient(colors: [
-                      Color(0xFFFF9224),
-                      Color(0xFFFF9224),
-                      Color(0xFF18B37F)
-                    ]),
-                    borderRadius: BorderRadius.circular(50),
-                  ),
-                  child: RaisedButton(
-                    onPressed: () {},
-                    child: Text("RaiseButton"),
-                    shape: new StadiumBorder(
-                      side: new BorderSide(
-                        style: BorderStyle.solid,
-                        color: Colors.greenAccent,
-                      ),
-                    ),
-//              highlightColor: Colors.amber,
-                    splashColor: Color(0xff20DDAA),
-                    //    colorBrightness:Brightness.light ,
-                  ),
-                ),
-                RaisedButton(
-                  onPressed: () {},
-                  textColor: Colors.white,
-                  clipBehavior: Clip.hardEdge,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(22.0))),
-                  padding: const EdgeInsets.all(0.0),
-                  child: Container(
-                    width: 260,
-                    height: 44,
-                    alignment: Alignment.center,
-                    decoration: const BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: <Color>[
-                          Color(0xff25D1D1),
-                          Color(0xff3BE6AD),
-                          Color(0xff20DDAA)
-                        ],
-                      ),
-                    ),
-                    padding: const EdgeInsets.all(10.0),
-                    child: Text(
-                      '立即申请',
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                  splashColor: Color(0xff20DDAA),
                 ),
               ],
             ),
@@ -2504,14 +2366,9 @@ class TextFieldState extends State<MyApp29Body>
                               ]),
                               borderRadius: BorderRadius.circular(50),
                             ),
-                            child: FlatButton.icon(
+                            child: ElevatedButton.icon(
                               onPressed: () {},
                               clipBehavior: Clip.antiAlias,
-                              shape: new RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(50.0),
-                              ),
-                              // highlightColor: Colors.red,
-                              hoverColor: Colors.amberAccent,
 
                               icon: Icon(
                                 Icons.phone,
@@ -3187,7 +3044,7 @@ class MyApp21 extends BasePage {
                         style: new TextStyle(fontSize: 10.0),
                       ),
                     ),
-                    label: new RaisedButton(onPressed: () {
+                    label: new ElevatedButton(onPressed: () {
                       print('顺利交付的计算机');
                     }))
               ],

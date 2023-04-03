@@ -166,8 +166,8 @@ class _MyHomePageState extends State<FlutterPickerPageBody> {
 
   showPicker(BuildContext context) {
     Picker picker = Picker(
-        adapter: PickerDataAdapter<String>(
-            pickerdata: JsonDecoder().convert(PickerData)),
+        // adapter: PickerDataAdapter<String>(
+        //     pickerdata: JsonDecoder().convert(PickerData)),
         changeToFirst: false,
         textAlign: TextAlign.left,
         textStyle: TextStyle(color: Colors.blue),
@@ -182,8 +182,8 @@ class _MyHomePageState extends State<FlutterPickerPageBody> {
 
   showPickerModal(BuildContext context) async {
     final result = await Picker(
-        adapter: PickerDataAdapter<String>(
-            pickerdata: JsonDecoder().convert(PickerData)),
+        // adapter: PickerDataAdapter<String>(
+        //     pickerdata: JsonDecoder().convert(PickerData)),
         changeToFirst: true,
         hideHeader: false,
         selectedTextStyle: TextStyle(color: Colors.blue),
@@ -262,8 +262,8 @@ class _MyHomePageState extends State<FlutterPickerPageBody> {
 
   showPickerDialog(BuildContext context) {
     Picker(
-        adapter: PickerDataAdapter<String>(
-            pickerdata: JsonDecoder().convert(PickerData)),
+        // adapter: PickerDataAdapter<String>(
+        //     pickerdata: JsonDecoder().convert(PickerData)),
         hideHeader: true,
         title: Text("Select Data"),
         selectedTextStyle: TextStyle(color: Colors.blue),
@@ -275,10 +275,10 @@ class _MyHomePageState extends State<FlutterPickerPageBody> {
 
   showPickerArray(BuildContext context) {
     Picker(
-        adapter: PickerDataAdapter<String>(
-          pickerdata: JsonDecoder().convert(PickerData2),
-          isArray: true,
-        ),
+        // adapter: PickerDataAdapter<String>(
+        //   pickerdata: JsonDecoder().convert(PickerData2),
+        //   isArray: true,
+        // ),
         hideHeader: true,
         selecteds: [3, 0, 2],
         title: Text("Please Select"),

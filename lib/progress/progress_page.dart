@@ -123,11 +123,6 @@ class MyButton extends StatelessWidget {
     // The InkWell Wraps our custom flat button Widget
     return new InkWell(
       // When the user taps the button, show a snackbar
-      onTap: () {
-        Scaffold.of(context).showSnackBar(new SnackBar(
-          content: new Text('Tap'),
-        ));
-      },
       child: new Container(
         width: 215,
         height: 36,

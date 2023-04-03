@@ -116,7 +116,7 @@ class LoadingDialog extends Dialog {
                     borderRadius:
                     const BorderRadius.all(const Radius.circular(4)), //弧度
                   ),*/
-                  child: FlatButton(
+                  child: ElevatedButton(
                     onPressed: () {
                       Loading.hide(context);
                     },
@@ -148,7 +148,7 @@ Future<void> show(context) async {
           ),
         ),
         actions: <Widget>[
-          FlatButton(
+          ElevatedButton(
             child: Text('Regret'),
             onPressed: () {
               Navigator.of(context).pop();

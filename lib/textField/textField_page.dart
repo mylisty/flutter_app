@@ -366,7 +366,7 @@ class TextFieldPage extends BasePage {
                   new SizedBox(
                     width: 340,
                     height: 42,
-                    child: RaisedButton(
+                    child: ElevatedButton(
                       onPressed: () {
                         // 读取from状态
                         var loginForm = loginkey.currentState;
@@ -430,7 +430,7 @@ class SecondScreen extends StatelessWidget {
         title: new Text('Navigator'),
       ),
       body: new Center(
-        child: new RaisedButton(
+        child: new ElevatedButton(
             child: Text(title),
             onPressed: () {
               //  Navigator.pop(context,dec);

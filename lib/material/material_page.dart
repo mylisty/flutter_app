@@ -188,9 +188,7 @@ class UpdateDialog extends Dialog {
                               width: 250,
                               height: 42,
                               margin: EdgeInsets.only(bottom: 15),
-                              child: RaisedButton(
-                                  color: Colors.red,
-                                  shape: StadiumBorder(),
+                              child: ElevatedButton(
                                   child: Text(
                                     '立即更新',
                                     style: TextStyle(
