@@ -1092,6 +1092,13 @@ class OverlayPageBodyState extends State<OverlayPageBody> {
   }
 
   @override
+  void dispose() {
+    OverlayDialog2.cancelToast();
+    OverlayDialog._cancelToast();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: new AppBar(
@@ -1113,6 +1120,24 @@ class OverlayPageBodyState extends State<OverlayPageBody> {
               },
               child: Text("弹出"),
             ),
+            ElevatedButton(
+              onPressed: () {
+                OverlayDialog2.cancelToast();
+              },
+              child: Text("取消2"),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                // OverlayDialog2.show(context);
+                // OverlayDialog2.show(context,
+                //     message: "换电中，预计五分钟...", height: 142,count: -1);
+                OverlayDialog2.show(context,
+                    message: "换电成功",
+                    status: "SUCCESS",
+                    bgColor: Color(0xE5000000));
+              },
+              child: Text("弹出2"),
+            ),
             Container(
               margin: EdgeInsets.only(top: 40),
               child: ElevatedButton(
@@ -1126,6 +1151,122 @@ class OverlayPageBodyState extends State<OverlayPageBody> {
         ),
       ),
     );
+  }
+}
+
+class OverlayDialog2 {
+  static OverlayEntry _overlayEntry; // 浮层，Toast显示全靠它
+  static Timer timer;
+
+  static void show(
+    BuildContext context, {
+    String message = "结束中", // 文本内容
+    int count = 30, // count =-1时 不启用倒计时功能
+    double height = 120,
+    String status = "LOADING", // LOADING  加载  FAIL 失败 SUCCESS 成功
+    Color bgColor, // 背景颜色
+  }) async {
+    if (bgColor == null) {
+      bgColor = Color(0xA6000000);
+    }
+    OverlayDialog2.cancelToast();
+    var countInit = true;
+    //获取OverlayState
+    OverlayState overlayState = Overlay.of(context);
+    _overlayEntry = OverlayEntry(
+      builder: (BuildContext context) => StatefulBuilder(
+        builder:
+            (BuildContext context, void Function(void Function()) setState2) {
+          if (countInit && count != -1 && status == "LOADING") {
+            countInit = false;
+            timer = Timer.periodic(const Duration(milliseconds: 1000), (timer) {
+              count--;
+              if (count <= 0) {
+                cancelToast();
+              }
+              setState2(() {});
+            });
+          }
+          return Material(
+            //创建透明层
+            type: MaterialType.transparency, //透明类型
+            child: Center(
+              child: Container(
+                width: 120,
+                height: height,
+                padding: EdgeInsets.only(
+                  top: 30,
+                  bottom: 24,
+                ),
+                decoration: BoxDecoration(
+                  color: bgColor,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Column(
+                  children: [
+                    Visibility(
+                      visible: "LOADING" == status,
+                      child: Container(
+                        child: CircularProgressIndicator(
+                          color: Colors.white,
+                          strokeWidth: 3,
+                          backgroundColor: Colors.transparent,
+                        ),
+                        width: 27,
+                        height: 27,
+                      ),
+                    ),
+                    Visibility(
+                      visible: "FAIL" == status,
+                      child: new Image.asset(
+                        'assets/images/swap_fail_close.png',
+                        width: 28,
+                        height: 28,
+                      ),
+                    ),
+                    Visibility(
+                      visible: "SUCCESS" == status,
+                      child: new Image.asset(
+                        'assets/images/swap_success.png',
+                        width: 28,
+                        height: 28,
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(top: 14, left: 16, right: 16),
+                      child: Text(
+                        "$message${count != -1 && status == "LOADING" ? count : ""}",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: 14, color: Colors.white),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        },
+      ),
+    );
+    WidgetsBinding.instance
+        .addPostFrameCallback((_) => overlayState.insert(_overlayEntry));
+  }
+
+  // 移除Toast
+  static cancelToast() async {
+    if (_overlayEntry != null) {
+      _overlayEntry.remove();
+      _overlayEntry = null;
+    }
+    _cancelTimer();
+  }
+
+  // 单独取消倒计时
+  static _cancelTimer() async {
+    if (timer != null) {
+      timer.cancel();
+      timer = null;
+    }
   }
 }
 
@@ -1334,7 +1475,7 @@ class _TabbarBgColorTesttate extends State<TabbarBgColorTestBody>
             BottomNavigationBarItem(
 //              backgroundColor: Colors.amber,
               icon: Icon(Icons.shopping_cart),
-              label:" 购物车",
+              label: " 购物车",
             ),
             BottomNavigationBarItem(
 //              backgroundColor: Colors.red,
@@ -2286,7 +2427,6 @@ class TextFieldState extends State<MyApp29Body>
                                 color: Colors.blueAccent, fontSize: 12)),
                       ]),
                 ),
-
                 Container(
                   width: 160,
                   height: 48,
@@ -2314,7 +2454,6 @@ class TextFieldState extends State<MyApp29Body>
                     ),
                   ),
                 ),
-
                 Container(
                   child: Text("data"),
                 ),
@@ -2369,7 +2508,6 @@ class TextFieldState extends State<MyApp29Body>
                             child: ElevatedButton.icon(
                               onPressed: () {},
                               clipBehavior: Clip.antiAlias,
-
                               icon: Icon(
                                 Icons.phone,
                                 color: Colors.white,
